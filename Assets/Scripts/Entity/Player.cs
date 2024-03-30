@@ -87,7 +87,7 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
     private bool isValidPosition(Vector3 futurePosition)
     {
         Vector3Int gridPosition = MapManager.Instance.FloorMap.WorldToCell(futurePosition);
-        if(!MapManager.Instance.inBounds(gridPosition.x, gridPosition.y) || MapManager.Instance.ObstacleMap.HasTile(gridPosition) || futurePosition == transform.position)
+        if(!MapManager.Instance.InBounds(gridPosition.x, gridPosition.y) || MapManager.Instance.ObstacleMap.HasTile(gridPosition) || futurePosition == transform.position)
             return false;
         return true;
     }

@@ -197,7 +197,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 247499119}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.15, y: 9.14, z: -0.054587908}
+  m_LocalPosition: {x: -0.67, y: 22.94, z: -0.054587908}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8901,7 +8901,26 @@ MonoBehaviour:
   lightColor:
     serializedVersion: 2
     rgba: 4294967295
-  floorTile: {fileID: 11400000, guid: ae035b030cc19f54e9e7c1d3cf008765, type: 2}
-  wallTile: {fileID: 11400000, guid: 1edc058d18d63c4448a94bd296ce0495, type: 2}
+  floorTile:
+  - {fileID: 11400000, guid: ae035b030cc19f54e9e7c1d3cf008765, type: 2}
+  - {fileID: 11400000, guid: 93681a4d67c85024f943029e74fe3909, type: 2}
+  - {fileID: 11400000, guid: 2a86af814d231094899f60bc79edcd25, type: 2}
+  - {fileID: 11400000, guid: a996aa770a5cebe4291863e6e2626f7d, type: 2}
+  - {fileID: 11400000, guid: 31e2c9cf368f2e445be176670950e8ae, type: 2}
+  - {fileID: 11400000, guid: a0e30a8a0847e76429e9d2abdc9e6997, type: 2}
+  - {fileID: 11400000, guid: d908ec57802dcb84c951cb1c635464a1, type: 2}
+  wallTile:
+  - {fileID: 11400000, guid: fe5dac9bc678777468e2cb3cb0f3c3f9, type: 2}
+  - {fileID: 11400000, guid: b78a27e42a99ab943bf220f5e6244768, type: 2}
+  - {fileID: 11400000, guid: 2bcb57d7f6a876b4ebacdaf6bb8f17fe, type: 2}
+  - {fileID: 11400000, guid: 1c9741f1da6ee5245abc2ee863ff827f, type: 2}
+  - {fileID: 11400000, guid: 4aad5706b0398e44e9a9d644e9f6e9a8, type: 2}
+  - {fileID: 11400000, guid: eb0ca5f8f476fe04a8c49dcbe341ad27, type: 2}
+  - {fileID: 11400000, guid: 896c5739c4a028d4188ee2bbb545102a, type: 2}
+  - {fileID: 11400000, guid: 100acf5c2e2432e4e907e60dc472ab72, type: 2}
+  - {fileID: 11400000, guid: 1edc058d18d63c4448a94bd296ce0495, type: 2}
+  - {fileID: 11400000, guid: 5531d56a1ca036048ac8e3a316fcdc28, type: 2}
+  - {fileID: 11400000, guid: 4aad5706b0398e44e9a9d644e9f6e9a8, type: 2}
+  - {fileID: 11400000, guid: 93878b97ffdd0434e80c5b7c1524cdee, type: 2}
   floorMap: {fileID: 1641941209}
   obstacleMap: {fileID: 307923888}
