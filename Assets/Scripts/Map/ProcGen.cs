@@ -26,7 +26,37 @@ sealed class ProcGen : MonoBehaviour
                 {
                     if(x == roomX || x == roomX + roomWidth - 1 || y == roomY || y == roomY + roomHeight - 1)
                     {
-                        if(SetWallTileIfEmpty(new Vector3Int(x, y, 0)))
+                        int tileIndex = 0;
+                        if (x == roomX){
+                            if (y == roomY)
+                                tileIndex = 3;
+                            else if(y == roomY + roomHeight - 1)
+                                tileIndex = 0;
+                            else
+                                tileIndex = 11;
+                        }
+                        else if(y == roomY){
+                            tileIndex = 10;
+                            if (x == roomX)
+                                tileIndex = 3;
+                            else if(x == roomX + roomWidth - 1)
+                                tileIndex = 2;
+                        }
+                        else if(x == roomX + roomWidth - 1){
+                            tileIndex = 9;
+                            if (y == roomY)
+                                tileIndex = 2;
+                            else if(y == roomY + roomHeight - 1)
+                                tileIndex = 1;
+                        }
+                        else if(y == roomY + roomHeight - 1){
+                            tileIndex = 8;
+                            if (x == roomX)
+                                tileIndex = 0;
+                            else if(x == roomX + roomWidth - 1)
+                                tileIndex = 1;
+                        }
+                        if(SetWallTileIfEmpty(new Vector3Int(x, y, 0), tileIndex))
                         {
                             continue;
                         }
@@ -96,7 +126,7 @@ sealed class ProcGen : MonoBehaviour
 
             for (int x = tunnelCoords[i].x - 2; x <= tunnelCoords[i].x + 2; x++) {
                 for (int y = tunnelCoords[i].y - 2; y <= tunnelCoords[i].y + 2; y++) {
-                    if (SetWallTileIfEmpty(new Vector3Int(x, y, 0))) {
+                    if (SetWallTileIfEmpty(new Vector3Int(x, y, 0), 8)) {
                         continue;
                     }
                 }
@@ -147,7 +177,7 @@ sealed class ProcGen : MonoBehaviour
         }
     }
 
-    private bool SetWallTileIfEmpty(Vector3Int position)
+    private bool SetWallTileIfEmpty(Vector3Int position, int tileIndex)
     {
         if(MapManager.Instance.FloorMap.GetTile(new Vector3Int(position.x, position.y, 0)))
         {
@@ -155,7 +185,7 @@ sealed class ProcGen : MonoBehaviour
         }
         else
         {
-            MapManager.Instance.ObstacleMap.SetTile(new Vector3Int(position.x, position.y, 0), MapManager.Instance.WallTile[Random.Range(0, MapManager.Instance.WallTile.Count)]);
+            MapManager.Instance.ObstacleMap.SetTile(new Vector3Int(position.x, position.y, 0), MapManager.Instance.WallTile[tileIndex]);
             return false;
         }
     }

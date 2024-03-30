@@ -8,7 +8,6 @@ public class MapManager : MonoBehaviour
 
     [Header("Map Settings")]
     [SerializeField] private int Width = 80, Height = 45;
-
     [SerializeField] private int roomMaxSize = 15, roomMinSize = 8, maxRooms = 30;
 
     [Header("Colors")]
@@ -48,18 +47,25 @@ public class MapManager : MonoBehaviour
         ProcGen procGen = new ProcGen();
         procGen.GenerateDungeon(Width, Height, roomMaxSize, roomMinSize, maxRooms, rooms);
 
-        Instantiate(Resources.Load<GameObject>("Player"), new Vector3(4 + 0.5f, 2 + 0.5f, 0), Quaternion.identity).name = "Player";
-        Instantiate(Resources.Load<GameObject>("NPC"), new Vector3(4 - 0.5f, 2 + 0.5f, 0), Quaternion.identity).name = "NPC";
+        // Instantiate player
+        GameObject player = Instantiate(Resources.Load<GameObject>("Player"), new Vector3(4 + 0.5f, 2 + 0.5f, 0), Quaternion.identity);
+        player.name = "Player";
 
-        Camera.main.transform.position = new Vector3(20, 20.25f, -10);
-        Camera.main.orthographicSize = 27f;
+        // Instantiate camera
+        GameObject camera = Instantiate(Resources.Load<GameObject>("Camera"), new Vector3(4 + 0.5f, 2 + 0.5f, 0), Quaternion.identity);
+        camera.name = "Camera";
+        Instantiate(Resources.Load<GameObject>("NPC"), new Vector3(40 - 5.5f, 25 + 0.5f, 0), Quaternion.identity).name = "NPC";
+
+        camera.transform.SetParent(player.transform); // Make camera a child of the player
+        Camera.main.transform.position = new Vector3(5 - 0.5f, 3 - 0.5f, -10);
+        Camera.main.orthographicSize = 7f;
     }
 
     public bool InBounds(int x, int y)
     {
         return x >= -10 && x < Width && y >= -10 && y < Height;
     }
-    
+
     public void CreatePlayer(Vector2 position)
     {
         Instantiate(Resources.Load<GameObject>("Player"), new Vector3(position.x + 0.5f, position.y + 0.5f, 0), Quaternion.identity).name = "Player";
