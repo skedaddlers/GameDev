@@ -5,24 +5,15 @@ using UnityEngine;
 public class Entity : MonoBehaviour
 {
 
-    [SerializeField] private bool isSentient, blocksMovement;
+    [SerializeField] private bool blocksMovement;
     // Start is called before the first frame update
 
-    public bool IsSentient{ get => isSentient; }
-    public bool BlocksMovement{ get => blocksMovement; }
-
-    void Start()
-    {
-        if(GetComponent<Player>())
-        {
-            GameManager.Instance.InsertEntity(this, 0);
-        }
-        else if(isSentient){
-            GameManager.Instance.AddEntity(this);
-        }
-    }
+    public bool BlocksMovement{ get => blocksMovement; set => blocksMovement = value; }
     // Update is called once per frame
-    public void Move(Vector2 direction){
-        // transform.position += (Vector3)direction;
+    public void AddToGameManager(){
+        GameManager.Instance.Entities.Add(this);
+    }
+    public void Move(Vector3 direction){
+        transform.position += direction;
     }
 }

@@ -6,20 +6,23 @@ public class GameManager : MonoBehaviour
 {
 
     public static GameManager Instance;
-    [SerializeField] private float time = 0.1f;
 
+    [Header("Time")]
+    [SerializeField] private float baseTIme = 0.075f;
+    [SerializeField] private float delayTime;
     [SerializeField] private bool isPlayerTurn = true;
 
-    [SerializeField] private int entityNum = 0;
+    [Header("Entities")]
+    [SerializeField] private int actorNum = 0;
     [SerializeField] private List<Entity> entities = new List<Entity>();
+    [SerializeField] private List<Actor> actors = new List<Actor>();
 
-    public bool IsPlayerTurn
-    {
-        get => isPlayerTurn;
-        set => isPlayerTurn = value; // Add a setter for IsPlayerTurn
-    }
+    [Header("Death")]
+    [SerializeField] private Sprite deadSprite;
+    public bool IsPlayerTurn { get => isPlayerTurn; }
     public List<Entity> Entities { get => entities; }
-    // Start is called before the first frame update
+    public List<Actor> Actors { get => actors; }
+    public Sprite DeadSprite { get => deadSprite; }
     void Awake()
     {
         if(Instance == null)
@@ -33,32 +36,45 @@ public class GameManager : MonoBehaviour
     }
 
     private void StartTurn(){
-        if(entities[entityNum].GetComponent<Player>())
-            IsPlayerTurn = true;
-        else if (entities[entityNum].IsSentient)
-            Action.SkipAction(entities[entityNum]);
+        if(actors[actorNum].GetComponent<Player>())
+            isPlayerTurn = true;
+        else {
+            if (actors[actorNum].GetComponent<HostileEnemy>()){
+                actors[actorNum].GetComponent<HostileEnemy>().RunAI();
+            }
+            else{
+                Action.SkipAction();
+            }
+        }
     }
 
     public void EndTurn(){
-        if(entities[entityNum].GetComponent<Player>())
-            IsPlayerTurn = false;
+        if(actors[actorNum].GetComponent<Player>())
+            isPlayerTurn = false;
 
-        if (entityNum == entities.Count - 1)
-            entityNum = 0;
+        if (actorNum == actors.Count - 1)
+            actorNum = 0;
         else
-            entityNum++;
+            actorNum++;
         StartCoroutine(TurnDelay());
     }
 
     private IEnumerator TurnDelay(){
-        yield return new WaitForSeconds(time);
+        yield return new WaitForSeconds(delayTime);
         StartTurn();
     }
 
-    public Entity GetBlockingEntityAtLocation(Vector3 location){
-        foreach(Entity entity in entities){
-            if(entity.BlocksMovement && entity.transform.position == location)
-                return entity;
+    public Actor GetBlockingActorAtLocation(Vector3 location){
+        foreach(Actor actor in Actors){
+            if(actor.BlocksMovement && actor.GetComponent<Player>() == null){
+                float offsetX = actor.transform.position.x - location.x;
+                float offsetY = actor.transform.position.y - location.y;
+                if(Mathf.Abs(offsetX) < 2 && Mathf.Abs(offsetY) < 2)
+                    Debug.Log("Offset X: " + offsetX + " Offset Y:" + offsetY);
+                if(Mathf.Abs(offsetX) < 0.5f && Mathf.Abs(offsetY) < 0.5f){
+                    return actor;
+                }
+            }
         }
         return null;
     }
@@ -67,7 +83,24 @@ public class GameManager : MonoBehaviour
         entities.Add(entity);
     }
 
-    public void InsertEntity(Entity entity, int index){
-        entities.Insert(index, entity);
+    public void RemoveEntity(Entity entity){
+        entities.Remove(entity);
     }
+
+    public void AddActor(Actor actor){
+        actors.Add(actor);
+        delayTime = SetTime();
+    }
+
+    public void InsertActor(Actor actor, int index){
+        actors.Insert(index, actor);
+        delayTime = SetTime();
+    }
+
+    public void RemoveActor(Actor actor){
+        actors.Remove(actor);
+        delayTime = SetTime();
+    }
+
+    private float SetTime() => baseTIme / actors.Count;
 }

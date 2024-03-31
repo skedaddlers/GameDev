@@ -77,7 +77,7 @@ sealed class ProcGen : MonoBehaviour
             else{
 
             }
-            PlaceEntities(newRoom, maxMonstersPerRoom);
+            PlaceActors(newRoom, maxMonstersPerRoom);
             rooms.Add(newRoom);
             
         }
@@ -137,15 +137,15 @@ sealed class ProcGen : MonoBehaviour
         }
     }
 
-    private void PlaceEntities(RectangularRoom newRoom, int maxMonsters)
+    private void PlaceActors(RectangularRoom newRoom, int maxMonsters)
     {
         int numMonsters = Random.Range(0, maxMonsters + 1);
         for(int monster = 0; monster < numMonsters;)
         {
-            int x = Random.Range(newRoom.x + 1, newRoom.x + newRoom.width - 1);
-            int y = Random.Range(newRoom.y + 1, newRoom.y + newRoom.height - 1);
+            int x = Random.Range(newRoom.X + 1, newRoom.X + newRoom.Width - 1);
+            int y = Random.Range(newRoom.Y + 1, newRoom.Y + newRoom.Height - 1);
 
-            if(x == newRoom.x || x == newRoom.x + newRoom.width - 1 || y == newRoom.y || y == newRoom.y + newRoom.height - 1)
+            if(x == newRoom.X || x == newRoom.X + newRoom.Width - 1 || y == newRoom.Y || y == newRoom.Y + newRoom.Height - 1)
             {
                 continue;
             }

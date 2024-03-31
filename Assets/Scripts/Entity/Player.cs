@@ -49,8 +49,9 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
 
     private void FixedUpdate()
     {
-        if (GameManager.Instance.IsPlayerTurn && moveKeyHeld)
+        if (GameManager.Instance.IsPlayerTurn && moveKeyHeld && GetComponent<Actor>().IsAlive)
         {
+            // Debug.Log("Player is moving");
             MovePlayer();
         }
     }
@@ -58,15 +59,15 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
     private void MovePlayer()
     {
         Vector2 direction = controls.Player.Movement.ReadValue<Vector2>();
-        Vector2 roundedDirection = new Vector2(Mathf.Round(direction.x), Mathf.Round(direction.y));
-        Vector3 futurePosition = transform.position + (Vector3)roundedDirection * movementSpeed * Time.fixedDeltaTime;
+        Vector3 roundedDirection = new Vector3(direction.x, direction.y, 0f) * movementSpeed * Time.fixedDeltaTime;
+        Vector3 futurePosition = transform.position + roundedDirection;
         // Debug.Log(transform.position.x + " " + transform.position.y);
         if (isValidPosition(futurePosition))
         {
-            moveKeyHeld = Action.BumpAction(GetComponent<Entity>(), roundedDirection);
-            Vector2 movementInput = controls.Player.Movement.ReadValue<Vector2>();
-            Vector3 movement = new Vector3(movementInput.x, movementInput.y, 0f) * movementSpeed * Time.fixedDeltaTime;
-            transform.position += movement;
+            moveKeyHeld = Action.BumpAction(GetComponent<Actor>(), roundedDirection);
+            // Vector2 movementInput = controls.Player.Movement.ReadValue<Vector2>();
+            // Vector3 movement = new Vector3(movementInput.x, movementInput.y, 0f) * movementSpeed * Time.fixedDeltaTime;
+            // transform.position += movement;
             UpdateAnimation();
         }
     }

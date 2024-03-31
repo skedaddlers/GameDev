@@ -7,7 +7,7 @@ public class MapManager : MonoBehaviour
     public static MapManager Instance;
 
     [Header("Map Settings")]
-    [SerializeField] private int Width = 80, Height = 45;
+    [SerializeField] private int width = 80, weight = 45;
     [SerializeField] private int roomMaxSize = 15, roomMinSize = 8, maxRooms = 30;
     [SerializeField] private int maxMonsterPerRoom = 3;
     [Header("Colors")]
@@ -23,12 +23,15 @@ public class MapManager : MonoBehaviour
     [Header("Features")]
     [SerializeField] private List<RectangularRoom> rooms = new List<RectangularRoom>();
 
+    private int Width { get => width; }
+    private int Height { get => weight; }
+    private Dictionary<Vector2Int, Node> nodes = new Dictionary<Vector2Int, Node>();
     public List<TileBase> FloorTile { get => floorTile; }
     public List<TileBase> WallTile { get => wallTile; }
     public Tilemap FloorMap { get => floorMap; }
     public Tilemap ObstacleMap { get => obstacleMap; }
     public List<RectangularRoom> Rooms { get => rooms; }
-
+    public Dictionary<Vector2Int, Node> Nodes { get => nodes; set => nodes = value;}
     private void Awake()
     {
         if (Instance == null)

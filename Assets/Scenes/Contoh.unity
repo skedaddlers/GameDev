@@ -2023,10 +2023,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64857aaa34f124b489c2b0535de372e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  time: 0.1
+  baseTIme: 0.005
+  delayTime: 0
   isPlayerTurn: 1
-  entityNum: 0
+  actorNum: 0
   entities: []
+  actors: []
+  deadSprite: {fileID: -1070926412, guid: 953489b83febc254daad5849d4359538, type: 3}
 --- !u!4 &1144863666
 Transform:
   m_ObjectHideFlags: 0
@@ -8809,8 +8812,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c9f9aa07c547634ca01f8c42254d436, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Width: 100
-  Height: 60
+  width: 80
+  weight: 45
   roomMaxSize: 20
   roomMinSize: 11
   maxRooms: 30
