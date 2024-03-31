@@ -63,7 +63,7 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
         // Debug.Log(transform.position.x + " " + transform.position.y);
         if (isValidPosition(futurePosition))
         {
-            // moveKeyHeld = Action.BumpAction(GetComponent<Entity>(), roundedDirection);
+            moveKeyHeld = Action.BumpAction(GetComponent<Entity>(), roundedDirection);
             Vector2 movementInput = controls.Player.Movement.ReadValue<Vector2>();
             Vector3 movement = new Vector3(movementInput.x, movementInput.y, 0f) * movementSpeed * Time.fixedDeltaTime;
             transform.position += movement;
@@ -93,7 +93,7 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
         return true;
     }
 
-    private void UpdateAnimation()
+    public void UpdateAnimation()
     {
         Vector2 movementInput = controls.Player.Movement.ReadValue<Vector2>();
 

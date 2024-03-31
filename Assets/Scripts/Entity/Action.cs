@@ -14,7 +14,7 @@ static public class Action
             return false;
         }
         else{
-            MovementAction(entity, dir);
+            // MovementAction(entity, dir);
             return true;
         }
     }

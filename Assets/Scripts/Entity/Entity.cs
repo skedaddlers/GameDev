@@ -23,6 +23,6 @@ public class Entity : MonoBehaviour
     }
     // Update is called once per frame
     public void Move(Vector2 direction){
-        transform.position += (Vector3)direction;
+        // transform.position += (Vector3)direction;
     }
 }
