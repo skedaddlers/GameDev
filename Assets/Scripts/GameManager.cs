@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
         get => isPlayerTurn;
         set => isPlayerTurn = value; // Add a setter for IsPlayerTurn
     }
+    public List<Entity> Entities { get => entities; }
     // Start is called before the first frame update
     void Awake()
     {
@@ -52,6 +53,14 @@ public class GameManager : MonoBehaviour
     private IEnumerator TurnDelay(){
         yield return new WaitForSeconds(time);
         StartTurn();
+    }
+
+    public Entity GetBlockingEntityAtLocation(Vector3 location){
+        foreach(Entity entity in entities){
+            if(entity.BlocksMovement && entity.transform.position == location)
+                return entity;
+        }
+        return null;
     }
 
     public void AddEntity(Entity entity){

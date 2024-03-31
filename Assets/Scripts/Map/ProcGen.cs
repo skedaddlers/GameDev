@@ -4,7 +4,7 @@ using UnityEngine;
 
 sealed class ProcGen : MonoBehaviour
 {
-    public void GenerateDungeon(int mapWidth, int mapHeight, int maxRoomSize, int minRoomSize, int maxRooms, List<RectangularRoom> rooms)
+    public void GenerateDungeon(int mapWidth, int mapHeight, int maxRoomSize, int minRoomSize, int maxRooms, int maxMonstersPerRoom, List<RectangularRoom> rooms)
     {
         for(int roomNum = 0; roomNum < maxRooms; roomNum++)
         {
@@ -71,15 +71,18 @@ sealed class ProcGen : MonoBehaviour
                     }
                 }
             }
-            if(MapManager.Instance.Rooms.Count == 0){
-                MapManager.Instance.CreatePlayer(newRoom.Center());
-            }
-            else{
+            if(rooms.Count != 0){
                 TunnelBetween(MapManager.Instance.Rooms[MapManager.Instance.Rooms.Count - 1], newRoom);
             }
+            else{
+
+            }
+            PlaceEntities(newRoom, maxMonstersPerRoom);
             rooms.Add(newRoom);
             
         }
+        MapManager.Instance.CreateEntity("Player", rooms[0].Center());
+
     }
 
     private void TunnelBetween(RectangularRoom oldRoom, RectangularRoom newRoom)
@@ -134,6 +137,37 @@ sealed class ProcGen : MonoBehaviour
         }
     }
 
+    private void PlaceEntities(RectangularRoom newRoom, int maxMonsters)
+    {
+        int numMonsters = Random.Range(0, maxMonsters + 1);
+        for(int monster = 0; monster < numMonsters;)
+        {
+            int x = Random.Range(newRoom.x + 1, newRoom.x + newRoom.width - 1);
+            int y = Random.Range(newRoom.y + 1, newRoom.y + newRoom.height - 1);
+
+            if(x == newRoom.x || x == newRoom.x + newRoom.width - 1 || y == newRoom.y || y == newRoom.y + newRoom.height - 1)
+            {
+                continue;
+            }
+
+            for(int entity = 0; entity < GameManager.Instance.Entities.Count; entity++)
+            {
+                Vector3Int pos = MapManager.Instance.FloorMap.WorldToCell(GameManager.Instance.Entities[entity].transform.position);
+                if(x == pos.x && y == pos.y)
+                {
+                    continue;
+                }
+            }
+
+            if(Random.value < 0.5f){
+                MapManager.Instance.CreateEntity("Skeleton", new Vector2(x, y));
+            }
+            else{
+                MapManager.Instance.CreateEntity("Zombie", new Vector2(x, y));
+            }
+            monster++;
+        }
+    }
     
 
     private void BressenhamLine(Vector2Int roomCenter, Vector2Int tunnelCorner, List<Vector2Int> tunnelCoords)

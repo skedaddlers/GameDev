@@ -5,12 +5,11 @@ using UnityEngine;
 public class Entity : MonoBehaviour
 {
 
-    [SerializeField] private bool isSentient = false;
+    [SerializeField] private bool isSentient, blocksMovement;
     // Start is called before the first frame update
 
-    public bool IsSentient{
-        get => isSentient;
-    }
+    public bool IsSentient{ get => isSentient; }
+    public bool BlocksMovement{ get => blocksMovement; }
 
     void Start()
     {

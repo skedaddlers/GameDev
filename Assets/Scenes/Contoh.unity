@@ -8814,6 +8814,7 @@ MonoBehaviour:
   roomMaxSize: 20
   roomMinSize: 11
   maxRooms: 30
+  maxMonsterPerRoom: 3
   darkColor:
     serializedVersion: 2
     rgba: 0

@@ -147,7 +147,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02755f9d669e20943aa8e52f19b2a6d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 5
+  movementSpeed: 7
 --- !u!114 &1006197751231624251
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -161,6 +161,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isSentient: 1
+  blocksMovement: 1
 --- !u!50 &7465568184871012612
 Rigidbody2D:
   serializedVersion: 4
