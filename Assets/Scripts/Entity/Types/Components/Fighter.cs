@@ -32,6 +32,13 @@ sealed class Fighter : MonoBehaviour
             UIManager.Instance.SetHealth(hp, maxHp);
         }
     }
+
+    private void Update()
+    {
+        if(GetComponent<Player>()){
+            UIManager.Instance.SetHealth(hp, maxHp);
+        }
+    }
     private void Die(){
         if(GetComponent<Player>()){
             UIManager.Instance.AddMessage("You died!", "#FF0000");

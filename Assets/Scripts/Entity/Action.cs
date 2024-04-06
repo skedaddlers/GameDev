@@ -21,6 +21,7 @@ static public class Action
             Item item = GameManager.Instance.Entities[i].GetComponent<Item>();
             item.transform.SetParent(actor.transform);
             actor.Inventory.Items.Add(item);
+            item.GetComponent<SpriteRenderer>().enabled = false;
 
             UIManager.Instance.AddMessage($"You picked up the {item.name}.", "#00FF00");
 
@@ -31,6 +32,8 @@ static public class Action
 
     static public void DropAction(Actor actor, Item item){
         actor.Inventory.Drop(item);
+        // MapManager.Instance.CreateEntity(item.name, actor.transform.position);
+        // GameManager.Instance.AddEntity(item);
 
         UIManager.Instance.ToggleDropMenu();
         GameManager.Instance.EndTurn();
