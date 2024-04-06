@@ -25,14 +25,22 @@ static public class Action
     static public void MeleeAction(Actor actor, Actor target){
         int damage = actor.GetComponent<Fighter>().Power - target.GetComponent<Fighter>().Defense;
 
-        string attackDesc = $"{actor.name} attacks {target.name} for {damage} damage!";
+        string attackDesc = $"{actor.name} attacks {target.name}";
+
+        string colorHex = "";
+
+        if(actor.GetComponent<Player>()){
+            colorHex = "#FFFFFF";
+        }
+        else{
+            colorHex = "#d1a3a4";
+        }
         if(damage > 0){
-            Debug.Log(attackDesc);
+            UIManager.Instance.AddMessage($"{attackDesc} for {damage} damage!", colorHex);
             target.GetComponent<Fighter>().Hp -= damage;
         }
         else{
-            attackDesc = $"{actor.name} attacks {target.name} but does no damage...";
-            Debug.Log(attackDesc);
+            UIManager.Instance.AddMessage($"{attackDesc} but does no damage.", colorHex);
         }
         GameManager.Instance.EndTurn();
     }

@@ -47,12 +47,21 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
         }
     }
 
+    public void OnView(InputAction.CallbackContext context)
+    {
+        if(context.performed)
+        {
+            UIManager.Instance.ToggleMessageHistory();
+        }
+
+    }
     private void FixedUpdate()
     {
-        if (GameManager.Instance.IsPlayerTurn && moveKeyHeld && GetComponent<Actor>().IsAlive)
-        {
-            // Debug.Log("Player is moving");
-            MovePlayer();
+        if(!UIManager.Instance.IsMessageHistoryOpen){
+            if (GameManager.Instance.IsPlayerTurn && moveKeyHeld && GetComponent<Actor>().IsAlive)
+            {
+                MovePlayer();
+            }
         }
     }
 

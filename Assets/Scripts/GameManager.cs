@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
 
     [Header("Time")]
-    [SerializeField] private float baseTIme = 0.075f;
+    [SerializeField] private float baseTime = 0.075f;
     [SerializeField] private float delayTime;
 
     [Header("Entities")]
@@ -102,5 +102,5 @@ public class GameManager : MonoBehaviour
         delayTime = SetTime();
     }
 
-    private float SetTime() => baseTIme / actors.Count;
+    private float SetTime() => baseTime / actors.Count;
 }
