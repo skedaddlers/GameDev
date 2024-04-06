@@ -11,7 +11,7 @@ public class Entity : MonoBehaviour
     public bool BlocksMovement{ get => blocksMovement; set => blocksMovement = value; }
     // Update is called once per frame
     public void AddToGameManager(){
-        GameManager.Instance.Entities.Add(this);
+        GameManager.Instance.AddEntity(this);
     }
     public void Move(Vector3 direction){
         transform.position += direction;

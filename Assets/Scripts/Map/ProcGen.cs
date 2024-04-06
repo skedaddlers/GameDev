@@ -4,7 +4,7 @@ using UnityEngine;
 
 sealed class ProcGen : MonoBehaviour
 {
-    public void GenerateDungeon(int mapWidth, int mapHeight, int maxRoomSize, int minRoomSize, int maxRooms, int maxMonstersPerRoom, List<RectangularRoom> rooms)
+    public void GenerateDungeon(int mapWidth, int mapHeight, int maxRoomSize, int minRoomSize, int maxRooms, int maxMonstersPerRoom, int maxItemsPerRoom, List<RectangularRoom> rooms)
     {
         for(int roomNum = 0; roomNum < maxRooms; roomNum++)
         {
@@ -77,7 +77,7 @@ sealed class ProcGen : MonoBehaviour
             else{
 
             }
-            PlaceActors(newRoom, maxMonstersPerRoom);
+            PlaceEntities(newRoom, maxMonstersPerRoom, maxItemsPerRoom);
             rooms.Add(newRoom);
             
         }
@@ -137,9 +137,11 @@ sealed class ProcGen : MonoBehaviour
         }
     }
 
-    private void PlaceActors(RectangularRoom newRoom, int maxMonsters)
+    private void PlaceEntities(RectangularRoom newRoom, int maxMonsters, int maxItems)
     {
         int numMonsters = Random.Range(0, maxMonsters + 1);
+        int numItems = Random.Range(0, maxItems + 1);
+
         for(int monster = 0; monster < numMonsters;)
         {
             int x = Random.Range(newRoom.X + 1, newRoom.X + newRoom.Width - 1);
@@ -166,6 +168,29 @@ sealed class ProcGen : MonoBehaviour
                 MapManager.Instance.CreateEntity("Zombie", new Vector2(x, y));
             }
             monster++;
+        }
+
+        for(int item = 0; item < numItems;)
+        {
+            int x = Random.Range(newRoom.X + 1, newRoom.X + newRoom.Width - 1);
+            int y = Random.Range(newRoom.Y + 1, newRoom.Y + newRoom.Height - 1);
+
+            if(x == newRoom.X || x == newRoom.X + newRoom.Width - 1 || y == newRoom.Y || y == newRoom.Y + newRoom.Height - 1)
+            {
+                continue;
+            }
+
+            for(int entity = 0; entity < GameManager.Instance.Entities.Count; entity++)
+            {
+                Vector3Int pos = MapManager.Instance.FloorMap.WorldToCell(GameManager.Instance.Entities[entity].transform.position);
+                if(x == pos.x && y == pos.y)
+                {
+                    continue;
+                }
+            }
+
+            MapManager.Instance.CreateEntity("HpPotion", new Vector2(x, y));
+            item++;
         }
     }
     

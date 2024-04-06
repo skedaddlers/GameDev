@@ -13,6 +13,7 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
     {
         controls = new Controls();
         animator = GetComponent<Animator>();
+        // Camera.main.transform.position = new Vector3(transform.position.x, transform.position.y,0);
     }
     private void OnEnable()
     {
@@ -43,7 +44,7 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
     {
         if(context.performed)
         {
-            Action.EscapeAction();
+            UIManager.Instance.ToggleMenu();
         }
     }
 
@@ -51,13 +52,48 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
     {
         if(context.performed)
         {
-            UIManager.Instance.ToggleMessageHistory();
+            if(!UIManager.Instance.IsMenuOpen || UIManager.Instance.IsMessageHistoryOpen)
+                UIManager.Instance.ToggleMessageHistory();
         }
-
     }
+
+    public void OnPickup(InputAction.CallbackContext context)
+    {
+        if(context.performed)
+        {
+            Action.PickupAction(GetComponent<Actor>());
+        }
+    }
+
+    public void OnInventory(InputAction.CallbackContext context)
+    {
+        if(context.performed)
+        {
+            if(!UIManager.Instance.IsMenuOpen || UIManager.Instance.IsInventoryOpen){
+                if(GetComponent<Inventory>().Items.Count > 0)
+                    UIManager.Instance.ToggleInventory(GetComponent<Actor>());
+                else
+                    UIManager.Instance.AddMessage("Your inventory is empty!", "#FF0000");
+            }
+        }
+    }
+
+    public void OnDrop(InputAction.CallbackContext context)
+    {
+        if(context.performed)
+        {
+            if(!UIManager.Instance.IsMenuOpen || UIManager.Instance.IsDropMenuOpen){
+                if(GetComponent<Inventory>().Items.Count > 0)
+                    UIManager.Instance.ToggleDropMenu(GetComponent<Actor>());
+                else
+                    UIManager.Instance.AddMessage("Your inventory is empty!", "#FF0000");
+            }
+        }
+    }
+
     private void FixedUpdate()
     {
-        if(!UIManager.Instance.IsMessageHistoryOpen){
+        if(!UIManager.Instance.IsMenuOpen){
             if (GameManager.Instance.IsPlayerTurn && moveKeyHeld && GetComponent<Actor>().IsAlive)
             {
                 MovePlayer();
@@ -70,10 +106,13 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
         Vector2 direction = controls.Player.Movement.ReadValue<Vector2>();
         Vector3 roundedDirection = new Vector3(direction.x, direction.y, 0f) * movementSpeed * Time.fixedDeltaTime;
         Vector3 futurePosition = transform.position + roundedDirection;
+
+        // Camera.main.transform.position = new Vector3(transform.position.x, transform.position.y,0);
         // Debug.Log(transform.position.x + " " + transform.position.y);
         if (isValidPosition(futurePosition))
         {
             moveKeyHeld = Action.BumpAction(GetComponent<Actor>(), roundedDirection);
+
             // Vector2 movementInput = controls.Player.Movement.ReadValue<Vector2>();
             // Vector3 movement = new Vector3(movementInput.x, movementInput.y, 0f) * movementSpeed * Time.fixedDeltaTime;
             // transform.position += movement;
