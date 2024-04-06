@@ -124,7 +124,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3291528750647798995}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 74fa14da959598f4aa1e27eb58fe4ef6, type: 2}
   m_CullingMode: 0
@@ -150,6 +150,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blocksMovement: 1
   isAlive: 1
+  fieldOfViewRange: 8
+  fieldOfView: []
   ai: {fileID: 2577817092569882764}
 --- !u!114 &-806051740714282425
 MonoBehaviour:

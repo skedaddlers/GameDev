@@ -5,10 +5,12 @@ using UnityEngine;
 public class Actor : Entity
 {
     [SerializeField] private bool isAlive = true;
-    // Start is called before the first frame update
+    [SerializeField] private int fieldOfViewRange = 8;
+    [SerializeField] private List<Vector3Int> fieldOfView = new List<Vector3Int>();
     [SerializeField] private Ai ai;
+    AdamMilVisibility algorithm;
     public bool IsAlive { get => isAlive; set => isAlive = value; }
-
+    public List<Vector3Int> FieldOfView { get => fieldOfView; }
     private void OnValidate(){
         if(GetComponent<Ai>()){
             ai = GetComponent<Ai>();
@@ -25,7 +27,28 @@ public class Actor : Entity
         else if(isAlive){
             GameManager.Instance.AddActor(this);
         }
+
+        algorithm = new AdamMilVisibility();
+        UpdateFieldOfView();
     }
+
+    private void Update() {
+        if(isAlive){
+            UpdateFieldOfView();
+        }
+    }
+
+    public void UpdateFieldOfView() {
+        Vector3Int gridPosition = MapManager.Instance.FloorMap.WorldToCell(transform.position);
+
+        fieldOfView.Clear();
+        algorithm.Compute(gridPosition, fieldOfViewRange, fieldOfView);
+
+        if (GetComponent<Player>()) {
+            MapManager.Instance.UpdateFogMap(fieldOfView);
+            MapManager.Instance.SetEntitiesVisibilities();
+        }
+  }
     // Update is called once per frame
 
 

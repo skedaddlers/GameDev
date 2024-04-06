@@ -10,9 +10,9 @@ public class GameManager : MonoBehaviour
     [Header("Time")]
     [SerializeField] private float baseTIme = 0.075f;
     [SerializeField] private float delayTime;
-    [SerializeField] private bool isPlayerTurn = true;
 
     [Header("Entities")]
+    [SerializeField] private bool isPlayerTurn = true;
     [SerializeField] private int actorNum = 0;
     [SerializeField] private List<Entity> entities = new List<Entity>();
     [SerializeField] private List<Actor> actors = new List<Actor>();
@@ -69,8 +69,8 @@ public class GameManager : MonoBehaviour
             if(actor.BlocksMovement && actor.GetComponent<Player>() == null){
                 float offsetX = actor.transform.position.x - location.x;
                 float offsetY = actor.transform.position.y - location.y;
-                if(Mathf.Abs(offsetX) < 2 && Mathf.Abs(offsetY) < 2)
-                    Debug.Log("Offset X: " + offsetX + " Offset Y:" + offsetY);
+                // if(Mathf.Abs(offsetX) < 2 && Mathf.Abs(offsetY) < 2)
+                    // Debug.Log("Offset X: " + offsetX + " Offset Y:" + offsetY);
                 if(Mathf.Abs(offsetX) < 0.5f && Mathf.Abs(offsetY) < 0.5f){
                     return actor;
                 }

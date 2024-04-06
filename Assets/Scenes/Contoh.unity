@@ -2023,7 +2023,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64857aaa34f124b489c2b0535de372e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseTIme: 0.005
+  baseTIme: 0.05
   delayTime: 0
   isPlayerTurn: 1
   actorNum: 0
@@ -8848,3 +8848,4 @@ MonoBehaviour:
   floorMap: {fileID: 1641941209}
   obstacleMap: {fileID: 307923888}
   rooms: []
+  visibleTiles: []
