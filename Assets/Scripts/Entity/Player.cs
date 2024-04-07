@@ -6,6 +6,7 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
     private Controls controls;
     private bool moveKeyHeld;
     [SerializeField] private float movementSpeed = 5f; // Adjust this value to change movement speed
+    [SerializeField] private int mana = 100;
 
     private Animator animator;
 
@@ -44,7 +45,7 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
     {
         if(context.performed)
         {
-            UIManager.Instance.ToggleMenu();
+            UIManager.Instance.ToggleMenu(GetComponent<Actor>());
         }
     }
 
@@ -99,6 +100,7 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
                 MovePlayer();
             }
         }
+        UIManager.Instance.UpdateSkills(GetComponent<Actor>());
     }
 
     private void MovePlayer()

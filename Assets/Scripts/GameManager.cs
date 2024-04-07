@@ -35,6 +35,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void Update(){
+
+    }
+
     private void StartTurn(){
         if(actors[actorNum].GetComponent<Player>())
             isPlayerTurn = true;
@@ -80,10 +84,13 @@ public class GameManager : MonoBehaviour
     }
 
     public void AddEntity(Entity entity){
+        if(!entity.gameObject.activeSelf)
+            entity.gameObject.SetActive(true);
         entities.Add(entity);
     }
 
     public void RemoveEntity(Entity entity){
+        entity.gameObject.SetActive(false);
         entities.Remove(entity);
     }
 
@@ -99,7 +106,7 @@ public class GameManager : MonoBehaviour
 
     public void RemoveActor(Actor actor){
         actors.Remove(actor);
-        delayTime = SetTime();
+        // delayTime = SetTime();
     }
 
     private float SetTime() => baseTime / actors.Count;

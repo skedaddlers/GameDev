@@ -32,6 +32,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject dropMenu;
     [SerializeField] private GameObject dropMenuContent;
 
+    [Header("Skills UI")]
+    [SerializeField] private GameObject skills;
+    [SerializeField] private GameObject skillsContent;
+
     public bool IsMessageHistoryOpen { get => isMessageHistoryOpen; }
     public bool IsInventoryOpen { get => isInventoryOpen; }
     public bool IsDropMenuOpen { get => isDropMenuOpen; }
@@ -47,7 +51,7 @@ public class UIManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    
+
     public void Start() => AddMessage("Welcome to the game!", "#FFFFFF");
 
      public void AddMessage(string newMessage, string colorHex) {
@@ -99,7 +103,7 @@ public class UIManager : MonoBehaviour
         hpSliderText.text = $"HP: {hp}/{maxHp}";
     }
 
-    public void ToggleMenu(){
+    public void ToggleMenu(Actor actor = null){
         if(isMenuOpen)
         {
             isMenuOpen = !isMenuOpen;
@@ -119,6 +123,7 @@ public class UIManager : MonoBehaviour
     public void ToggleMessageHistory(){
         messageHistory.SetActive(!messageHistory.activeSelf);
         isMessageHistoryOpen = messageHistory.activeSelf;
+        skills.SetActive(!skills.activeSelf);
     }
 
     public void ToggleInventory(Actor actor = null){
@@ -128,6 +133,7 @@ public class UIManager : MonoBehaviour
 
         if(isMenuOpen){
             UpdateMenu(actor, inventoryContent);
+            skills.SetActive(false);
         }
     }
 
@@ -138,6 +144,7 @@ public class UIManager : MonoBehaviour
 
         if(isMenuOpen){
             UpdateMenu(actor, dropMenuContent);
+            skills.SetActive(false);
         }
     }
 
@@ -156,9 +163,11 @@ public class UIManager : MonoBehaviour
             menuContentChild.GetComponent<Button>().onClick.AddListener(() => {
                 if (menuContent == inventoryContent) 
                 {
+                    Debug.Log("Use item");
                     Action.UseAction(actor, i - 1);
                 } else if (menuContent == dropMenuContent) 
                 {
+                    Debug.Log("Drop item");
                     Action.DropAction(actor, actor.Inventory.Items[i - 1]);
                 }
                 UpdateMenu(actor, menuContent);
@@ -166,5 +175,36 @@ public class UIManager : MonoBehaviour
             menuContentChild.SetActive(true);
         }
         eventSystem.SetSelectedGameObject(menuContent.transform.GetChild(0).gameObject);
+    }
+
+    public void UpdateSkills(Actor actor){
+        if(skills.activeSelf){
+            for(int i = 0; i < skillsContent.transform.childCount; i++){
+                GameObject skill = skillsContent.transform.GetChild(i).gameObject;
+                skill.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "";
+                skill.GetComponent<Button>().onClick.RemoveAllListeners();
+                skill.SetActive(false);
+            }
+
+            for(int i = 0; i < 6; i++){
+                GameObject skill = skillsContent.transform.GetChild(i).gameObject;
+                skill.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text ="";
+                skill.GetComponent<Button>().onClick.AddListener(() => {
+                    if(skill == skillsContent.transform.GetChild(0).gameObject)
+                        Debug.Log("Using skill: 0");
+                    else if(skill == skillsContent.transform.GetChild(1).gameObject)
+                        Debug.Log("Using skill: 1");
+                    else if(skill == skillsContent.transform.GetChild(2).gameObject)
+                        Debug.Log("Using skill: 2");
+                    else if(skill == skillsContent.transform.GetChild(3).gameObject)
+                        Debug.Log("Using skill: 3");
+                    else if(skill == skillsContent.transform.GetChild(4).gameObject)
+                        Debug.Log("Using skill: 4");
+                    else if(skill == skillsContent.transform.GetChild(5).gameObject)
+                        Debug.Log("Using skill: 5");
+                });
+                skill.SetActive(true);
+            }
+        }
     }
 }
