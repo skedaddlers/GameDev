@@ -23,6 +23,24 @@ public class GameManager : MonoBehaviour
     public List<Entity> Entities { get => entities; }
     public List<Actor> Actors { get => actors; }
     public Sprite DeadSprite { get => deadSprite; }
+    float deltaTime = 0.0f;
+
+
+    void OnGUI()
+    {
+        int w = Screen.width, h = Screen.height;
+
+        GUIStyle style = new GUIStyle();
+
+        Rect rect = new Rect(0, 0, w, h * 2 / 100);
+        style.alignment = TextAnchor.UpperLeft;
+        style.fontSize = h * 2 / 50;
+        style.normal.textColor = new Color (1.0f, 1.0f, 1.0f, 1.0f);
+        float msec = deltaTime * 1000.0f;
+        float fps = 1.0f / deltaTime;
+        string text = string.Format("{0:0.0} ms ({1:0.} fps)", msec, fps);
+        GUI.Label(rect, text, style);
+    }
     void Awake()
     {
         if(Instance == null)
@@ -35,38 +53,49 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void Start(){
+        Application.targetFrameRate = 60;
+    }
+
     private void Update(){
-
-    }
-
-    private void StartTurn(){
-        if(actors[actorNum].GetComponent<Player>())
-            isPlayerTurn = true;
-        else {
-            if (actors[actorNum].GetComponent<HostileEnemy>()){
-                actors[actorNum].GetComponent<HostileEnemy>().RunAI();
+        foreach(Actor actor in actors){
+            if(actor.GetComponent<Player>()){
+                isPlayerTurn = true;
             }
-            else{
-                Action.SkipAction();
-            }
+            else 
+                actor.GetComponent<HostileEnemy>().RunAI();
         }
+        deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
     }
 
-    public void EndTurn(){
-        if(actors[actorNum].GetComponent<Player>())
-            isPlayerTurn = false;
+    // private void StartTurn(){
+    //     if(actors[actorNum].GetComponent<Player>())
+    //         isPlayerTurn = true;
+    //     else {
+    //         if (actors[actorNum].GetComponent<HostileEnemy>()){
+    //             actors[actorNum].GetComponent<HostileEnemy>().RunAI();
+    //         }
+    //         else{
+    //             Action.SkipAction();
+    //         }
+    //     }
+    // }
 
-        if (actorNum == actors.Count - 1)
-            actorNum = 0;
-        else
-            actorNum++;
-        StartCoroutine(TurnDelay());
-    }
+    // public void EndTurn(){
+    //     if(actors[actorNum].GetComponent<Player>())
+    //         isPlayerTurn = false;
 
-    private IEnumerator TurnDelay(){
-        yield return new WaitForSeconds(delayTime);
-        StartTurn();
-    }
+    //     if (actorNum == actors.Count - 1)
+    //         actorNum = 0;
+    //     else
+    //         actorNum++;
+    //     StartCoroutine(TurnDelay());
+    // }
+
+    // private IEnumerator TurnDelay(){
+    //     yield return new WaitForSeconds(delayTime);
+    //     StartTurn();
+    // }
 
     public Actor GetBlockingActorAtLocation(Vector3 location){
         foreach(Actor actor in Actors){
@@ -96,12 +125,12 @@ public class GameManager : MonoBehaviour
 
     public void AddActor(Actor actor){
         actors.Add(actor);
-        delayTime = SetTime();
+        // delayTime = SetTime();
     }
 
     public void InsertActor(Actor actor, int index){
         actors.Insert(index, actor);
-        delayTime = SetTime();
+        // delayTime = SetTime();
     }
 
     public void RemoveActor(Actor actor){
@@ -109,5 +138,5 @@ public class GameManager : MonoBehaviour
         // delayTime = SetTime();
     }
 
-    private float SetTime() => baseTime / actors.Count;
+    // private float SetTime() => baseTime / actors.Count;
 }

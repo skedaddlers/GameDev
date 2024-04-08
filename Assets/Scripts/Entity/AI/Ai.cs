@@ -11,10 +11,10 @@ public class Ai : MonoBehaviour
 
     public void OnValidate() => aStar = GetComponent<AStar>();
 
-    public void MoveAlongPath(Vector3Int targetPos){
-        Debug.Log("Moving along path");
+    public void MoveAlongPath(Vector3Int targetPos, float movementSpeed){
+        // Debug.Log("Moving along path");
         Vector3Int gridPos = MapManager.Instance.FloorMap.WorldToCell(transform.position); 
-        Vector2 dir = aStar.Compute((Vector2Int)gridPos, (Vector2Int)targetPos);
+        Vector2 dir = aStar.Compute((Vector2Int)gridPos, (Vector2Int)targetPos) * movementSpeed * Time.deltaTime;
         Action.MovementAction(GetComponent<Actor>(), dir);
     }
 }

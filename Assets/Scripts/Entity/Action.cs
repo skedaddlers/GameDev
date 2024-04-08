@@ -1,7 +1,8 @@
 using UnityEngine;
 
-static public class Action
+public class Action
 {
+
     
     static public void PickupAction(Actor actor)
     {
@@ -26,7 +27,7 @@ static public class Action
             UIManager.Instance.AddMessage($"You picked up the {item.name}.", "#00FF00");
 
             GameManager.Instance.RemoveEntity(item);
-            GameManager.Instance.EndTurn();
+            // GameManager.Instance.EndTurn();
         }
     }
 
@@ -36,7 +37,7 @@ static public class Action
         // GameManager.Instance.AddEntity(item);
 
         UIManager.Instance.ToggleDropMenu();
-        GameManager.Instance.EndTurn();
+        // GameManager.Instance.EndTurn();
     }
 
     static public void UseAction(Actor actor , int index){
@@ -53,7 +54,7 @@ static public class Action
         }
 
         UIManager.Instance.ToggleInventory();
-        GameManager.Instance.EndTurn();
+        // GameManager.Instance.EndTurn();
 
     }
     static public bool BumpAction(Actor actor, Vector3 dir){
@@ -73,6 +74,7 @@ static public class Action
     }
 
     static public void MeleeAction(Actor actor, Actor target){
+
         int damage = actor.GetComponent<Fighter>().Power - target.GetComponent<Fighter>().Defense;
 
         string attackDesc = $"{actor.name} attacks {target.name}";
@@ -92,15 +94,16 @@ static public class Action
         else{
             UIManager.Instance.AddMessage($"{attackDesc} but does no damage.", colorHex);
         }
-        GameManager.Instance.EndTurn();
+
+        // GameManager.Instance.EndTurn();
     }
 
     static public void MovementAction(Actor actor, Vector3 direction){
         actor.Move(direction);
-        GameManager.Instance.EndTurn();
+        // GameManager.Instance.EndTurn();
     }
 
     static public void SkipAction(){
-        GameManager.Instance.EndTurn();
+        // GameManager.Instance.EndTurn();
     }
 }

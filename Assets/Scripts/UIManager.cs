@@ -133,7 +133,7 @@ public class UIManager : MonoBehaviour
 
         if(isMenuOpen){
             UpdateMenu(actor, inventoryContent);
-            skills.SetActive(false);
+            // skills.SetActive(false);
         }
     }
 
@@ -144,7 +144,7 @@ public class UIManager : MonoBehaviour
 
         if(isMenuOpen){
             UpdateMenu(actor, dropMenuContent);
-            skills.SetActive(false);
+            // skills.SetActive(false);
         }
     }
 
