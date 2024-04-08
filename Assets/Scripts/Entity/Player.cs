@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour, Controls.IPlayerActions
@@ -7,7 +8,14 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
     private bool moveKeyHeld;
     [SerializeField] private float movementSpeed = 5f; // Adjust this value to change movement speed
     [SerializeField] private int mana = 100;
+    [SerializeField] private int maxMana = 100;
+    [SerializeField] private int manaRegen = 2;
+    [SerializeField] private float manaRegenRate = 1f;
+    [SerializeField] private float manaRegenCounter = 1f;
+    [SerializeField] private SkillManager skillManager;
 
+    public int Mana { get => mana; set => mana = value; }
+    public int MaxMana { get => maxMana; }
     private Animator animator;
 
     private void Awake()
@@ -15,6 +23,8 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
         controls = new Controls();
         animator = GetComponent<Animator>();
         // Camera.main.transform.position = new Vector3(transform.position.x, transform.position.y,0);
+        skillManager = GetComponent<SkillManager>();
+        InitializeSkills();
     }
     private void OnEnable()
     {
@@ -43,7 +53,9 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
 
     void Controls.IPlayerActions.OnClick(InputAction.CallbackContext context)
     {
-        if(context.performed && GetComponent<Actor>().IsAlive && !UIManager.Instance.IsMenuOpen)
+        if(context.performed && GetComponent<Actor>().IsAlive && !UIManager.Instance.IsMenuOpen &&
+            !UIManager.Instance.ContainsSkillButton(Mouse.current.position.ReadValue())
+        )
         {
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
             Vector3Int gridPosition = MapManager.Instance.FloorMap.WorldToCell(mousePosition);
@@ -114,6 +126,14 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
             }
         }
         UIManager.Instance.UpdateSkills(GetComponent<Actor>());
+
+        if(mana < maxMana){
+            manaRegenCounter -= Time.fixedDeltaTime;
+            if(manaRegenCounter <= 0){
+                mana += manaRegen;
+                manaRegenCounter = manaRegenRate;
+            }
+        }
     }
 
     private void MovePlayer()
@@ -134,21 +154,20 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
             UpdateAnimation();
         }
     }
-    
-    // private void MovePlayer()
-    // {
-    //     Vector2 direction = controls.Player.Movement.ReadValue<Vector2>();
-    //     Vector2 roundedDirection = new Vector2(Mathf.Round(direction.x), Mathf.Round(direction.y));
-    //     Vector3 futurePosition = transform.position + (Vector3)roundedDirection * movementSpeed * Time.fixedDeltaTime;
 
-    //     if(isValidPosition(futurePosition))
-    //         Action.MovementAction(GetComponent<Entity>(), roundedDirection);
-    //     // Vector2 movementInput = controls.Player.Movement.ReadValue<Vector2>();
-    //     // Vector3 movement = new Vector3(movementInput.x, movementInput.y, 0f) * movementSpeed * Time.fixedDeltaTime;
-    //     // transform.position += movement;
-    //     // UpdateAnimation();
-    // }
+    private void InitializeSkills(){
+        skillManager.AddSkill(new SalonSolitaire());
+        skillManager.AddSkill(new LetThePeopleRejoice());
+        skillManager.AddSkill(new SingerOfManyWaters());
+        skillManager.AddSkill(new AuraOfTheFormerArchon());
+        skillManager.AddSkill(new WatersAspirations());
+        skillManager.AddSkill(new TearsOfTheSinners());
 
+        
+    }
+    public void UseSkill(int index){
+        skillManager.UseSkill(index);
+    }
     private bool isValidPosition(Vector3 futurePosition)
     {
         Vector3Int gridPosition = MapManager.Instance.FloorMap.WorldToCell(futurePosition);
@@ -166,4 +185,6 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
         animator.SetFloat("MoveY", movementInput.y);
         // animator.SetBool("IsMoving", moveKeyHeld);
     }
+
+
 }

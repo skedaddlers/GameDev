@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: -1089554611067158398}
   - component: {fileID: -6452018366456817787}
   - component: {fileID: 1229510834712304930}
+  - component: {fileID: 8262832105559861489}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -150,6 +151,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementSpeed: 7
   mana: 100
+  maxMana: 100
+  manaRegen: 2
+  manaRegenRate: 1
+  manaRegenCounter: 1
+  skillManager: {fileID: 0}
+  skills: []
 --- !u!114 &-1089554611067158398
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -199,3 +206,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   capacity: 26
   items: []
+--- !u!114 &8262832105559861489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3350686397796326697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e75411dee864571429f62602c2b78bf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

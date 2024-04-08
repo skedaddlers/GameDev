@@ -10,9 +10,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] private EventSystem eventSystem;
     [SerializeField] private bool isMenuOpen = false;
     
-    [Header("Health UI")]
+    [Header("Player UI")]
     [SerializeField] private Slider hpSlider;
     [SerializeField] private TextMeshProUGUI hpSliderText;
+    [SerializeField] private Slider manaSlider;
+    [SerializeField] private TextMeshProUGUI manaSliderText;
 
     [Header("Message UI")]
     [SerializeField] private int sameMessageCount = 5;
@@ -95,6 +97,15 @@ public class UIManager : MonoBehaviour
             Debug.Log("GetColorFromHex: Could not parse color from string");
             return Color.white;
         }
+    }
+
+    public void SetManaMax(int MaxMana){
+        manaSlider.maxValue = MaxMana;
+    }
+
+    public void SetMana(int mana, int maxMana){
+        manaSlider.value = mana;
+        manaSliderText.text = $"Mana: {mana}/{maxMana}";
     }
 
     public void SetHealthMax(int MaxHp){
@@ -193,22 +204,34 @@ public class UIManager : MonoBehaviour
                 GameObject skill = skillsContent.transform.GetChild(i).gameObject;
                 skill.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text ="";
                 skill.GetComponent<Button>().onClick.AddListener(() => {
-                    if(skill == skillsContent.transform.GetChild(0).gameObject)
-                        Debug.Log("Using skill: 0");
-                    else if(skill == skillsContent.transform.GetChild(1).gameObject)
-                        Debug.Log("Using skill: 1");
-                    else if(skill == skillsContent.transform.GetChild(2).gameObject)
-                        Debug.Log("Using skill: 2");
-                    else if(skill == skillsContent.transform.GetChild(3).gameObject)
-                        Debug.Log("Using skill: 3");
-                    else if(skill == skillsContent.transform.GetChild(4).gameObject)
-                        Debug.Log("Using skill: 4");
-                    else if(skill == skillsContent.transform.GetChild(5).gameObject)
-                        Debug.Log("Using skill: 5");
+                    if(skill == skillsContent.transform.GetChild(0).gameObject){
+                        actor.GetComponent<Player>().UseSkill(0);
+                    }  
+                    else if(skill == skillsContent.transform.GetChild(1).gameObject){
+                        actor.GetComponent<Player>().UseSkill(1);
+                    }
+                    else if(skill == skillsContent.transform.GetChild(2).gameObject){
+                        actor.GetComponent<Player>().UseSkill(2);
+                    }
+                    else if(skill == skillsContent.transform.GetChild(3).gameObject){
+                        actor.GetComponent<Player>().UseSkill(3);
+                    }
+                    else if(skill == skillsContent.transform.GetChild(4).gameObject){
+                        actor.GetComponent<Player>().UseSkill(4);
+                    }
+                    else if(skill == skillsContent.transform.GetChild(5).gameObject){
+                        actor.GetComponent<Player>().UseSkill(5);
+                    }
                 });
                 skill.SetActive(true);
             }
         }
+    }
+
+    public void UpdateCooldown(int index, float cooldown){
+        GameObject skill = skillsContent.transform.GetChild(index).gameObject;
+        int cooldownInt = Mathf.CeilToInt(cooldown);
+        skill.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = $"{cooldownInt}";
     }
 
     public void UpdateEnemyHealthBar(Actor enemy){
@@ -239,5 +262,21 @@ public class UIManager : MonoBehaviour
     public Vector3 GetHealthBarPosition(Vector3 position){
         Vector3 screenPosition = Camera.main.WorldToScreenPoint(position);
         return new Vector3(position.x, position.y + 1, 0);
+    }
+
+    public bool ContainsSkillButton(Vector3 position){
+        // Vector3 screenPosition = Camera.main.WorldToScreenPoint(position);
+        // Debug.Log(position);
+        if(skills.GetComponent<RectTransform>().rect.Contains(position)){
+            return true;
+        }
+        // for(int i = 0; i < skillsContent.transform.childCount; i++){
+        //     GameObject skill = skillsContent.transform.GetChild(i).gameObject;
+        //     Debug.Log(skillsContent.GetComponent<RectTransform>().rect);
+        //     if(skill.GetComponent<RectTransform>().rect.Contains(position)){
+        //         return true;
+        //     }
+        // }
+        return false;
     }
 }
