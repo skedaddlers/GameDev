@@ -41,6 +41,19 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
 
     }
 
+    void Controls.IPlayerActions.OnClick(InputAction.CallbackContext context)
+    {
+        if(context.performed)
+        {
+            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+            Vector3Int gridPosition = MapManager.Instance.FloorMap.WorldToCell(mousePosition);
+            Vector2 gridPosition2D = new Vector2(gridPosition.x, gridPosition.y);
+            Vector2 playerPosition = transform.position;
+            Vector2 direction = (gridPosition2D - playerPosition).normalized;
+            MapManager.Instance.CreateProjectile(playerPosition, direction);
+        }
+    }
+
     void Controls.IPlayerActions.OnExit(InputAction.CallbackContext context)
     {
         if(context.performed)

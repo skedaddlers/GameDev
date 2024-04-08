@@ -36,6 +36,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject skills;
     [SerializeField] private GameObject skillsContent;
 
+    [Header("Enemy HP Bar")]
+    [SerializeField] private Dictionary<Actor, Slider> enemyHpSliders = new Dictionary<Actor, Slider>();
+
     public bool IsMessageHistoryOpen { get => isMessageHistoryOpen; }
     public bool IsInventoryOpen { get => isInventoryOpen; }
     public bool IsDropMenuOpen { get => isDropMenuOpen; }
@@ -206,5 +209,31 @@ public class UIManager : MonoBehaviour
                 skill.SetActive(true);
             }
         }
+    }
+
+    public void UpdateEnemyHealthBar(Actor enemy){
+        if(enemy.GetComponent<Fighter>().Hp <= 0){
+            Destroy(enemyHpSliders[enemy].gameObject);
+            enemyHpSliders.Remove(enemy);
+            return;
+        }
+        if(enemyHpSliders.ContainsKey(enemy)){
+            enemyHpSliders[enemy].value = enemy.GetComponent<Fighter>().Hp;
+            enemyHpSliders[enemy].transform.position = GetHealthBarPosition(enemy.GetComponent<Fighter>().transform.position); // Set position above the enemy
+            // Debug.Log(enemyHpSliders[enemy].transform.position);
+        }
+        else{
+            Slider enemyHpSlider = Instantiate(Resources.Load<Slider>("EnemyHpSlider")) as Slider;
+            enemyHpSlider.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            enemyHpSlider.maxValue = enemy.GetComponent<Fighter>().MaxHp;
+            enemyHpSlider.value = enemy.GetComponent<Fighter>().Hp;
+            enemyHpSlider.transform.position = GetHealthBarPosition(enemy.GetComponent<Fighter>().transform.position); // Set position above the enemy
+            enemyHpSliders.Add(enemy, enemyHpSlider);
+        }
+    }
+
+    public Vector3 GetHealthBarPosition(Vector3 position){
+        Vector3 screenPosition = Camera.main.WorldToScreenPoint(position);
+        return new Vector3(position.x, position.y + 1, 0);
     }
 }

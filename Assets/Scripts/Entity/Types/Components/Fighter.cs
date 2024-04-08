@@ -22,6 +22,7 @@ sealed class Fighter : MonoBehaviour
             }
         }
     }
+    public int MaxHp { get => maxHp; }
     public int Defense { get => defense; }
     public int Power { get => power; }
     public Actor Target { get => target; set => target = value; }
@@ -33,10 +34,13 @@ sealed class Fighter : MonoBehaviour
         }
     }
 
-    private void Update()
+    void Update()
     {
         if(GetComponent<Player>()){
             UIManager.Instance.SetHealth(hp, maxHp);
+        }
+        else{
+            UIManager.Instance.UpdateEnemyHealthBar(this.GetComponent<Actor>());
         }
     }
     private void Die(){

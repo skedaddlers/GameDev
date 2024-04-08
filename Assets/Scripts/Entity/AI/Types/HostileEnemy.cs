@@ -25,6 +25,7 @@ public class HostileEnemy : Ai
         // if(movementTimer > 0){
         //     movementTimer -= Time.deltaTime;
         // }
+        // UIManager.Instance.UpdateEnemyHealthBar(this);
     }
 
     public void RunAI(){

@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class Action
 {
-
     
     static public void PickupAction(Actor actor)
     {
@@ -72,6 +71,25 @@ public class Action
             return true;
         }
     }
+
+    static public void CheckForCollision(Projectile projectile){
+        Actor target = GameManager.Instance.GetBlockingActorAtLocation(projectile.transform.position);
+        Vector3Int gridPosition = MapManager.Instance.FloorMap.WorldToCell(projectile.transform.position);
+        if(!MapManager.Instance.InBounds((int)gridPosition.x, (int)gridPosition.y) || MapManager.Instance.ObstacleMap.HasTile(gridPosition)){
+            GameManager.Instance.RemoveEntity(projectile);
+            GameObject.Destroy(projectile.gameObject);
+            return;
+        }
+        // Vector3Int gridPosition = MapManager.Instance.FloorMap.WorldToCell(futurePosition);
+        // if(!MapManager.Instance.InBounds(gridPosition.x, gridPosition.y) || MapManager.Instance.ObstacleMap.HasTile(gridPosition) || futurePosition == transform.position)
+        
+        if(target != null){
+            Debug.Log($"{projectile.name} hits {target.name}!");
+            target.GetComponent<Fighter>().Hp -= projectile.Damage;
+            GameManager.Instance.RemoveEntity(projectile);
+        }
+    }
+
 
     static public void MeleeAction(Actor actor, Actor target){
 

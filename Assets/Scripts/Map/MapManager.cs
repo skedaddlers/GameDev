@@ -92,7 +92,13 @@ public class MapManager : MonoBehaviour
             default:
                 break;
         }
-       
+    }
+
+    public void CreateProjectile(Vector2 position, Vector2 direction)
+    {
+        GameObject projectile = Instantiate(Resources.Load<GameObject>("Projectile"), new Vector3(position.x, position.y, 0), Quaternion.identity);
+        projectile.GetComponent<Projectile>().Direction = direction;
+        projectile.name = "Projectile";
     }
 
     public void UpdateFogMap(List<Vector3Int> playerFOV) {

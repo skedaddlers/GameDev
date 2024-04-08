@@ -42,6 +42,7 @@ public class Actor : Entity
         if(isAlive){
             UpdateFieldOfView();
         }
+
     }
 
     public void UpdateFieldOfView() {
