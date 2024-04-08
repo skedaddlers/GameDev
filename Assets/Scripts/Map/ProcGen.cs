@@ -4,7 +4,8 @@ using UnityEngine;
 
 sealed class ProcGen : MonoBehaviour
 {
-    public void GenerateDungeon(int mapWidth, int mapHeight, int maxRoomSize, int minRoomSize, int maxRooms, int maxMonstersPerRoom, int maxItemsPerRoom, List<RectangularRoom> rooms)
+    public void GenerateDungeon(int mapWidth, int mapHeight, int maxRoomSize, int minRoomSize, int maxRooms, 
+    int minMonstersPerRoom, int maxMonstersPerRoom, int maxItemsPerRoom, List<RectangularRoom> rooms)
     {
         for(int roomNum = 0; roomNum < maxRooms; roomNum++)
         {
@@ -77,7 +78,7 @@ sealed class ProcGen : MonoBehaviour
             else{
 
             }
-            PlaceEntities(newRoom, maxMonstersPerRoom, maxItemsPerRoom);
+            PlaceEntities(newRoom, minMonstersPerRoom, maxMonstersPerRoom, maxItemsPerRoom);
             rooms.Add(newRoom);
             
         }
@@ -137,9 +138,18 @@ sealed class ProcGen : MonoBehaviour
         }
     }
 
-    private void PlaceEntities(RectangularRoom newRoom, int maxMonsters, int maxItems)
+    private void PlaceEntities(RectangularRoom newRoom, int minMonsters, int maxMonsters, int maxItems)
     {
-        int numMonsters = Random.Range(0, maxMonsters + 1);
+        //Check if the room is the first room
+        if(MapManager.Instance.Rooms.Count == 0)
+        {
+            return;
+        }
+        // if(newRoom == MapManager.Instance.Rooms[0])
+        // {
+        //     return;
+        // }
+        int numMonsters = Random.Range(minMonsters, maxMonsters + 1);
         int numItems = Random.Range(0, maxItems + 1);
 
         for(int monster = 0; monster < numMonsters;)

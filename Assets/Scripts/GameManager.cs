@@ -62,8 +62,10 @@ public class GameManager : MonoBehaviour
             if(actor.GetComponent<Player>()){
                 isPlayerTurn = true;
             }
-            else 
+            else if (actor.GetComponent<HostileEnemy>()){
                 actor.GetComponent<HostileEnemy>().RunAI();
+            }
+
         }
         deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
     }

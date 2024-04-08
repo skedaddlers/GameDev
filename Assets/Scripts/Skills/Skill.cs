@@ -18,6 +18,7 @@ abstract public class Skill : MonoBehaviour
     public virtual float Duration { get; set; }
     public virtual bool OnCooldown { get; set; }
     public virtual float RemainingCooldown { get; }
+    public virtual bool IsActive { get; }
     public virtual void Use(){
         Debug.Log("Skill Used");
     }
@@ -27,6 +28,11 @@ abstract public class Skill : MonoBehaviour
         OnCooldown = true;
         yield return new WaitForSeconds(Cooldown);
         OnCooldown = false;
+    }
+
+    public virtual void UpdateDuration()
+    {
+        // Debug.Log("Update Duration");
     }
 
 }

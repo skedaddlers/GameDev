@@ -7,9 +7,11 @@ public class MapManager : MonoBehaviour
     public static MapManager Instance;
 
     [Header("Map Settings")]
-    [SerializeField] private int width = 80, weight = 45;
-    [SerializeField] private int roomMaxSize = 15, roomMinSize = 8, maxRooms = 30;
-    [SerializeField] private int maxMonsterPerRoom = 3;
+    [SerializeField] private int width = 80;
+    [SerializeField] private int height = 45;
+    [SerializeField] private int roomMaxSize = 25, roomMinSize = 8, maxRooms = 30;
+    [SerializeField] private int minMonsterPerRoom = 2;
+    [SerializeField] private int maxMonsterPerRoom = 6;
     [SerializeField] private int maxItemsPerRoom = 2;
 
     [Header("Colors")]
@@ -30,7 +32,7 @@ public class MapManager : MonoBehaviour
     private Dictionary<Vector2Int, Node> nodes = new Dictionary<Vector2Int, Node>();
     
     private int Width { get => width; }
-    private int Height { get => weight; }
+    private int Height { get => height; }
     public List<TileBase> FloorTile { get => floorTile; }
     public List<TileBase> WallTile { get => wallTile; }
     public Tilemap FloorMap { get => floorMap; }
@@ -53,7 +55,7 @@ public class MapManager : MonoBehaviour
     void Start()
     {
         ProcGen procGen = new ProcGen();
-        procGen.GenerateDungeon(Width, Height, roomMaxSize, roomMinSize, maxRooms, maxMonsterPerRoom, maxItemsPerRoom, rooms);
+        procGen.GenerateDungeon(Width, Height, roomMaxSize, roomMinSize, maxRooms, minMonsterPerRoom, maxMonsterPerRoom, maxItemsPerRoom, rooms);
 
         AddTileMapToDictionary(floorMap);
         AddTileMapToDictionary(obstacleMap);
@@ -94,7 +96,7 @@ public class MapManager : MonoBehaviour
         }
     }
 
-    public void CreateProjectile(Vector2 position, Vector2 direction)
+    public void CreateProjectile(Vector2 position, Vector2 direction, int damage = 3)
     {
         GameObject projectile = Instantiate(Resources.Load<GameObject>("Projectile"), new Vector3(position.x, position.y, 0), Quaternion.identity);
         projectile.GetComponent<Projectile>().Direction = direction;
@@ -144,9 +146,24 @@ public class MapManager : MonoBehaviour
             TileData tile = new TileData();
             tiles.Add(pos, tile);
         }
-
-        
     }
+
+    public void GenerateSalonMembers(Player player){
+        Vector3 playerPosition = player.transform.position;
+        GameObject octo = Instantiate(Resources.Load<GameObject>("NPC"), new Vector3(playerPosition.x, playerPosition.y + 1.5f, 0), Quaternion.identity);
+        octo.name = "Gentilhomme Usher";
+        octo.GetComponent<SalonMember>().Damage = 4;
+        octo.GetComponent<SalonMember>().AttackCooldown = 2;
+        GameObject seahorse = Instantiate(Resources.Load<GameObject>("NPC"), new Vector3(playerPosition.x + 1f, playerPosition.y - 1f, 0), Quaternion.identity);
+        seahorse.name = "Surintendante Chevalmarin";
+        seahorse.GetComponent<SalonMember>().Damage = 3;
+        seahorse.GetComponent<SalonMember>().AttackCooldown = 1.5f;
+        GameObject crab = Instantiate(Resources.Load<GameObject>("NPC"), new Vector3(playerPosition.x - 1f, playerPosition.y - 1f, 0), Quaternion.identity);
+        crab.name = "Mademoiselle Crabaletta"; 
+        crab.GetComponent<SalonMember>().Damage = 6;
+        crab.GetComponent<SalonMember>().AttackCooldown = 3f;
+    }
+
     // private void SetupFogMap() {
     //     foreach (Vector3Int pos in tiles.Keys) {
     //         fogMap.SetTile(pos, fogTile);

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SkillManager : MonoBehaviour
 {
+    public static SkillManager Instance;
    [SerializeField] private List<Skill> skills = new List<Skill>();
 
    public void AddSkill(Skill skill){
@@ -31,6 +32,15 @@ public class SkillManager : MonoBehaviour
 
     private void Update(){
         UpdateCooldowns();
+        UpdateDurations();
+    }
+
+    private void UpdateDurations(){
+        for(int i = 0; i < skills.Count; i++){
+            if(skills[i].IsActive){
+                skills[i].UpdateDuration();
+            }
+        }
     }
 
     private void UpdateCooldowns(){

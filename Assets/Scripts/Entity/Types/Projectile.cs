@@ -9,7 +9,7 @@ public class Projectile : Entity
     [SerializeField] private int damage = 5;
     [SerializeField] private Vector3 direction;
 
-    public int Damage { get => damage; }
+    public int Damage { get => damage; set => damage = value;}
     public Vector3 Direction { get => direction; set => direction = value; }
 
     void Update()

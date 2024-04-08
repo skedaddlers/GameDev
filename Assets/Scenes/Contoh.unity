@@ -8985,12 +8985,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c9f9aa07c547634ca01f8c42254d436, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 80
-  weight: 45
-  roomMaxSize: 20
-  roomMinSize: 11
+  width: 100
+  height: 100
+  roomMaxSize: 25
+  roomMinSize: 15
   maxRooms: 30
-  maxMonsterPerRoom: 3
+  minMonsterPerRoom: 2
+  maxMonsterPerRoom: 6
   maxItemsPerRoom: 2
   darkColor:
     serializedVersion: 2
@@ -9488,7 +9489,15 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2296491176764695990, guid: aa8fa34288de3304eafaf0f90df5a799, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2296491176764695990, guid: aa8fa34288de3304eafaf0f90df5a799, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2296491176764695990, guid: aa8fa34288de3304eafaf0f90df5a799, type: 3}
+      propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2320099198005755082, guid: aa8fa34288de3304eafaf0f90df5a799, type: 3}
@@ -10273,6 +10282,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4377913073986422287, guid: aa8fa34288de3304eafaf0f90df5a799, type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4432342907785058034, guid: aa8fa34288de3304eafaf0f90df5a799, type: 3}
+      propertyPath: m_AnchorMax.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4432342907785058034, guid: aa8fa34288de3304eafaf0f90df5a799, type: 3}
