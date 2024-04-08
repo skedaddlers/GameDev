@@ -98,6 +98,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blocksMovement: 0
-  speed: 10
+  speed: 15
   damage: 3
   direction: {x: 0, y: 0, z: 0}

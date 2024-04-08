@@ -5,7 +5,7 @@ using UnityEngine;
 public class Actor : Entity
 {
     [SerializeField] private bool isAlive = true;
-    [SerializeField] private int fieldOfViewRange = 8;
+    [SerializeField] private int fieldOfViewRange = 16;
     [SerializeField] private List<Vector3Int> fieldOfView = new List<Vector3Int>();
     [SerializeField] private Ai ai;
     [SerializeField] Inventory inventory;
@@ -42,7 +42,6 @@ public class Actor : Entity
         if(isAlive){
             UpdateFieldOfView();
         }
-
     }
 
     public void UpdateFieldOfView() {

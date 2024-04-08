@@ -87,6 +87,7 @@ public class Action
             Debug.Log($"{projectile.name} hits {target.name}!");
             target.GetComponent<Fighter>().Hp -= projectile.Damage;
             GameManager.Instance.RemoveEntity(projectile);
+            GameObject.Destroy(projectile.gameObject);
         }
     }
 

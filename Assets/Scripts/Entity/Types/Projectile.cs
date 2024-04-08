@@ -5,7 +5,7 @@ using UnityEngine;
 public class Projectile : Entity
 {
     // Start is called before the first frame update
-    [SerializeField] private float speed = 10f;
+    [SerializeField] private float speed;
     [SerializeField] private int damage = 5;
     [SerializeField] private Vector3 direction;
 

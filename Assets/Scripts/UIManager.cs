@@ -212,11 +212,14 @@ public class UIManager : MonoBehaviour
     }
 
     public void UpdateEnemyHealthBar(Actor enemy){
-        if(enemy.GetComponent<Fighter>().Hp <= 0){
-            Destroy(enemyHpSliders[enemy].gameObject);
-            enemyHpSliders.Remove(enemy);
+        if (!enemy.IsAlive) {
+            if (enemyHpSliders.ContainsKey(enemy)) {
+                Destroy(enemyHpSliders[enemy].gameObject);
+                enemyHpSliders.Remove(enemy);
+            }
             return;
         }
+
         if(enemyHpSliders.ContainsKey(enemy)){
             enemyHpSliders[enemy].value = enemy.GetComponent<Fighter>().Hp;
             enemyHpSliders[enemy].transform.position = GetHealthBarPosition(enemy.GetComponent<Fighter>().transform.position); // Set position above the enemy
@@ -229,8 +232,9 @@ public class UIManager : MonoBehaviour
             enemyHpSlider.value = enemy.GetComponent<Fighter>().Hp;
             enemyHpSlider.transform.position = GetHealthBarPosition(enemy.GetComponent<Fighter>().transform.position); // Set position above the enemy
             enemyHpSliders.Add(enemy, enemyHpSlider);
-        }
+        }    
     }
+
 
     public Vector3 GetHealthBarPosition(Vector3 position){
         Vector3 screenPosition = Camera.main.WorldToScreenPoint(position);

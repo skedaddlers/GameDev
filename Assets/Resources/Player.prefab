@@ -164,7 +164,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blocksMovement: 1
   isAlive: 1
-  fieldOfViewRange: 8
+  fieldOfViewRange: 18
   fieldOfView: []
   ai: {fileID: 0}
   inventory: {fileID: 1229510834712304930}

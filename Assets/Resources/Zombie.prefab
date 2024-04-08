@@ -150,7 +150,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blocksMovement: 1
   isAlive: 1
-  fieldOfViewRange: 8
+  fieldOfViewRange: 16
   fieldOfView: []
   ai: {fileID: 2577817092569882764}
   inventory: {fileID: 0}
@@ -166,10 +166,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b277014bef278241aa45bed70a91787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 15
-  hp: 15
+  maxHp: 20
+  hp: 20
   defense: 2
-  power: 2
+  power: 3
   target: {fileID: 0}
 --- !u!114 &4577567348277160934
 MonoBehaviour:
@@ -198,3 +198,4 @@ MonoBehaviour:
   aStar: {fileID: 4577567348277160934}
   fighter: {fileID: -806051740714282425}
   isFighting: 0
+  attackCooldown: 1

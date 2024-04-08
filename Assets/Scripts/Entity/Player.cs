@@ -43,7 +43,7 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
 
     void Controls.IPlayerActions.OnClick(InputAction.CallbackContext context)
     {
-        if(context.performed)
+        if(context.performed && GetComponent<Actor>().IsAlive && !UIManager.Instance.IsMenuOpen)
         {
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
             Vector3Int gridPosition = MapManager.Instance.FloorMap.WorldToCell(mousePosition);
