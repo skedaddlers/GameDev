@@ -96,10 +96,11 @@ public class MapManager : MonoBehaviour
         }
     }
 
-    public void CreateProjectile(Vector2 position, Vector2 direction, int damage = 3)
+    public void CreateProjectile(Vector2 position, Vector2 direction, int damage)
     {
         GameObject projectile = Instantiate(Resources.Load<GameObject>("Projectile"), new Vector3(position.x, position.y, 0), Quaternion.identity);
         projectile.GetComponent<Projectile>().Direction = direction;
+        projectile.GetComponent<Projectile>().Damage = damage;
         projectile.name = "Projectile";
     }
 
@@ -162,6 +163,16 @@ public class MapManager : MonoBehaviour
         crab.name = "Mademoiselle Crabaletta"; 
         crab.GetComponent<SalonMember>().Damage = 6;
         crab.GetComponent<SalonMember>().AttackCooldown = 3f;
+    }
+
+    public void GenerateAura(Player player, float duration, float radius){
+
+        GameObject aura = Instantiate(Resources.Load<GameObject>("Effect"), new Vector3(player.transform.position.x, player.transform.position.y, 0), Quaternion.identity);
+        aura.name = "Aura";
+        // sprite location is in Resources/Sprites
+        aura.GetComponent<VFX>().SetSprite( Resources.Load<Sprite>("Sprites/Aura"));
+        aura.GetComponent<VFX>().Duration = duration;
+        aura.GetComponent<VFX>().Size = radius;
     }
 
     // private void SetupFogMap() {

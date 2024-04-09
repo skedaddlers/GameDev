@@ -24,7 +24,14 @@ public class AStar : MonoBehaviour {
       UpdateCurrentTile(ref currentNode);
       path = GeneratePath(currentNode, start, goal);
     }
-    Vector2 stepDirection = new Vector2(path.Peek().x - start.x, path.Peek().y - start.y);
+    Vector2 stepDirection = Vector2.zero;
+
+    if (path != null && path.Count > 0) {
+        stepDirection = new Vector2(path.Peek().x - start.x, path.Peek().y - start.y);
+    } else {
+        Debug.LogError("No path found or path is empty!");
+    }
+    // Vector2 stepDirection = new Vector2(path.Peek().x - start.x, path.Peek().y - start.y);
 
     if (GameManager.Instance.GetBlockingActorAtLocation(transform.position + (Vector3)stepDirection)) {
       return Vector2.zero;

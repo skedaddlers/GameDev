@@ -18,13 +18,20 @@ sealed class Fighter : MonoBehaviour
             }
 
             if(hp == 0){
+                if(GetComponent<Player>() == null){
+                    foreach(Entity entity in GameManager.Instance.Entities){
+                        if(entity.GetComponent<Player>()){
+                            entity.GetComponent<Player>().EnemiesKilled++;
+                        }
+                    }
+                }
                 Die();
             }
         }
     }
     public int MaxHp { get => maxHp; }
     public int Defense { get => defense; }
-    public int Power { get => power; }
+    public int Power { get => power; set => power = value;}
     public Actor Target { get => target; set => target = value; }
 
     private void Start(){

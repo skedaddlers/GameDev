@@ -13,9 +13,13 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
     [SerializeField] private float manaRegenRate = 1f;
     [SerializeField] private float manaRegenCounter = 1f;
     [SerializeField] private SkillManager skillManager;
+    [SerializeField] private int enemiesKilled = 0;
+    private float attackCd = 0.7f;
+    private float timer = 0f;
 
     public int Mana { get => mana; set => mana = value; }
     public int MaxMana { get => maxMana; }
+    public int EnemiesKilled { get => enemiesKilled; set => enemiesKilled = value; }
     private Animator animator;
 
     private void Awake()
@@ -54,7 +58,7 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
     void Controls.IPlayerActions.OnClick(InputAction.CallbackContext context)
     {
         if(context.performed && GetComponent<Actor>().IsAlive && !UIManager.Instance.IsMenuOpen &&
-            !UIManager.Instance.ContainsSkillButton(Mouse.current.position.ReadValue())
+            !UIManager.Instance.ContainsSkillButton(Mouse.current.position.ReadValue()) && timer <= 0
         )
         {
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
@@ -62,7 +66,9 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
             Vector2 gridPosition2D = new Vector2(gridPosition.x, gridPosition.y);
             Vector2 playerPosition = transform.position;
             Vector2 direction = (gridPosition2D - playerPosition).normalized;
-            MapManager.Instance.CreateProjectile(playerPosition, direction);
+            MapManager.Instance.CreateProjectile(playerPosition, direction, GetComponent<Fighter>().Power);
+            timer = attackCd;
+            mana -= 1;
         }
     }
 
@@ -133,6 +139,9 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
                 mana += manaRegen;
                 manaRegenCounter = manaRegenRate;
             }
+        }
+        if(timer > 0){
+            timer -= Time.fixedDeltaTime;
         }
     }
 

@@ -21,15 +21,6 @@ public class SalonSolitaire : Skill
     public override float RemainingCooldown { get => remainingCooldown; }
     public override bool IsActive { get => isActive; }
 
-    void Start()
-    {
-
-    }
-
-    void Update()
-    {
-
-    }
 
     public override void UpdateDuration()
     {
