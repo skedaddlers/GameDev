@@ -107,8 +107,20 @@ public class Action
             colorHex = "#d1a3a4";
         }
         if(damage > 0){
-            UIManager.Instance.AddMessage($"{attackDesc} for {damage} damage!", colorHex);
-            target.GetComponent<Fighter>().Hp -= damage;
+            if(target.GetComponent<Fighter>().ShieldHp > 0){
+                int shieldDamage = Mathf.Min(target.GetComponent<Fighter>().ShieldHp, damage);
+                int damageDealt = damage - shieldDamage;
+                if(shieldDamage >= damage){
+                    UIManager.Instance.AddMessage($"{attackDesc} but is blocked by the shield.", colorHex);
+                }
+                else{
+                    UIManager.Instance.AddMessage($"{attackDesc} and breaks the shield!", colorHex);
+                }
+            }
+            else{
+                UIManager.Instance.AddMessage($"{attackDesc} for {damage} damage!", colorHex);
+            }
+            target.GetComponent<Fighter>().TakeDamage(damage);
         }
         else{
             UIManager.Instance.AddMessage($"{attackDesc} but does no damage.", colorHex);

@@ -27,9 +27,11 @@ public class AStar : MonoBehaviour {
     Vector2 stepDirection = Vector2.zero;
 
     if (path != null && path.Count > 0) {
-        stepDirection = new Vector2(path.Peek().x - start.x, path.Peek().y - start.y);
-    } else {
-        Debug.LogError("No path found or path is empty!");
+      stepDirection = new Vector2(path.Peek().x - start.x, path.Peek().y - start.y);
+    }
+    else {
+      Debug.Log("No path found");
+      return Vector2.zero;
     }
     // Vector2 stepDirection = new Vector2(path.Peek().x - start.x, path.Peek().y - start.y);
 

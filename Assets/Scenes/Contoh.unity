@@ -176,7 +176,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 6
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -2185,12 +2185,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64857aaa34f124b489c2b0535de372e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseTime: 0.005
   delayTime: 0.05
   isPlayerTurn: 1
-  actorNum: 0
   entities: []
   actors: []
+  vfx: []
   deadSprite: {fileID: -1070926412, guid: 953489b83febc254daad5849d4359538, type: 3}
 --- !u!4 &1144863666
 Transform:

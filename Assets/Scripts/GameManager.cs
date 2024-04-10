@@ -8,14 +8,14 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
 
     [Header("Time")]
-    [SerializeField] private float baseTime = 0.075f;
     [SerializeField] private float delayTime;
 
     [Header("Entities")]
     [SerializeField] private bool isPlayerTurn = true;
-    [SerializeField] private int actorNum = 0;
     [SerializeField] private List<Entity> entities = new List<Entity>();
     [SerializeField] private List<Actor> actors = new List<Actor>();
+    [SerializeField] private List<VFX> vfx = new List<VFX>();
+
 
     [Header("Death")]
     [SerializeField] private Sprite deadSprite;
@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     public List<Entity> Entities { get => entities; }
     public List<Actor> Actors { get => actors; }
     public Sprite DeadSprite { get => deadSprite; }
+    public List<VFX> VFX { get => vfx; }
     float deltaTime = 0.0f;
 
 
@@ -138,6 +139,23 @@ public class GameManager : MonoBehaviour
     public void RemoveActor(Actor actor){
         actors.Remove(actor);
         // delayTime = SetTime();
+    }
+
+    public void AddVFX(VFX vfx){
+        this.vfx.Add(vfx);
+    }
+    public void RemoveVFX(VFX vfx){
+        this.vfx.Remove(vfx);
+        Destroy(vfx.gameObject);
+    }
+    public void RemoveVFXByNames(string name){
+        for(int i = 0; i < vfx.Count; i++){
+            if(vfx[i].name == name){
+                Destroy(vfx[i].gameObject);
+                vfx.RemoveAt(i);
+                i--;
+            }
+        }
     }
 
     // private float SetTime() => baseTime / actors.Count;

@@ -53,7 +53,7 @@ public class HostileEnemy : Ai
                         // Debug.Log(actionTimer);
                         return;
                     }
-                    Debug.Log("Attacking");
+                    // Debug.Log("Attacking");
                     Action.MeleeAction(GetComponent<Actor>(), fighter.Target);
                     actionTimer = attackCooldown;
                     return;

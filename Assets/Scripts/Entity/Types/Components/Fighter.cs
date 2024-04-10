@@ -6,6 +6,7 @@ using UnityEngine;
 sealed class Fighter : MonoBehaviour
 {
     [SerializeField] private int maxHp, hp, defense, power;
+    [SerializeField] private int shieldHp = 0;
     [SerializeField] private Actor target;
 
     public int Hp{
@@ -32,6 +33,7 @@ sealed class Fighter : MonoBehaviour
     public int MaxHp { get => maxHp; }
     public int Defense { get => defense; }
     public int Power { get => power; set => power = value;}
+    public int ShieldHp { get => shieldHp; set => shieldHp = value; }
     public Actor Target { get => target; set => target = value; }
 
     private void Start(){
@@ -50,6 +52,22 @@ sealed class Fighter : MonoBehaviour
         }
         else{
             UIManager.Instance.UpdateEnemyHealthBar(this.GetComponent<Actor>());
+        }
+    }
+
+    public void TakeDamage(int damage){
+        if(shieldHp > 0){
+            shieldHp -= damage;
+            if(shieldHp < 0){
+                hp += shieldHp;
+                shieldHp = 0;
+            }
+        }
+        else{
+            hp -= damage;
+        }
+        if(hp <= 0){
+            Die();
         }
     }
     private void Die(){

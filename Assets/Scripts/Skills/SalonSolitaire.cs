@@ -29,7 +29,7 @@ public class SalonSolitaire : Skill
         if(remainingDuration <= 0f)
         {
             remainingDuration = duration;
-            UIManager.Instance.AddMessage("Salon Solitaire has ended!", "#00FFFF");
+            UIManager.Instance.AddMessage(skillName + " has ended!", "#00FFFF");
             isActive = false;
             DestroySalonMembers();
         }

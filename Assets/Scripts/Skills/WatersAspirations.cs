@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// This ckill creates a shield around the player that absorbs damage for a certain duration
 public class WatersAspirations : Skill
 {
     [Header("Specific Attribute")]
@@ -11,6 +12,9 @@ public class WatersAspirations : Skill
     [SerializeField] private float cooldown = 16f;
     [SerializeField] private bool onCooldown = false;
     [SerializeField] private float remainingCooldown = 0f;
+    [SerializeField] private bool isActive = false;
+    [SerializeField] private int shieldHp = 15;
+    private float remainingDuration = 10f;
 
     public override string SkillName { get => skillName; }
     public override float Duration { get => duration; }
@@ -18,22 +22,49 @@ public class WatersAspirations : Skill
     public override float Cooldown { get => cooldown; }
     public override bool OnCooldown { get => onCooldown;}
     public override float RemainingCooldown { get => remainingCooldown; }
+    public override bool IsActive { get => isActive; }
 
-
-    void Start()
+    public override void UpdateDuration()
     {
-
+        remainingDuration -= Time.deltaTime;
+        Player player = null;
+        foreach(Entity entity in GameManager.Instance.Entities)
+        {
+            if(entity.GetComponent<Player>())
+            {
+                if(entity.GetComponent<Fighter>().ShieldHp <= 0)
+                {
+                    UIManager.Instance.AddMessage(skillName + " is broken!", "#00FFFF");
+                    isActive = false;
+                    remainingDuration = duration;
+                    GameManager.Instance.RemoveVFXByNames("Shield");
+                    return;
+                }
+            }
+        }
+        if(remainingDuration <= 0)
+        {
+            remainingDuration = duration;
+            UIManager.Instance.AddMessage(skillName + " has ended!", "#00FFFF");
+            player.GetComponent<Fighter>().ShieldHp = 0;
+            isActive = false;
+        }
     }
-
-    void Update()
-    {
-
-    }
-
 
     public override void Use()
     {
         UIManager.Instance.AddMessage("You used " + skillName + "!", "#00FFFF");
+        Player player = null;
+        foreach(Entity entity in GameManager.Instance.Entities)
+        {
+            if(entity.GetComponent<Player>())
+            {
+                player = entity.GetComponent<Player>();
+                player.GetComponent<Fighter>().ShieldHp = shieldHp;
+                break;
+            }
+        }
+        MapManager.Instance.GenerateEffect("Shield", player, duration, 1, 1);
     }
 
     public override IEnumerator CooldownRoutine()

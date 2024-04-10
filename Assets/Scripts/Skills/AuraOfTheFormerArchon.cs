@@ -13,7 +13,7 @@ public class AuraOfTheFormerArchon : Skill
     [SerializeField] private float cooldown = 15f;
     [SerializeField] private bool onCooldown = false;
     [SerializeField] private float remainingCooldown = 0f;
-    [SerializeField]private float remainingDuration = 15f;
+    [SerializeField]private float remainingDuration = 10f;
     [SerializeField]private bool isActive = false;
     [SerializeField] private int damage = 4;
     private float damageInterval = 1f;
@@ -40,7 +40,7 @@ public class AuraOfTheFormerArchon : Skill
         if(remainingDuration <= 0f)
         {
             remainingDuration = duration;
-            UIManager.Instance.AddMessage("Salon Solitaire has ended!", "#00FFFF");
+            UIManager.Instance.AddMessage(skillName + " has ended!", "#00FFFF");
             isActive = false;
         }
     }
@@ -62,7 +62,7 @@ public class AuraOfTheFormerArchon : Skill
             {
                 if(Vector3.Distance(player.transform.position, entity.transform.position) <= radius)
                 {
-                    entity.GetComponent<Fighter>().Hp -= damage;
+                    entity.GetComponent<Fighter>().TakeDamage(damage);
                 }
             }
         }
@@ -82,7 +82,7 @@ public class AuraOfTheFormerArchon : Skill
                 break;
             }
         }
-        MapManager.Instance.GenerateAura(player, duration, radius + 1);
+        MapManager.Instance.GenerateEffect("Aura", player, duration, radius + 1, 2);
     }
 
     public override IEnumerator CooldownRoutine()

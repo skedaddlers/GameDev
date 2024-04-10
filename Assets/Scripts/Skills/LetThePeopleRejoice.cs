@@ -67,7 +67,7 @@ public class LetThePeopleRejoice : Skill
             if(player.EnemiesKilled > initialAmountOfEnemiesKilled)
             {
                 initialAmountOfEnemiesKilled = player.EnemiesKilled;
-                player.GetComponent<Fighter>().Hp += 2;
+                player.GetComponent<Fighter>().Heal(2);
                 UIManager.Instance.AddMessage("You have been healed by Let The People Rejoice!", "#00FFFF");
             }
             remainingHealIfDefeatEnemyInterval = healIfDefeatEnemyInterval;
@@ -75,7 +75,7 @@ public class LetThePeopleRejoice : Skill
         if(remainingDuration <= 0f)
         {
             remainingDuration = duration;
-            UIManager.Instance.AddMessage("Let The People Rejoice has ended!", "#00FFFF");
+            UIManager.Instance.AddMessage(skillName + " has ended!", "#00FFFF");
             foreach(Entity entity in GameManager.Instance.Entities)
             {
                 if(entity.GetComponent<Player>())
@@ -103,6 +103,7 @@ public class LetThePeopleRejoice : Skill
         }
         player.GetComponent<Fighter>().Power *= 2; 
         initialAmountOfEnemiesKilled = player.EnemiesKilled;
+        MapManager.Instance.GenerateEffect("Let", player, duration, 1, 2);
     }
 
     public override IEnumerator CooldownRoutine()

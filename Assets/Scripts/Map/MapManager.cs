@@ -76,11 +76,8 @@ public class MapManager : MonoBehaviour
             case "Player":
                 GameObject player = Instantiate(Resources.Load<GameObject>("Player"), new Vector3(position.x + 0.5f, position.y + 0.5f, 0), Quaternion.identity);
                 player.name = "Player";
-                // GameObject camera = Instantiate(Resources.Load<GameObject>("Camera"), new Vector3(position.x + 10f, position.y + 10f, 0), Quaternion.identity);
-                // camera.name = "Camera";
-                // camera.transform.SetParent(player.transform); // Make camera a child of the player
                 Camera.main.transform.position = new Vector3(position.x + 0.5f, position.y + 0.5f, -10);
-                Camera.main.orthographicSize = 7f;
+                Camera.main.orthographicSize = 6f;
                 break;
             case "Skeleton":
                 Instantiate(Resources.Load<GameObject>("Skeleton"), new Vector3(position.x + 0.5f, position.y + 0.5f, 0), Quaternion.identity).name = "Skeleton";
@@ -151,28 +148,26 @@ public class MapManager : MonoBehaviour
 
     public void GenerateSalonMembers(Player player){
         Vector3 playerPosition = player.transform.position;
-        GameObject octo = Instantiate(Resources.Load<GameObject>("NPC"), new Vector3(playerPosition.x, playerPosition.y + 1.5f, 0), Quaternion.identity);
+        GameObject octo = Instantiate(Resources.Load<GameObject>("Entities/Gentilhomme Usher"), new Vector3(playerPosition.x, playerPosition.y + 1.5f, 0), Quaternion.identity);
         octo.name = "Gentilhomme Usher";
         octo.GetComponent<SalonMember>().Damage = 4;
         octo.GetComponent<SalonMember>().AttackCooldown = 2;
-        GameObject seahorse = Instantiate(Resources.Load<GameObject>("NPC"), new Vector3(playerPosition.x + 1f, playerPosition.y - 1f, 0), Quaternion.identity);
+        GameObject seahorse = Instantiate(Resources.Load<GameObject>("Entities/Surintendante Chevalmarin"), new Vector3(playerPosition.x + 1f, playerPosition.y - 1f, 0), Quaternion.identity);
         seahorse.name = "Surintendante Chevalmarin";
         seahorse.GetComponent<SalonMember>().Damage = 3;
         seahorse.GetComponent<SalonMember>().AttackCooldown = 1.5f;
-        GameObject crab = Instantiate(Resources.Load<GameObject>("NPC"), new Vector3(playerPosition.x - 1f, playerPosition.y - 1f, 0), Quaternion.identity);
+        GameObject crab = Instantiate(Resources.Load<GameObject>("Entities/Mademoiselle Crabaletta"), new Vector3(playerPosition.x - 1f, playerPosition.y - 1f, 0), Quaternion.identity);
         crab.name = "Mademoiselle Crabaletta"; 
         crab.GetComponent<SalonMember>().Damage = 6;
         crab.GetComponent<SalonMember>().AttackCooldown = 3f;
     }
 
-    public void GenerateAura(Player player, float duration, float radius){
-
-        GameObject aura = Instantiate(Resources.Load<GameObject>("Effect"), new Vector3(player.transform.position.x, player.transform.position.y, 0), Quaternion.identity);
-        aura.name = "Aura";
-        // sprite location is in Resources/Sprites
-        aura.GetComponent<VFX>().SetSprite( Resources.Load<Sprite>("Sprites/Aura"));
-        aura.GetComponent<VFX>().Duration = duration;
-        aura.GetComponent<VFX>().Size = radius;
+    public void GenerateEffect(string Effectname, Player player, float duration, float radius, int totalSprites){
+        GameObject effect = Instantiate(Resources.Load<GameObject>("Effect"), new Vector3(player.transform.position.x, player.transform.position.y, 0), Quaternion.identity);
+        effect.name = Effectname;
+        effect.GetComponent<VFX>().GetSprites(Effectname, totalSprites);
+        effect.GetComponent<VFX>().Duration = duration;
+        effect.GetComponent<VFX>().Size = radius;
     }
 
     // private void SetupFogMap() {
