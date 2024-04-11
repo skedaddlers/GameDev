@@ -36,17 +36,9 @@ public class LetThePeopleRejoice : Skill
         remainingDuration -= Time.deltaTime;
         remainingReduceHpInterval -= Time.deltaTime;
         remainingHealIfDefeatEnemyInterval -= Time.deltaTime;
+        Actor player = GameManager.Instance.Actors[0];
         if(remainingReduceHpInterval <= 0f)
         {
-            Player player = null;
-            foreach(Entity entity in GameManager.Instance.Entities)
-            {
-                if(entity.GetComponent<Player>())
-                {
-                    player = entity.GetComponent<Player>();
-                    break;
-                }
-            }
             // Player can't die from this skill
             if(player.GetComponent<Fighter>().Hp > 1)
                 player.GetComponent<Fighter>().Hp -= 1;
@@ -54,19 +46,10 @@ public class LetThePeopleRejoice : Skill
         }
         if(remainingHealIfDefeatEnemyInterval <= 0f)
         {
-            Player player = null;
-            foreach(Entity entity in GameManager.Instance.Entities)
-            {
-                if(entity.GetComponent<Player>())
-                {
-                    player = entity.GetComponent<Player>();
-                    break;
-                }
-            }
             // if the player has defeated an enemy logic
-            if(player.EnemiesKilled > initialAmountOfEnemiesKilled)
+            if(player.GetComponent<Player>().EnemiesKilled > initialAmountOfEnemiesKilled)
             {
-                initialAmountOfEnemiesKilled = player.EnemiesKilled;
+                initialAmountOfEnemiesKilled = player.GetComponent<Player>().EnemiesKilled;
                 player.GetComponent<Fighter>().Heal(2);
                 UIManager.Instance.AddMessage("You have been healed by Let The People Rejoice!", "#00FFFF");
             }
@@ -76,14 +59,7 @@ public class LetThePeopleRejoice : Skill
         {
             remainingDuration = duration;
             UIManager.Instance.AddMessage(skillName + " has ended!", "#00FFFF");
-            foreach(Entity entity in GameManager.Instance.Entities)
-            {
-                if(entity.GetComponent<Player>())
-                {
-                    entity.GetComponent<Fighter>().Power /= 2;
-                    break;
-                }
-            }
+            player.GetComponent<Fighter>().Power /= 2;
             isActive = false;
         }
 
@@ -92,17 +68,9 @@ public class LetThePeopleRejoice : Skill
     {
         UIManager.Instance.AddMessage("You used " + skillName + "!", "#00FFFF");
         isActive = true;
-        Player player = null;
-        foreach(Entity entity in GameManager.Instance.Entities)
-        {
-            if(entity.GetComponent<Player>())
-            {
-                player = entity.GetComponent<Player>();
-                break;
-            }
-        }
+        Actor player = GameManager.Instance.Actors[0];
         player.GetComponent<Fighter>().Power *= 2; 
-        initialAmountOfEnemiesKilled = player.EnemiesKilled;
+        initialAmountOfEnemiesKilled = player.GetComponent<Player>().EnemiesKilled;
         MapManager.Instance.GenerateEffect("Let", player, duration, 1, 2);
     }
 

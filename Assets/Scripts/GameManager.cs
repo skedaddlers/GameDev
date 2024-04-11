@@ -59,15 +59,6 @@ public class GameManager : MonoBehaviour
     }
 
     private void Update(){
-        foreach(Actor actor in actors){
-            if(actor.GetComponent<Player>()){
-                isPlayerTurn = true;
-            }
-            else if (actor.GetComponent<HostileEnemy>()){
-                actor.GetComponent<HostileEnemy>().RunAI();
-            }
-
-        }
         deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
     }
 
@@ -102,7 +93,9 @@ public class GameManager : MonoBehaviour
 
     public Actor GetBlockingActorAtLocation(Vector3 location){
         foreach(Actor actor in Actors){
-            if(actor.BlocksMovement && actor.GetComponent<Player>() == null){
+            // if the actor is not the player and blocks movement
+
+            if(actor.GetComponent<Player>() == null){
                 float offsetX = actor.transform.position.x - location.x;
                 float offsetY = actor.transform.position.y - location.y;
                 // if(Mathf.Abs(offsetX) < 2 && Mathf.Abs(offsetY) < 2)
@@ -141,12 +134,12 @@ public class GameManager : MonoBehaviour
         // delayTime = SetTime();
     }
 
-    public void AddVFX(VFX vfx){
-        this.vfx.Add(vfx);
+    public void AddVFX(VFX effect){
+        vfx.Add(effect);
     }
-    public void RemoveVFX(VFX vfx){
-        this.vfx.Remove(vfx);
-        Destroy(vfx.gameObject);
+    public void RemoveVFX(VFX effect){
+        vfx.Remove(effect);
+        Destroy(effect.gameObject);
     }
     public void RemoveVFXByNames(string name){
         for(int i = 0; i < vfx.Count; i++){

@@ -12,6 +12,8 @@ public class AStar : MonoBehaviour {
   /// <param name="goal">End position</param>
   /// <returns>List of directions to move to get to the end</returns>
   public Vector2 Compute(Vector2Int start, Vector2Int goal) {
+    int maxIterations = 50;
+    int iterations = 0;
     currentNode = GetNode(start);
     openList = new HashSet<Node>();
     closedList = new HashSet<Node>();
@@ -19,6 +21,11 @@ public class AStar : MonoBehaviour {
     Stack<Vector2Int> path = null;
 
     while (openList.Count > 0 && path == null) {
+      if (iterations > maxIterations) {
+        return Vector2.zero;
+      }
+      iterations++;
+      // Debug.Log("Finding path");
       List<Node> neighbours = FindNeighbours(currentNode.position, start);
       ExamineNeighbours(neighbours, currentNode, goal);
       UpdateCurrentTile(ref currentNode);

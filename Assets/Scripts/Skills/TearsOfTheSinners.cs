@@ -41,18 +41,13 @@ public class TearsOfTheSinners : Skill
     }
 
     private void DealDamage(){
-        Player player = null;
-        foreach(Entity entity in GameManager.Instance.Entities){
-            if(entity.GetComponent<Player>()){
-                player = entity.GetComponent<Player>();
-                break;
-            }
-        }
+        Actor player = GameManager.Instance.Actors[0];
         foreach(Entity entity in GameManager.Instance.Entities){
             if(entity.GetComponent<HostileEnemy>()){   
                 float xDistance = Mathf.Abs(player.transform.position.x - entity.transform.position.x);
                 float yDistance = Mathf.Abs(player.transform.position.y - entity.transform.position.y);
-                if(xDistance <= Camera.main.orthographicSize * Camera.main.aspect && yDistance <= Camera.main.orthographicSize){
+                if(xDistance <= Camera.main.orthographicSize * Camera.main.aspect && yDistance <= Camera.main.orthographicSize && 
+                entity.GetComponent<Actor>().IsAlive){
                     entity.GetComponent<Fighter>().TakeDamage(damage);
                 }           
                 // if(Vector3.Distance(player.transform.position, entity.transform.position) <= Camera.main.orthographicSize){
@@ -65,15 +60,7 @@ public class TearsOfTheSinners : Skill
     {
         UIManager.Instance.AddMessage("You used " + skillName + "!", "#00FFFF");
         isActive = true;
-        Player player = null;
-        foreach(Entity entity in GameManager.Instance.Entities)
-        {
-            if(entity.GetComponent<Player>())
-            {
-                player = entity.GetComponent<Player>();
-                break;
-            }
-        }        
+        Actor player = GameManager.Instance.Actors[0];      
         MapManager.Instance.GenerateEffect("Rain", player, duration, 1, 3);
     }
 

@@ -15,9 +15,11 @@ sealed class ProcGen : MonoBehaviour
             int roomY = Random.Range(0, mapHeight - roomHeight - 1);
 
             RectangularRoom newRoom = new RectangularRoom(roomX, roomY, roomWidth, roomHeight);
+            
 
             if(newRoom.Overlaps(rooms))
             {
+                roomNum--;
                 continue;
             }
 
@@ -79,11 +81,15 @@ sealed class ProcGen : MonoBehaviour
 
             }
             PlaceEntities(newRoom, minMonstersPerRoom, maxMonstersPerRoom, maxItemsPerRoom);
+            
+            newRoom.RoomNumber = roomNum;
             rooms.Add(newRoom);
             
         }
+        rooms[0].IsCleared = true;
         MapManager.Instance.CreateEntity("Player", rooms[0].Center());
-
+        CreateBossRoom(rooms);
+        MapManager.Instance.AssignEntitiesToRooms();
     }
 
     private void TunnelBetween(RectangularRoom oldRoom, RectangularRoom newRoom)
@@ -257,5 +263,24 @@ sealed class ProcGen : MonoBehaviour
             MapManager.Instance.ObstacleMap.SetTile(new Vector3Int(position.x, position.y, 0), MapManager.Instance.WallTile[tileIndex]);
             return false;
         }
+    }
+
+    private void CreateBossRoom(List<RectangularRoom> rooms)
+    {
+        RectangularRoom firstRoom = rooms[0];
+        RectangularRoom farthestRoom = rooms[0];
+        float maxDistance = 0;
+        foreach(RectangularRoom room in rooms)
+        {
+            float distance = Vector2.Distance(firstRoom.Center(), room.Center());
+            if(distance > maxDistance)
+            {
+                maxDistance = distance;
+                farthestRoom = room;
+            }
+        }
+        farthestRoom.IsBossRoom = true;
+        MapManager.Instance.CreateEntity("Boss", farthestRoom.Center());
+        Debug.Log("Boss room created");
     }
 }

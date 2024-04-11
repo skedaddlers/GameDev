@@ -47,20 +47,12 @@ public class AuraOfTheFormerArchon : Skill
 
     private void DealDamage()
     {
-        Player player = null;
-        foreach(Entity entity in GameManager.Instance.Entities)
-        {
-            if(entity.GetComponent<Player>())
-            {
-                player = entity.GetComponent<Player>();
-                break;
-            }
-        }
+        Actor player = GameManager.Instance.Actors[0];
         foreach(Entity entity in GameManager.Instance.Entities)
         {
             if(entity.GetComponent<HostileEnemy>())
             {
-                if(Vector3.Distance(player.transform.position, entity.transform.position) <= radius)
+                if(Vector3.Distance(player.transform.position, entity.transform.position) <= radius && entity.GetComponent<Actor>().IsAlive)
                 {
                     entity.GetComponent<Fighter>().TakeDamage(damage);
                 }
@@ -73,15 +65,7 @@ public class AuraOfTheFormerArchon : Skill
         UIManager.Instance.AddMessage("You used " + skillName + "!", "#00FFFF");
         isActive = true;
         // Creates a ring of water around the player
-        Player player = null;
-        foreach(Entity entity in GameManager.Instance.Entities)
-        {
-            if(entity.GetComponent<Player>())
-            {
-                player = entity.GetComponent<Player>();
-                break;
-            }
-        }
+        Actor player = GameManager.Instance.Actors[0];
         MapManager.Instance.GenerateEffect("Aura", player, duration, radius + 1, 2);
     }
 

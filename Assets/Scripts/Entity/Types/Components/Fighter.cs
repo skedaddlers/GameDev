@@ -6,6 +6,7 @@ using UnityEngine;
 sealed class Fighter : MonoBehaviour
 {
     [SerializeField] private int maxHp, hp, defense, power;
+    [SerializeField] private float movementSpeed = 5f;
     [SerializeField] private int shieldHp = 0;
     [SerializeField] private Actor target;
 
@@ -34,6 +35,7 @@ sealed class Fighter : MonoBehaviour
     public int Defense { get => defense; }
     public int Power { get => power; set => power = value;}
     public int ShieldHp { get => shieldHp; set => shieldHp = value; }
+    public float MovementSpeed { get => movementSpeed; set => movementSpeed = value;}
     public Actor Target { get => target; set => target = value; }
 
     private void Start(){
@@ -64,9 +66,14 @@ sealed class Fighter : MonoBehaviour
             }
         }
         else{
-            hp -= damage;
+            int damageDealt = damage;
+            if(hp < damage){
+                damageDealt = hp;
+            }
+            hp -= damageDealt;
         }
         if(hp <= 0){
+            
             Die();
         }
     }

@@ -27,20 +27,14 @@ public class WatersAspirations : Skill
     public override void UpdateDuration()
     {
         remainingDuration -= Time.deltaTime;
-        Player player = null;
-        foreach(Entity entity in GameManager.Instance.Entities)
+        Actor player = GameManager.Instance.Actors[0];
+        if(player.GetComponent<Fighter>().ShieldHp <= 0)
         {
-            if(entity.GetComponent<Player>())
-            {
-                if(entity.GetComponent<Fighter>().ShieldHp <= 0)
-                {
-                    UIManager.Instance.AddMessage(skillName + " is broken!", "#00FFFF");
-                    isActive = false;
-                    remainingDuration = duration;
-                    GameManager.Instance.RemoveVFXByNames("Shield");
-                    return;
-                }
-            }
+            UIManager.Instance.AddMessage(skillName + " is broken!", "#00FFFF");
+            isActive = false;
+            remainingDuration = duration;
+            GameManager.Instance.RemoveVFXByNames("Shield");
+            return;
         }
         if(remainingDuration <= 0)
         {
@@ -53,17 +47,10 @@ public class WatersAspirations : Skill
 
     public override void Use()
     {
+        isActive = true;
         UIManager.Instance.AddMessage("You used " + skillName + "!", "#00FFFF");
-        Player player = null;
-        foreach(Entity entity in GameManager.Instance.Entities)
-        {
-            if(entity.GetComponent<Player>())
-            {
-                player = entity.GetComponent<Player>();
-                player.GetComponent<Fighter>().ShieldHp = shieldHp;
-                break;
-            }
-        }
+        Actor player = GameManager.Instance.Actors[0];
+        player.GetComponent<Fighter>().ShieldHp = shieldHp;
         MapManager.Instance.GenerateEffect("Shield", player, duration, 1, 1);
     }
 

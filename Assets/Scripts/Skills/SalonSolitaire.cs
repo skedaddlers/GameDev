@@ -38,16 +38,12 @@ public class SalonSolitaire : Skill
     public override void Use()
     {
         UIManager.Instance.AddMessage("You used " + skillName + "!", "#00FFFF");
-        Player player = null;
-        foreach(Entity entity in GameManager.Instance.Entities)
-        {
-            if(entity.GetComponent<Player>())
-            {
-                player = entity.GetComponent<Player>();
-                break;
-            }
-        }
-        MapManager.Instance.GenerateSalonMembers(player);
+        Actor player = GameManager.Instance.Actors[0];
+        // MapManager.Instance.GenerateSalonMembers(player);
+        Vector3 playerPosition = player.transform.position;
+        MapManager.Instance.CreateEntity("Gentilhomme Usher", playerPosition + new Vector3(0, 1.5f, 0));
+        MapManager.Instance.CreateEntity("Surintendante Chevalmarin", playerPosition + new Vector3(1f, -1f, 0));
+        MapManager.Instance.CreateEntity("Mademoiselle Crabaletta", playerPosition + new Vector3(-1f, -1f, 0));
         isActive = true;
     }
 

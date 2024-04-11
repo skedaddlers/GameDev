@@ -12,7 +12,7 @@ public class Action
                 if(Mathf.Abs(offsetX) > 1 || Mathf.Abs(offsetY) > 1)
                     continue;
             }
-
+            Debug.Log("Picking up item");
             if(actor.Inventory.Items.Count >= actor.Inventory.Capacity){
                 UIManager.Instance.AddMessage("Your inventory is full!", "#FF0000");
                 return;
@@ -85,7 +85,7 @@ public class Action
         
         if(target != null){
             Debug.Log($"{projectile.name} hits {target.name}!");
-            target.GetComponent<Fighter>().Hp -= projectile.Damage;
+            target.GetComponent<Fighter>().TakeDamage(projectile.GetComponent<Projectile>().Damage);
             GameManager.Instance.RemoveEntity(projectile);
             GameObject.Destroy(projectile.gameObject);
         }

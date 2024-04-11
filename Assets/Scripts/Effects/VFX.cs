@@ -47,6 +47,7 @@ public class VFX : MonoBehaviour
         UpdateSprite();
         if(timer >= duration)
         {
+            GameManager.Instance.RemoveVFX(this);
             Destroy(gameObject);
         }
 

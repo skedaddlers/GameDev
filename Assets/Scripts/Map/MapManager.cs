@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class MapManager : MonoBehaviour
 {
     public static MapManager Instance;
+    [SerializeField] private bool hasAssignedEntities = false;
 
     [Header("Map Settings")]
     [SerializeField] private int width = 80;
@@ -59,9 +60,70 @@ public class MapManager : MonoBehaviour
 
         AddTileMapToDictionary(floorMap);
         AddTileMapToDictionary(obstacleMap);
+        
+    }
 
-        // SetupFogMap();
-    
+    void Update(){
+        // iterate every room to check if player is in it
+        if(!hasAssignedEntities){
+            AssignEntitiesToRooms();
+            hasAssignedEntities = true;
+        }
+        Actor player = GameManager.Instance.Actors[0];
+        foreach (RectangularRoom room in rooms)
+        {
+            float playerX = player.transform.position.x;
+            float playerY = player.transform.position.y;
+            if(playerX - 1f >= room.X  && playerX + 1f < room.X + room.Width && playerY - 1f >= room.Y && playerY + 1f < room.Y + room.Height)
+            {
+                // Debug.Log("Player is in room " + room.RoomNumber);
+                room.ContainsPlayer = true;
+                break;
+            }
+            else
+            {
+                room.ContainsPlayer = false;
+            }
+        }
+        // Run AI on enemies in the current room
+        foreach(RectangularRoom room in rooms)
+        {
+            if (room.ContainsPlayer)
+            {
+                //Close off the room if it hasn't been done yet
+                if(!room.IsCleared){
+                    CloseOffRoom(room);
+                    foreach (Entity entity in room.Entities)
+                    {
+                        if (entity.GetComponent<Actor>())
+                        {
+                            if (entity.GetComponent<Actor>().IsAlive)
+                            {
+                                if (entity.GetComponent<Actor>().GetComponent<HostileEnemy>())
+                                {
+                                    entity.GetComponent<Actor>().GetComponent<HostileEnemy>().RunAI();
+                                }
+                            }
+                            else
+                            {
+                                room.Entities.Remove(entity);
+                            }
+                        }
+                        else{
+                            room.Entities.Remove(entity);
+                        }
+                    }
+                    if(room.Entities.Count == 0){
+                        room.IsCleared = true;
+                    }
+                }
+                else{
+                    OpenRoom(room);
+                }
+            }
+        }
+        
+        
     }
 
     public bool InBounds(int x, int y)
@@ -71,31 +133,114 @@ public class MapManager : MonoBehaviour
 
     public void CreateEntity(string entity, Vector2 position)
     {
+        string path = "Entities/" + entity;
         switch (entity)
         {
             case "Player":
-                GameObject player = Instantiate(Resources.Load<GameObject>("Player"), new Vector3(position.x + 0.5f, position.y + 0.5f, 0), Quaternion.identity);
+                GameObject player = Instantiate(Resources.Load<GameObject>(path), new Vector3(position.x + 0.5f, position.y + 0.5f, 0), Quaternion.identity);
                 player.name = "Player";
                 Camera.main.transform.position = new Vector3(position.x + 0.5f, position.y + 0.5f, -10);
                 Camera.main.orthographicSize = 6f;
                 break;
             case "Skeleton":
-                Instantiate(Resources.Load<GameObject>("Skeleton"), new Vector3(position.x + 0.5f, position.y + 0.5f, 0), Quaternion.identity).name = "Skeleton";
+                Instantiate(Resources.Load<GameObject>(path), new Vector3(position.x + 0.5f, position.y + 0.5f, 0), Quaternion.identity).name = "Skeleton";
                 break;
             case "Zombie":
-                Instantiate(Resources.Load<GameObject>("Zombie"), new Vector3(position.x + 0.5f, position.y + 0.5f, 0), Quaternion.identity).name = "Zombie";
+                Instantiate(Resources.Load<GameObject>(path), new Vector3(position.x + 0.5f, position.y + 0.5f, 0), Quaternion.identity).name = "Zombie";
                 break;
             case "HpPotion":
-                Instantiate(Resources.Load<GameObject>("HpPotion"), new Vector3(position.x + 0.5f, position.y + 0.5f, 0), Quaternion.identity).name = "HpPotion";
+                Instantiate(Resources.Load<GameObject>(path), new Vector3(position.x + 0.5f, position.y + 0.5f, 0), Quaternion.identity).name = "HpPotion";
+                break;
+            case "Gentilhomme Usher":
+                GameObject octo = Instantiate(Resources.Load<GameObject>(path), position, Quaternion.identity);
+                octo.name = "Gentilhomme Usher";
+                octo.GetComponent<SalonMember>().Damage = 4;
+                octo.GetComponent<SalonMember>().AttackCooldown = 2;
+                break;
+            case "Surintendante Chevalmarin":
+                GameObject seahorse = Instantiate(Resources.Load<GameObject>(path), position, Quaternion.identity);
+                seahorse.name = "Surintendante Chevalmarin";
+                seahorse.GetComponent<SalonMember>().Damage = 3;
+                seahorse.GetComponent<SalonMember>().AttackCooldown = 1.5f;
+                break;
+            case "Mademoiselle Crabaletta":
+                GameObject crab = Instantiate(Resources.Load<GameObject>(path), position, Quaternion.identity);
+                crab.name = "Mademoiselle Crabaletta"; 
+                crab.GetComponent<SalonMember>().Damage = 6;
+                crab.GetComponent<SalonMember>().AttackCooldown = 3f;
+                break;
+            case "Singer":
+                GameObject singer = Instantiate(Resources.Load<GameObject>(path), position, Quaternion.identity);
+                singer.name = "Singer";
+                break;
+            case "Boss":
+                GameObject boss = Instantiate(Resources.Load<GameObject>(path), new Vector3(position.x + 0.5f, position.y + 0.5f, 0), Quaternion.identity);
+                boss.name = "Boss";
                 break;
             default:
                 break;
         }
     }
+    public void AssignEntitiesToRooms()
+    {
+        Debug.Log("Assigning entities to rooms");
+        foreach (RectangularRoom room in rooms)
+        {
+            // Debug.Log("Room " + room.RoomNumber);
+            foreach(Entity entity in GameManager.Instance.Entities)
+            {
+                // Debug.Log(entity.name);
+                float entityX = entity.transform.position.x;
+                float entityY = entity.transform.position.y;
+                if(entityX >= room.X && entityX < room.X + room.Width && entityY >= room.Y && entityY < room.Y + room.Height)
+                {
+                    room.AddEntity(entity);
+                }
+            }
+            Debug.Log("Entities in room " + room.RoomNumber + ": " + room.Entities.Count);
+        }
+    }
+
+    private void CloseOffRoom(RectangularRoom room)
+    {
+        for (int x = room.X; x < room.X + room.Width; x++)
+        {
+            for (int y = room.Y; y < room.Y + room.Height; y++)
+            {
+                if (x == room.X || x == room.X + room.Width - 1 || y == room.Y || y == room.Y + room.Height - 1)
+                {
+                    if (obstacleMap.GetTile(new Vector3Int(x, y, 0)) == null)
+                    {
+                        // set wall tile number 13
+                        obstacleMap.SetTile(new Vector3Int(x, y, 0), wallTile[13]);
+                    }
+                }
+            }
+        }
+    }
+
+    private void OpenRoom(RectangularRoom room)
+    {
+        for (int x = room.X; x < room.X + room.Width; x++)
+        {
+            for (int y = room.Y; y < room.Y + room.Height; y++)
+            {
+                if (x == room.X || x == room.X + room.Width - 1 || y == room.Y || y == room.Y + room.Height - 1)
+                {
+                    // check if the tile is tile number 13
+                    if (obstacleMap.GetTile(new Vector3Int(x, y, 0)) == wallTile[13])
+                    {
+                        obstacleMap.SetTile(new Vector3Int(x, y, 0), null);
+                    }
+                }
+            }
+        }
+        room.IsCleared = true;
+    }
 
     public void CreateProjectile(Vector2 position, Vector2 direction, int damage)
     {
-        GameObject projectile = Instantiate(Resources.Load<GameObject>("Projectile"), new Vector3(position.x, position.y, 0), Quaternion.identity);
+        GameObject projectile = Instantiate(Resources.Load<GameObject>("Entities/Projectile"), new Vector3(position.x, position.y, 0), Quaternion.identity);
         projectile.GetComponent<Projectile>().Direction = direction;
         projectile.GetComponent<Projectile>().Damage = damage;
         projectile.name = "Projectile";
@@ -146,29 +291,17 @@ public class MapManager : MonoBehaviour
         }
     }
 
-    public void GenerateSalonMembers(Player player){
-        Vector3 playerPosition = player.transform.position;
-        GameObject octo = Instantiate(Resources.Load<GameObject>("Entities/Gentilhomme Usher"), new Vector3(playerPosition.x, playerPosition.y + 1.5f, 0), Quaternion.identity);
-        octo.name = "Gentilhomme Usher";
-        octo.GetComponent<SalonMember>().Damage = 4;
-        octo.GetComponent<SalonMember>().AttackCooldown = 2;
-        GameObject seahorse = Instantiate(Resources.Load<GameObject>("Entities/Surintendante Chevalmarin"), new Vector3(playerPosition.x + 1f, playerPosition.y - 1f, 0), Quaternion.identity);
-        seahorse.name = "Surintendante Chevalmarin";
-        seahorse.GetComponent<SalonMember>().Damage = 3;
-        seahorse.GetComponent<SalonMember>().AttackCooldown = 1.5f;
-        GameObject crab = Instantiate(Resources.Load<GameObject>("Entities/Mademoiselle Crabaletta"), new Vector3(playerPosition.x - 1f, playerPosition.y - 1f, 0), Quaternion.identity);
-        crab.name = "Mademoiselle Crabaletta"; 
-        crab.GetComponent<SalonMember>().Damage = 6;
-        crab.GetComponent<SalonMember>().AttackCooldown = 3f;
-    }
-
-    public void GenerateEffect(string Effectname, Player player, float duration, float radius, int totalSprites){
+    public void GenerateEffect(string Effectname, Actor player, float duration, float radius, int totalSprites){
         GameObject effect = Instantiate(Resources.Load<GameObject>("Effect"), new Vector3(player.transform.position.x, player.transform.position.y, 0), Quaternion.identity);
         effect.name = Effectname;
         effect.GetComponent<VFX>().GetSprites(Effectname, totalSprites);
         effect.GetComponent<VFX>().Duration = duration;
         effect.GetComponent<VFX>().Size = radius;
+
     }
+    
+
+    
 
     // private void SetupFogMap() {
     //     foreach (Vector3Int pos in tiles.Keys) {

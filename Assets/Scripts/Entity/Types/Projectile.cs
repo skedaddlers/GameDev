@@ -14,6 +14,14 @@ public class Projectile : Entity
 
     void Update()
     {
+        // Destroy if off screen
+        Actor player = GameManager.Instance.Actors[0];
+        float xDistance = Mathf.Abs(player.transform.position.x - transform.position.x);
+        float yDistance = Mathf.Abs(player.transform.position.y - transform.position.y);
+        if(xDistance > Camera.main.orthographicSize * Camera.main.aspect || yDistance > Camera.main.orthographicSize){
+            Destroy(gameObject);
+            return;
+        }
         transform.position += direction * speed * Time.deltaTime;
         Action.CheckForCollision(this);
     }

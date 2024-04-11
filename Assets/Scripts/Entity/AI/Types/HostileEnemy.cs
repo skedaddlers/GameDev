@@ -65,7 +65,7 @@ public class HostileEnemy : Ai
                     //     return;
                     // }
                     // movementTimer = movementCooldown;
-                    MoveAlongPath(targetPos, 3f);
+                    MoveAlongPath(targetPos, GetComponent<Fighter>().MovementSpeed);
                     return;
                 }
             }

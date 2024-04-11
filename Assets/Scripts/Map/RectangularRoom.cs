@@ -6,11 +6,21 @@ using UnityEngine;
 public class RectangularRoom : MonoBehaviour
 {
     // Start is called before the first frame update
+    private int roomNumber;
+    private bool isBossRoom = false;
+    private bool containsPlayer = false;
+    private bool isCleared = false;
     private int x, y, width, height;
+    private List<Entity> entities = new List<Entity>();
     public int X { get => x; set => x = value; }
     public int Y { get => y; set => y = value; }
     public int Width { get => width; set => width = value; }    
     public int Height { get => height; set => height = value; }
+    public int RoomNumber { get => roomNumber; set => roomNumber = value; }
+    public bool IsBossRoom { get => isBossRoom; set => isBossRoom = value; }
+    public bool ContainsPlayer { get => containsPlayer; set => containsPlayer = value; }
+    public bool IsCleared { get => isCleared; set => isCleared = value; }
+    public List<Entity> Entities { get => entities; set => entities = value; }
     public RectangularRoom(int x, int y, int width, int height)
     {
         this.x = x;
@@ -19,6 +29,10 @@ public class RectangularRoom : MonoBehaviour
         this.height = height;
     }
 
+    public void AddEntity(Entity entity)
+    {
+        entities.Add(entity);
+    }
     public Vector2Int Center() => new Vector2Int(x + width / 2, y + height / 2);
 
     /// <summary>

@@ -52,7 +52,7 @@ public class Actor : Entity
 
         if (GetComponent<Player>()) {
             MapManager.Instance.UpdateFogMap(fieldOfView);
-            MapManager.Instance.SetEntitiesVisibilities();
+            // MapManager.Instance.SetEntitiesVisibilities();
         }
   }
     // Update is called once per frame
