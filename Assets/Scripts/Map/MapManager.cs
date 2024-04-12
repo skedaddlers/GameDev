@@ -1,6 +1,8 @@
 using UnityEngine;
+using System.Linq; // Add this using directive
 using UnityEngine.Tilemaps;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class MapManager : MonoBehaviour
 {
@@ -27,9 +29,9 @@ public class MapManager : MonoBehaviour
     // [SerializeField] private Tilemap fogMap;
 
     [Header("Features")]
-    [SerializeField] private List<RectangularRoom> rooms = new List<RectangularRoom>();
-    [SerializeField] private List<Vector3Int> visibleTiles = new List<Vector3Int>();
-    private Dictionary<Vector3Int, TileData> tiles = new Dictionary<Vector3Int, TileData>();
+    [SerializeField] private List<RectangularRoom> rooms;
+    [SerializeField] private List<Vector3Int> visibleTiles;
+    private Dictionary<Vector3Int, TileData> tiles;
     private Dictionary<Vector2Int, Node> nodes = new Dictionary<Vector2Int, Node>();
     
     private int Width { get => width; }
@@ -39,6 +41,7 @@ public class MapManager : MonoBehaviour
     public Tilemap FloorMap { get => floorMap; }
     public Tilemap ObstacleMap { get => obstacleMap; }
     public List<RectangularRoom> Rooms { get => rooms; }
+    public List<Vector3Int> VisibleTiles { get => visibleTiles; }
     public Dictionary<Vector2Int, Node> Nodes { get => nodes; set => nodes = value;}
     private void Awake()
     {
@@ -50,17 +53,37 @@ public class MapManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        SceneState sceneState = SaveManager.Instance.Save.Scenes.Find(x => x.FloorNumber == SaveManager.Instance.CurrentFloor);
+        if(sceneState is not null){
+            LoadState(sceneState.MapState);
+        }
+        else{
+            GenerateDungeon();
+        }
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        
+    }
+
+    public void GenerateDungeon()
+    {
+        rooms = new List<RectangularRoom>();
+        tiles = new Dictionary<Vector3Int, TileData>();
+        visibleTiles = new List<Vector3Int>();
+
         ProcGen procGen = new ProcGen();
         procGen.GenerateDungeon(Width, Height, roomMaxSize, roomMinSize, maxRooms, minMonsterPerRoom, maxMonsterPerRoom, maxItemsPerRoom, rooms);
 
         AddTileMapToDictionary(floorMap);
         AddTileMapToDictionary(obstacleMap);
-        
     }
 
     void Update(){
@@ -131,54 +154,64 @@ public class MapManager : MonoBehaviour
         return x >= -10 && x < Width && y >= -10 && y < Height;
     }
 
-    public void CreateEntity(string entity, Vector2 position)
+    public GameObject CreateEntity(string entity, Vector2 position)
     {
         string path = "Entities/" + entity;
-        switch (entity)
+        if(entity == "Player")
         {
-            case "Player":
-                GameObject player = Instantiate(Resources.Load<GameObject>(path), new Vector3(position.x + 0.5f, position.y + 0.5f, 0), Quaternion.identity);
-                player.name = "Player";
-                Camera.main.transform.position = new Vector3(position.x + 0.5f, position.y + 0.5f, -10);
-                Camera.main.orthographicSize = 6f;
-                break;
-            case "Skeleton":
-                Instantiate(Resources.Load<GameObject>(path), new Vector3(position.x + 0.5f, position.y + 0.5f, 0), Quaternion.identity).name = "Skeleton";
-                break;
-            case "Zombie":
-                Instantiate(Resources.Load<GameObject>(path), new Vector3(position.x + 0.5f, position.y + 0.5f, 0), Quaternion.identity).name = "Zombie";
-                break;
-            case "HpPotion":
-                Instantiate(Resources.Load<GameObject>(path), new Vector3(position.x + 0.5f, position.y + 0.5f, 0), Quaternion.identity).name = "HpPotion";
-                break;
-            case "Gentilhomme Usher":
-                GameObject octo = Instantiate(Resources.Load<GameObject>(path), position, Quaternion.identity);
-                octo.name = "Gentilhomme Usher";
-                octo.GetComponent<SalonMember>().Damage = 4;
-                octo.GetComponent<SalonMember>().AttackCooldown = 2;
-                break;
-            case "Surintendante Chevalmarin":
-                GameObject seahorse = Instantiate(Resources.Load<GameObject>(path), position, Quaternion.identity);
-                seahorse.name = "Surintendante Chevalmarin";
-                seahorse.GetComponent<SalonMember>().Damage = 3;
-                seahorse.GetComponent<SalonMember>().AttackCooldown = 1.5f;
-                break;
-            case "Mademoiselle Crabaletta":
-                GameObject crab = Instantiate(Resources.Load<GameObject>(path), position, Quaternion.identity);
-                crab.name = "Mademoiselle Crabaletta"; 
-                crab.GetComponent<SalonMember>().Damage = 6;
-                crab.GetComponent<SalonMember>().AttackCooldown = 3f;
-                break;
-            case "Singer":
-                GameObject singer = Instantiate(Resources.Load<GameObject>(path), position, Quaternion.identity);
-                singer.name = "Singer";
-                break;
-            case "Boss":
-                GameObject boss = Instantiate(Resources.Load<GameObject>(path), new Vector3(position.x + 0.5f, position.y + 0.5f, 0), Quaternion.identity);
-                boss.name = "Boss";
-                break;
-            default:
-                break;
+            GameObject player = Instantiate(Resources.Load<GameObject>(path), new Vector3(position.x + 0.5f, position.y + 0.5f, 0), Quaternion.identity);
+            player.name = "Player";
+            Camera.main.transform.position = new Vector3(position.x + 0.5f, position.y + 0.5f, -10);
+            Camera.main.orthographicSize = 6f;
+            return player;
+        }
+        else
+        {
+            GameObject newEntity = Instantiate(Resources.Load<GameObject>(path), new Vector3(position.x, position.y, 0), Quaternion.identity);
+            newEntity.name = entity;
+            return newEntity;
+            // case "Player":
+                
+            //     break;
+            // case "Skeleton":
+            //     GameObject skeleton = Instantiate(Resources.Load<GameObject>(path), new Vector3(position.x + 0.5f, position.y + 0.5f, 0), Quaternion.identity).name = "Skeleton";
+            //     skeleton.name = "Skeleton";
+            //     return skeleton;
+            //     break;
+            // case "Zombie":
+            //     Instantiate(Resources.Load<GameObject>(path), new Vector3(position.x + 0.5f, position.y + 0.5f, 0), Quaternion.identity).name = "Zombie";
+            //     break;
+            // case "HpPotion":
+            //     Instantiate(Resources.Load<GameObject>(path), new Vector3(position.x + 0.5f, position.y + 0.5f, 0), Quaternion.identity).name = "HpPotion";
+            //     break;
+            // case "Gentilhomme Usher":
+            //     GameObject octo = Instantiate(Resources.Load<GameObject>(path), position, Quaternion.identity);
+            //     octo.name = "Gentilhomme Usher";
+            //     octo.GetComponent<SalonMember>().Damage = 4;
+            //     octo.GetComponent<SalonMember>().AttackCooldown = 2;
+            //     break;
+            // case "Surintendante Chevalmarin":
+            //     GameObject seahorse = Instantiate(Resources.Load<GameObject>(path), position, Quaternion.identity);
+            //     seahorse.name = "Surintendante Chevalmarin";
+            //     seahorse.GetComponent<SalonMember>().Damage = 3;
+            //     seahorse.GetComponent<SalonMember>().AttackCooldown = 1.5f;
+            //     break;
+            // case "Mademoiselle Crabaletta":
+            //     GameObject crab = Instantiate(Resources.Load<GameObject>(path), position, Quaternion.identity);
+            //     crab.name = "Mademoiselle Crabaletta"; 
+            //     crab.GetComponent<SalonMember>().Damage = 6;
+            //     crab.GetComponent<SalonMember>().AttackCooldown = 3f;
+            //     break;
+            // case "Singer":
+            //     GameObject singer = Instantiate(Resources.Load<GameObject>(path), position, Quaternion.identity);
+            //     singer.name = "Singer";
+            //     break;
+            // case "Boss":
+            //     GameObject boss = Instantiate(Resources.Load<GameObject>(path), new Vector3(position.x + 0.5f, position.y + 0.5f, 0), Quaternion.identity);
+            //     boss.name = "Boss";
+            //     break;
+            // default:
+            //     break;
         }
     }
     public void AssignEntitiesToRooms()
@@ -286,7 +319,9 @@ public class MapManager : MonoBehaviour
                 continue;
             }
 
-            TileData tile = new TileData();
+            TileData tile = new TileData(
+                name: tilemap.GetTile(pos).name
+            );
             tiles.Add(pos, tile);
         }
     }
@@ -299,14 +334,45 @@ public class MapManager : MonoBehaviour
         effect.GetComponent<VFX>().Size = radius;
 
     }
-    
 
-    
+    public MapState SaveState() => new MapState(tiles, rooms);
+    public void LoadState(MapState state){
+        rooms = state.StoredRooms;
+        tiles = state.StoredTiles.ToDictionary(x => new Vector3Int((int)x.Key.x, (int)x.Key.y, (int)x.Key.z), x => x.Value);
+        if(visibleTiles.Count > 0){
+            visibleTiles.Clear();
+        }
 
-    // private void SetupFogMap() {
-    //     foreach (Vector3Int pos in tiles.Keys) {
-    //         fogMap.SetTile(pos, fogTile);
-    //         fogMap.SetTileFlags(pos, TileFlags.None);
-    //     }
-    // }
+        foreach (Vector3Int pos in tiles.Keys){
+            //loop every floorTile
+            foreach(TileBase tile in floorTile){
+                if(tiles[pos].Name == tile.name){
+                    floorMap.SetTile(pos, tile);
+                }
+            }
+            //loop every wallTile
+            foreach(TileBase tile in wallTile){
+                if(tiles[pos].Name == tile.name){
+                    obstacleMap.SetTile(pos, tile);
+                }
+            }
+        }
+    
+    }
+
+}
+
+[System.Serializable]
+public class MapState
+{
+    [SerializeField] private Dictionary<Vector3, TileData> storedTiles;
+    [SerializeField] private List<RectangularRoom> stooredRooms;
+    public List<RectangularRoom> StoredRooms { get => stooredRooms; set => stooredRooms = value; }
+    public Dictionary<Vector3, TileData> StoredTiles { get => storedTiles; set => storedTiles = value; }
+
+    public MapState(Dictionary<Vector3Int, TileData> tiles, List<RectangularRoom> rooms)
+    {
+        storedTiles = tiles.ToDictionary(x => (Vector3)x.Key, x => x.Value);
+        stooredRooms = rooms;
+    }
 }

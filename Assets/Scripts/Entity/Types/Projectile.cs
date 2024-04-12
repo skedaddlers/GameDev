@@ -26,4 +26,27 @@ public class Projectile : Entity
         Action.CheckForCollision(this);
     }
 
+    public override EntityState SaveState() => new ProjectileState(
+        name: name,
+        blocksMovement: BlocksMovement,
+        position: transform.position,
+        direction: direction
+    );
+
+    public void LoadState(ProjectileState state){
+        transform.position = state.Position;
+        direction = state.Direction;
+    }
+
+}
+
+[System.Serializable]
+public class ProjectileState : EntityState {
+    [SerializeField] private Vector3 direction;
+    public Vector3 Direction { get => direction; set => direction = value; }
+    public ProjectileState(EntityType type = EntityType.Projectile, string name = "", bool blocksMovement = false, Vector3 position = new Vector3(), 
+    Vector3 direction = new Vector3()) : base(type, name, blocksMovement, position)
+    {
+        this.direction = direction;
+    }
 }

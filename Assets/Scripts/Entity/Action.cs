@@ -19,14 +19,10 @@ public class Action
             }
 
             Item item = GameManager.Instance.Entities[i].GetComponent<Item>();
-            item.transform.SetParent(actor.transform);
-            actor.Inventory.Items.Add(item);
+            actor.Inventory.Add(item);
             item.GetComponent<SpriteRenderer>().enabled = false;
 
             UIManager.Instance.AddMessage($"You picked up the {item.name}.", "#00FF00");
-
-            GameManager.Instance.RemoveEntity(item);
-            // GameManager.Instance.EndTurn();
         }
     }
 

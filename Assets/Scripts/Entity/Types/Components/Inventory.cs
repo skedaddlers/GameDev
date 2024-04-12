@@ -9,6 +9,13 @@ public class Inventory : MonoBehaviour
     public int Capacity { get => capacity; }
     public List<Item> Items { get => items; }
 
+    public void Add(Item item)
+    {
+        Items.Add(item);
+        item.transform.SetParent(transform);
+        GameManager.Instance.RemoveEntity(item);
+    }
+
     public void Drop(Item item)
     {
         items.Remove(item);

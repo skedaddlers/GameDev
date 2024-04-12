@@ -40,11 +40,16 @@ public class UIManager : MonoBehaviour
 
     [Header("Enemy HP Bar")]
     [SerializeField] private Dictionary<Actor, Slider> enemyHpSliders = new Dictionary<Actor, Slider>();
+    
+    [Header("Escape Menu UI")]
+    [SerializeField] private GameObject escapeMenu;
+    [SerializeField] private bool isEscapeMenuOpen = false;
 
     public bool IsMessageHistoryOpen { get => isMessageHistoryOpen; }
     public bool IsInventoryOpen { get => isInventoryOpen; }
     public bool IsDropMenuOpen { get => isDropMenuOpen; }
     public bool IsMenuOpen { get => isMenuOpen; }
+    public bool IsEscapeMenuOpen { get => isEscapeMenuOpen; }
 
     public static UIManager Instance;
     // Start is called before the first frame update
@@ -117,19 +122,27 @@ public class UIManager : MonoBehaviour
         hpSliderText.text = $"HP: {hp}/{maxHp}";
     }
 
-    public void ToggleMenu(Actor actor = null){
+    public void ToggleMenu(){
         if(isMenuOpen)
         {
             isMenuOpen = !isMenuOpen;
 
-            if(isMessageHistoryOpen){
-                ToggleMessageHistory();
-            }
-            else if(isInventoryOpen){
-                ToggleInventory();
-            }
-            else if(isDropMenuOpen){
-                ToggleDropMenu();
+            switch (true)
+            {
+                case bool _ when isMessageHistoryOpen:
+                    ToggleMessageHistory();
+                    break;
+                case bool _ when isInventoryOpen:
+                    ToggleInventory();
+                    break;
+                case bool _ when isDropMenuOpen:
+                    ToggleDropMenu();
+                    break;
+                case bool _ when isEscapeMenuOpen:
+                    ToggleEscapeMenu();
+                    break;
+                default:
+                    break;
             }
         }
     }
@@ -160,6 +173,29 @@ public class UIManager : MonoBehaviour
             UpdateMenu(actor, dropMenuContent);
             // skills.SetActive(false);
         }
+    }
+
+    public void ToggleEscapeMenu(){
+        escapeMenu.SetActive(!escapeMenu.activeSelf);
+        isMenuOpen = escapeMenu.activeSelf;
+        isEscapeMenuOpen = escapeMenu.activeSelf;
+
+        if(isMenuOpen){
+            eventSystem.SetSelectedGameObject(escapeMenu.transform.GetChild(0).gameObject);
+        }
+    }
+
+    public void Save(){
+        SaveManager.Instance.SaveGame();
+    }
+
+    public void Load(){
+        SaveManager.Instance.LoadGame();
+        ToggleMenu();
+    }
+
+    public void Quit(){
+        Application.Quit();
     }
 
     private void UpdateMenu(Actor actor, GameObject menuContent) {

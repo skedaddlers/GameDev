@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Actor))]
-sealed class Fighter : MonoBehaviour
+public class Fighter : MonoBehaviour
 {
     [SerializeField] private int maxHp, hp, defense, power;
     [SerializeField] private float movementSpeed = 5f;
@@ -77,12 +77,15 @@ sealed class Fighter : MonoBehaviour
             Die();
         }
     }
-    private void Die(){
-        if(GetComponent<Player>()){
-            UIManager.Instance.AddMessage("You died!", "#FF0000");
-        }
-        else{
-            UIManager.Instance.AddMessage($"{name} died!", "#FFa500");
+    public void Die(){
+        if(GetComponent<Actor>().IsAlive){
+            if(GetComponent<Player>()){
+                UIManager.Instance.AddMessage("You died!", "#FF0000");
+            }
+            else{
+                UIManager.Instance.AddMessage($"{name} died!", "#FFa500");
+            }
+            GetComponent<Actor>().IsAlive = false;
         }
 
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
@@ -92,7 +95,6 @@ sealed class Fighter : MonoBehaviour
 
         name = $"Remains of {name}";
         GetComponent<Actor>().BlocksMovement = false;
-        GetComponent<Actor>().IsAlive = false;
         if(!GetComponent<Player>()){
             GameManager.Instance.RemoveActor(this.GetComponent<Actor>());
         }
@@ -112,5 +114,45 @@ sealed class Fighter : MonoBehaviour
         int amountHealed = newHPValue - hp;
         hp = newHPValue;
         return amountHealed;
+    }
+
+    public FighterState SaveState() => new FighterState(
+        maxHp: maxHp,
+        hp: hp,
+        defense: defense,
+        power: power,
+        shieldHp: shieldHp,
+        target: target != null ? target.name : null
+    );
+
+    public void LoadState(FighterState state){
+        maxHp = state.MaxHp;
+        hp = state.Hp;
+        defense = state.Defense;
+        power = state.Power;
+        shieldHp = state.ShieldHp;
+        target = GameManager.Instance.Actors.Find(x => x.name == state.Target);
+    }
+}
+
+public class FighterState
+{
+    [SerializeField] private int maxHp, hp, defense, power;
+    [SerializeField] private int shieldHp;
+    [SerializeField] private string target;
+    public int MaxHp { get => maxHp; set => maxHp = value; }
+    public int Hp { get => hp; set => hp = value; }
+    public int Defense { get => defense; set => defense = value; }
+    public int Power { get => power; set => power = value; }
+    public int ShieldHp { get => shieldHp; set => shieldHp = value; }
+    public string Target { get => target; set => target = value; }
+
+    public FighterState(int maxHp, int hp, int defense, int power, int shieldHp, string target){
+        this.maxHp = maxHp;
+        this.hp = hp;
+        this.defense = defense;
+        this.power = power;
+        this.shieldHp = shieldHp;
+        this.target = target;
     }
 }

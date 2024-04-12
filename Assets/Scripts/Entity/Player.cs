@@ -75,7 +75,11 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
     {
         if(context.performed)
         {
-            UIManager.Instance.ToggleMenu(GetComponent<Actor>());
+            if(UIManager.Instance.IsEscapeMenuOpen && UIManager.Instance.IsMenuOpen)
+                UIManager.Instance.ToggleEscapeMenu();
+            else if(UIManager.Instance.IsMenuOpen)
+                UIManager.Instance.ToggleMenu();
+            // UIManager.Instance.ToggleMenu(GetComponent<Actor>());
         }
     }
 

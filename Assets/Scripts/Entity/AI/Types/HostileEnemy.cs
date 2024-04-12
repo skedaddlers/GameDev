@@ -71,4 +71,6 @@ public class HostileEnemy : Ai
             }
         }
     }
+
+    public override AiState SaveState() => new AiState(type: "HostileEnemy");
 }

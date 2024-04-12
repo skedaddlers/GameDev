@@ -17,4 +17,14 @@ public class Ai : MonoBehaviour
         Vector2 dir = aStar.Compute((Vector2Int)gridPos, (Vector2Int)targetPos) * movementSpeed * Time.deltaTime;
         Action.MovementAction(GetComponent<Actor>(), dir);
     }
+    public virtual AiState SaveState() => new AiState();
+}
+
+[System.Serializable]
+public class AiState {
+    [SerializeField] private string type;
+    public string Type { get => type; set => type = value; }
+    public AiState(string type = "") {
+        this.type = type;
+    }
 }

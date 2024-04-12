@@ -48,6 +48,9 @@ public class Consumable : MonoBehaviour
     
     public void Consume(Actor actor, Item item){
         actor.Inventory.Items.Remove(item);
+        GameManager.Instance.RemoveEntity(GetComponent<Item>());
         Destroy(item.gameObject);
     }
+
+
 }

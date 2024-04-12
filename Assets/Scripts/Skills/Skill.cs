@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Player))]
-abstract public class Skill : MonoBehaviour
+abstract public class Skill
 {
     // Start is called before the first frame update
     [Header("Skill Settings")]
