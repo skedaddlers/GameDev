@@ -174,6 +174,7 @@ public class GameManager : MonoBehaviour
     // private float SetTime() => baseTime / actors.Count;
 
     public GameState SaveState(){
+        
         foreach(Item item in actors[0].Inventory.Items){
             if(entities.Contains(item)){
                 continue;
@@ -196,6 +197,9 @@ public class GameManager : MonoBehaviour
             foreach(VFX effect in vfx){
                 Destroy(effect.gameObject);
             }
+            foreach(Actor actor in actors){
+                Destroy(actor.gameObject);
+            }
             entities.Clear();
             actors.Clear();
             vfx.Clear();
@@ -210,11 +214,19 @@ public class GameManager : MonoBehaviour
             yield return new WaitForEndOfFrame();
             string entityName = entityStates[entityState].Name.Contains("Remains of") ?
                 entityStates[entityState].Name.Substring(entityStates[entityState].Name.LastIndexOf(' ') + 1) : entityStates[entityState].Name;
-            
+
             if(entityStates[entityState].Type == EntityState.EntityType.Actor){
                 ActorState actorState = entityStates[entityState] as ActorState;
                 Actor actor = MapManager.Instance.CreateEntity(entityName, actorState.Position).GetComponent<Actor>();
                 actor.LoadState(actorState);
+
+                // // Check if the actor is the player
+                // if (actor.GetComponent<Player>() != null)
+                // {
+                //     // Save and load the player's mana
+                //     Player player = actor.GetComponent<Player>();
+                //     player.Mana = actorState.Mana;
+                // }
             }
             else if(entityStates[entityState].Type == EntityState.EntityType.Item){
                 ItemState itemState = entityStates[entityState] as ItemState;
@@ -226,7 +238,6 @@ public class GameManager : MonoBehaviour
                 Projectile projectile = MapManager.Instance.CreateEntity(entityName, projectileState.Position).GetComponent<Projectile>();
                 projectile.LoadState(projectileState);
             }
-            
 
             entityState++;
 

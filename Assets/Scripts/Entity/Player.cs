@@ -75,7 +75,7 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
     {
         if(context.performed)
         {
-            if(UIManager.Instance.IsEscapeMenuOpen && UIManager.Instance.IsMenuOpen)
+            if(!UIManager.Instance.IsEscapeMenuOpen && !UIManager.Instance.IsMenuOpen)
                 UIManager.Instance.ToggleEscapeMenu();
             else if(UIManager.Instance.IsMenuOpen)
                 UIManager.Instance.ToggleMenu();
@@ -202,5 +202,32 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
         // animator.SetBool("IsMoving", moveKeyHeld);
     }
 
+    public PlayerState SaveState() => new PlayerState(
+        mana: mana,
+        maxMana: maxMana,
+        enemiesKilled: enemiesKilled
+    );
 
+    public void LoadState(PlayerState state)
+    {
+        mana = state.Mana;
+        enemiesKilled = state.EnemiesKilled;
+    }
+}
+
+public class PlayerState
+{
+    public int mana;
+    public int maxMana;
+    public int enemiesKilled;
+    public int Mana { get => mana; set => mana = value; }
+    public int MaxMana { get => maxMana; }
+    public int EnemiesKilled { get => enemiesKilled; set => enemiesKilled = value; }
+    public PlayerState(int mana, int maxMana = 100, int enemiesKilled = 0)
+    {
+        this.mana = mana;
+        this.maxMana = maxMana;
+        this.enemiesKilled = enemiesKilled;
+    }
+   
 }

@@ -59,7 +59,7 @@ public class SalonSolitaire : Skill
         {
             if(GameManager.Instance.Entities[i].GetComponent<SalonMember>())
             {
-                GameObject.Destroy(GameManager.Instance.Entities[i]);
+                GameObject.Destroy(GameManager.Instance.Entities[i].gameObject);
                 GameManager.Instance.Entities.RemoveAt(i);
                 i--;
             }

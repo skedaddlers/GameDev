@@ -50,10 +50,10 @@ public class Actor : Entity
         base.AddToGameManager();
 
         if(GetComponent<Player>()){
-            GameManager.Instance.InsertEntity(this, 0);
+            GameManager.Instance.InsertActor(this, 0);
         }
         else{
-            GameManager.Instance.AddEntity(this);
+            GameManager.Instance.AddActor(this);
         }
     }
 
@@ -75,7 +75,8 @@ public class Actor : Entity
         isAlive: IsAlive,
         position: transform.position,
         currentAI: ai != null ? ai.SaveState() : null,
-        fighterState: fighter != null ? fighter.SaveState() : null
+        fighterState: fighter != null ? fighter.SaveState() : null,
+        playerState: GetComponent<Player>() != null ? GetComponent<Player>().SaveState() : null
     );
 
     public void LoadState(ActorState state) {
@@ -105,14 +106,18 @@ public class ActorState : EntityState
     [SerializeField] private bool isAlive;
     [SerializeField] private AiState currentAI;
     [SerializeField] private FighterState fighterState;
+    [SerializeField] private PlayerState playerState; // Add this line
+
     public bool IsAlive { get => isAlive; set => isAlive = value; }
     public AiState CurrentAI { get => currentAI; set => currentAI = value; }
     public FighterState FighterState { get => fighterState; set => fighterState = value; }
+    public PlayerState PlayerState { get => playerState; set => playerState = value; } // Add this property
 
-    public ActorState(EntityType type = EntityType.Actor, string name = "", bool blocksMovement = false, Vector3 position = new Vector3(), 
-     bool isAlive = true, AiState currentAI = null, FighterState fighterState = null) : base(type, name, blocksMovement, position) {
+    public ActorState(EntityType type = EntityType.Actor, string name = "", bool blocksMovement = false, Vector3 position = new Vector3(),
+        bool isAlive = true, AiState currentAI = null, FighterState fighterState = null, PlayerState playerState = null) : base(type, name, blocksMovement, position) {
         this.isAlive = isAlive;
         this.currentAI = currentAI;
         this.fighterState = fighterState;
+        this.playerState = playerState; // Add this line
     }
 }
