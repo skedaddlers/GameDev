@@ -10,6 +10,7 @@ public class Actor : Entity
     [SerializeField] private Ai ai;
     [SerializeField] Inventory inventory;
     [SerializeField] private Fighter fighter;
+    [SerializeField] private Player player;
     AdamMilVisibility algorithm;
     public bool IsAlive { get => isAlive; set => isAlive = value; }
     public List<Vector3Int> FieldOfView { get => fieldOfView; }
@@ -25,6 +26,10 @@ public class Actor : Entity
 
         if(GetComponent<Fighter>()){
             fighter = GetComponent<Fighter>();
+        }
+
+        if(GetComponent<Player>()){
+            player = GetComponent<Player>();
         }
     }
 
@@ -94,6 +99,9 @@ public class Actor : Entity
         }
         if(state.FighterState != null){
             fighter.LoadState(state.FighterState);
+        }
+        if(state.PlayerState != null){
+            player.LoadState(state.PlayerState);
         }
     }
 

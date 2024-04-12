@@ -69,8 +69,8 @@ public class MapManager : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {
-        
+    {   
+        AssignEntitiesToRooms();
     }
 
     public void GenerateDungeon()
@@ -95,6 +95,7 @@ public class MapManager : MonoBehaviour
         Actor player = GameManager.Instance.Actors[0];
         foreach (RectangularRoom room in rooms)
         {
+            Debug.Log("Player is in room " + room.RoomNumber);
             float playerX = player.transform.position.x;
             float playerY = player.transform.position.y;
             if(playerX - 1f >= room.X  && playerX + 1f < room.X + room.Width && playerY - 1f >= room.Y && playerY + 1f < room.Y + room.Height)
@@ -113,6 +114,7 @@ public class MapManager : MonoBehaviour
         {
             if (room.ContainsPlayer)
             {
+                Debug.Log("Player is in room " + room.RoomNumber);
                 //Close off the room if it hasn't been done yet
                 if(!room.IsCleared){
                     CloseOffRoom(room);
@@ -170,48 +172,6 @@ public class MapManager : MonoBehaviour
             GameObject newEntity = Instantiate(Resources.Load<GameObject>(path), new Vector3(position.x, position.y, 0), Quaternion.identity);
             newEntity.name = entity;
             return newEntity;
-            // case "Player":
-                
-            //     break;
-            // case "Skeleton":
-            //     GameObject skeleton = Instantiate(Resources.Load<GameObject>(path), new Vector3(position.x + 0.5f, position.y + 0.5f, 0), Quaternion.identity).name = "Skeleton";
-            //     skeleton.name = "Skeleton";
-            //     return skeleton;
-            //     break;
-            // case "Zombie":
-            //     Instantiate(Resources.Load<GameObject>(path), new Vector3(position.x + 0.5f, position.y + 0.5f, 0), Quaternion.identity).name = "Zombie";
-            //     break;
-            // case "HpPotion":
-            //     Instantiate(Resources.Load<GameObject>(path), new Vector3(position.x + 0.5f, position.y + 0.5f, 0), Quaternion.identity).name = "HpPotion";
-            //     break;
-            // case "Gentilhomme Usher":
-            //     GameObject octo = Instantiate(Resources.Load<GameObject>(path), position, Quaternion.identity);
-            //     octo.name = "Gentilhomme Usher";
-            //     octo.GetComponent<SalonMember>().Damage = 4;
-            //     octo.GetComponent<SalonMember>().AttackCooldown = 2;
-            //     break;
-            // case "Surintendante Chevalmarin":
-            //     GameObject seahorse = Instantiate(Resources.Load<GameObject>(path), position, Quaternion.identity);
-            //     seahorse.name = "Surintendante Chevalmarin";
-            //     seahorse.GetComponent<SalonMember>().Damage = 3;
-            //     seahorse.GetComponent<SalonMember>().AttackCooldown = 1.5f;
-            //     break;
-            // case "Mademoiselle Crabaletta":
-            //     GameObject crab = Instantiate(Resources.Load<GameObject>(path), position, Quaternion.identity);
-            //     crab.name = "Mademoiselle Crabaletta"; 
-            //     crab.GetComponent<SalonMember>().Damage = 6;
-            //     crab.GetComponent<SalonMember>().AttackCooldown = 3f;
-            //     break;
-            // case "Singer":
-            //     GameObject singer = Instantiate(Resources.Load<GameObject>(path), position, Quaternion.identity);
-            //     singer.name = "Singer";
-            //     break;
-            // case "Boss":
-            //     GameObject boss = Instantiate(Resources.Load<GameObject>(path), new Vector3(position.x + 0.5f, position.y + 0.5f, 0), Quaternion.identity);
-            //     boss.name = "Boss";
-            //     break;
-            // default:
-            //     break;
         }
     }
     public void AssignEntitiesToRooms()
