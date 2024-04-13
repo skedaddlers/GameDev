@@ -6,6 +6,7 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
 {
     private Controls controls;
     private bool moveKeyHeld;
+    [SerializeField] private int exp = 0;
     [SerializeField] private int mana = 100;
     [SerializeField] private int maxMana = 100;
     [SerializeField] private int manaRegen = 1;
@@ -13,8 +14,10 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
     [SerializeField] private float manaRegenCounter = 2f;
     [SerializeField] private SkillManager skillManager;
     [SerializeField] private int enemiesKilled = 0;
-    private float rangedAttackCd = 0.7f;
+    private float attackCd = 0.7f;
     private float timer = 0f;
+    private float weaponCd = 0f;
+    private float weaponTimer = 0f;
 
     public int Mana { get => mana; set => mana = value; }
     public int MaxMana { get => maxMana; }
@@ -56,20 +59,49 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
 
     void Controls.IPlayerActions.OnClick(InputAction.CallbackContext context)
     {
-        if(context.performed && GetComponent<Actor>().IsAlive && !UIManager.Instance.IsMenuOpen &&
-            !UIManager.Instance.ContainsSkillButton(Mouse.current.position.ReadValue()) && timer <= 0
-        )
-        {
+        if(context.performed){
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
             Vector3Int gridPosition = MapManager.Instance.FloorMap.WorldToCell(mousePosition);
             Vector2 gridPosition2D = new Vector2(gridPosition.x, gridPosition.y);
             Vector2 playerPosition = transform.position;
             Vector2 direction = (gridPosition2D - playerPosition).normalized;
-            MapManager.Instance.CreateProjectile(playerPosition, direction, GetComponent<Fighter>().Power);
-            timer = rangedAttackCd;
-            mana -= 2;
+            // If the player has weapon, perform slash action, esle perform ranged attack
+            if(GetComponent<Inventory>().Weapon != null ){
+                if( weaponTimer <= 0 && GetComponent<Actor>().IsAlive && !UIManager.Instance.IsMenuOpen
+                    && !UIManager.Instance.ContainsSkillButton(Mouse.current.position.ReadValue()))
+                {
+                    Action.SlashAction(GetComponent<Actor>(), direction);
+                    weaponTimer = weaponCd;
+                }
+            }
+            else{
+                if(timer <= 0 && mana >= 2 && GetComponent<Actor>().IsAlive && !UIManager.Instance.IsMenuOpen &&
+                    !UIManager.Instance.ContainsSkillButton(Mouse.current.position.ReadValue())){
+                    Action.RangedAction(GetComponent<Actor>(), direction);
+                    timer = attackCd;
+                    mana -= 2;
+                }
+            }
         }
     }
+
+    void Controls.IPlayerActions.OnDropWeapon(InputAction.CallbackContext context)
+    {
+        // Drops currently equipped weapon
+        if(context.performed)
+        {
+            if(GetComponent<Inventory>().Weapon != null){
+                Weapon weapon = GetComponent<Inventory>().Weapon;
+                GetComponent<Inventory>().DropWeapon();
+                UIManager.Instance.AddMessage($"You dropped the {weapon.name}.", "#FF0000");
+                UIManager.Instance.UpdateWeapon(GetComponent<Actor>());
+            }
+            else{
+                UIManager.Instance.AddMessage("You have no weapon equipped!", "#FF0000");
+            }
+        }
+    }
+
 
     void Controls.IPlayerActions.OnExit(InputAction.CallbackContext context)
     {
@@ -128,6 +160,12 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
 
     private void FixedUpdate()
     {
+        if(GetComponent<Inventory>().Weapon != null){
+            Weapon weapon = GetComponent<Inventory>().Weapon;
+            weaponCd = weapon.AttackSpeed; 
+            if(weaponTimer > 0)
+                weaponTimer -= Time.fixedDeltaTime;
+        }
         if(!UIManager.Instance.IsMenuOpen){
             if (GameManager.Instance.IsPlayerTurn && moveKeyHeld && GetComponent<Actor>().IsAlive)
             {

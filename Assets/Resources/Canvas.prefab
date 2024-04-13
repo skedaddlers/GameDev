@@ -5093,6 +5093,8 @@ MonoBehaviour:
   skillsContent: {fileID: 4809969433759888992}
   escapeMenu: {fileID: 5286086475512505737}
   isEscapeMenuOpen: 0
+  weaponImage: {fileID: 0}
+  defaultWeaponSprite: {fileID: 0}
 --- !u!1 &5017341946870119064
 GameObject:
   m_ObjectHideFlags: 0

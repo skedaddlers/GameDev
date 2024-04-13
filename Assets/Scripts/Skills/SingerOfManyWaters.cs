@@ -43,6 +43,7 @@ public class SingerOfManyWaters : Skill
             {
                 GameObject.Destroy(entity.gameObject);
                 GameManager.Instance.Entities.Remove(entity);
+                
             }
         }
     }

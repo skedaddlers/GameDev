@@ -29,6 +29,7 @@ public class MapManager : MonoBehaviour
     // [SerializeField] private Tilemap fogMap;
 
     [Header("Features")]
+    [SerializeField] private RoomManager roomManager = new RoomManager();
     [SerializeField] private List<RectangularRoom> rooms;
     [SerializeField] private List<Vector3Int> visibleTiles;
     private Dictionary<Vector3Int, TileData> tiles;
@@ -43,6 +44,7 @@ public class MapManager : MonoBehaviour
     public List<RectangularRoom> Rooms { get => rooms; }
     public List<Vector3Int> VisibleTiles { get => visibleTiles; }
     public Dictionary<Vector2Int, Node> Nodes { get => nodes; set => nodes = value;}
+    public RoomManager RoomManager { get => roomManager; }
     private void Awake()
     {
         if (Instance == null)
@@ -95,12 +97,10 @@ public class MapManager : MonoBehaviour
         Actor player = GameManager.Instance.Actors[0];
         foreach (RectangularRoom room in rooms)
         {
-            Debug.Log("Player is in room " + room.RoomNumber);
             float playerX = player.transform.position.x;
             float playerY = player.transform.position.y;
             if(playerX - 1f >= room.X  && playerX + 1f < room.X + room.Width && playerY - 1f >= room.Y && playerY + 1f < room.Y + room.Height)
             {
-                // Debug.Log("Player is in room " + room.RoomNumber);
                 room.ContainsPlayer = true;
                 break;
             }
@@ -114,7 +114,6 @@ public class MapManager : MonoBehaviour
         {
             if (room.ContainsPlayer)
             {
-                Debug.Log("Player is in room " + room.RoomNumber);
                 //Close off the room if it hasn't been done yet
                 if(!room.IsCleared){
                     CloseOffRoom(room);
@@ -176,13 +175,14 @@ public class MapManager : MonoBehaviour
     }
     public void AssignEntitiesToRooms()
     {
-        Debug.Log("Assigning entities to rooms");
+        // Debug.Log("Assigning entities to rooms");
         foreach (RectangularRoom room in rooms)
         {
             // Debug.Log("Room " + room.RoomNumber);
             foreach(Entity entity in GameManager.Instance.Entities)
             {
                 // Debug.Log(entity.name);
+                Debug.Log("Entity " + entity.name);
                 float entityX = entity.transform.position.x;
                 float entityY = entity.transform.position.y;
                 if(entityX >= room.X && entityX < room.X + room.Width && entityY >= room.Y && entityY < room.Y + room.Height)

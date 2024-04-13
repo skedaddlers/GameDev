@@ -44,6 +44,10 @@ public class UIManager : MonoBehaviour
     [Header("Escape Menu UI")]
     [SerializeField] private GameObject escapeMenu;
     [SerializeField] private bool isEscapeMenuOpen = false;
+    
+    [Header("Weapon UI")]
+    [SerializeField] private GameObject weaponImage;
+    [SerializeField] private Sprite defaultWeaponSprite;
 
     public bool IsMessageHistoryOpen { get => isMessageHistoryOpen; }
     public bool IsInventoryOpen { get => isInventoryOpen; }
@@ -225,6 +229,15 @@ public class UIManager : MonoBehaviour
             menuContentChild.SetActive(true);
         }
         eventSystem.SetSelectedGameObject(menuContent.transform.GetChild(0).gameObject);
+    }
+
+    public void UpdateWeapon(Actor player){
+        if(player.GetComponent<Inventory>().Weapon != null){
+            weaponImage.GetComponent<Image>().sprite = player.GetComponent<Inventory>().Weapon.GetComponent<SpriteRenderer>().sprite;
+        }
+        else{
+            weaponImage.GetComponent<Image>().sprite = defaultWeaponSprite;
+        }
     }
 
     public void UpdateSkills(Actor actor){

@@ -6,12 +6,12 @@ using UnityEngine;
 public class RectangularRoom : MonoBehaviour
 {
     // Start is called before the first frame update
-    private int roomNumber;
-    private bool isBossRoom = false;
-    private bool containsPlayer = false;
-    private bool isCleared = false;
-    private int x, y, width, height;
-    private List<Entity> entities = new List<Entity>();
+    [SerializeField] private int roomNumber;
+    [SerializeField] private bool isBossRoom = false;
+    [SerializeField] private bool containsPlayer = false;
+    [SerializeField] private bool isCleared = false;
+    [SerializeField] private int x, y, width, height;
+    [SerializeField] private List<Entity> entities = new List<Entity>();
     public int X { get => x; set => x = value; }
     public int Y { get => y; set => y = value; }
     public int Width { get => width; set => width = value; }    

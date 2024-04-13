@@ -6,23 +6,32 @@ public class Action
     static public void PickupAction(Actor actor)
     {
         for(int i = 0; i < GameManager.Instance.Entities.Count; i++){
-            if(GameManager.Instance.Entities[i].GetComponent<Actor>() || actor.transform.position != GameManager.Instance.Entities[i].transform.position){
+            if(GameManager.Instance.Entities[i].GetComponent<Item>() || GameManager.Instance.Entities[i].GetComponent<Weapon>()){
                 float offsetX = GameManager.Instance.Entities[i].transform.position.x - actor.transform.position.x;
                 float offsetY = GameManager.Instance.Entities[i].transform.position.y - actor.transform.position.y;
                 if(Mathf.Abs(offsetX) > 1 || Mathf.Abs(offsetY) > 1)
                     continue;
             }
-            Debug.Log("Picking up item");
-            if(actor.Inventory.Items.Count >= actor.Inventory.Capacity){
-                UIManager.Instance.AddMessage("Your inventory is full!", "#FF0000");
+            if(GameManager.Instance.Entities[i].GetComponent<Weapon>()){
+                Weapon weapon = GameManager.Instance.Entities[i].GetComponent<Weapon>();
+                actor.Inventory.EquipWeapon(weapon);
+                actor.GetComponent<Fighter>().Power = weapon.Damage;
+                weapon.GetComponent<SpriteRenderer>().enabled = false;
+                UIManager.Instance.UpdateWeapon(actor);
                 return;
             }
-
-            Item item = GameManager.Instance.Entities[i].GetComponent<Item>();
-            actor.Inventory.Add(item);
-            item.GetComponent<SpriteRenderer>().enabled = false;
-
-            UIManager.Instance.AddMessage($"You picked up the {item.name}.", "#00FF00");
+            else if(GameManager.Instance.Entities[i].GetComponent<Item>()){
+                if(actor.Inventory.Items.Count >= actor.Inventory.Capacity){
+                    UIManager.Instance.AddMessage("Your inventory is full!", "#FF0000");
+                    return;
+                }
+                Item item = GameManager.Instance.Entities[i].GetComponent<Item>();
+                actor.Inventory.Add(item);
+                item.GetComponent<SpriteRenderer>().enabled = false;
+                UIManager.Instance.AddMessage($"You picked up the {item.name}.", "#00FF00");
+            }
+            Debug.Log("Picking up item");
+            
         }
     }
 
@@ -57,7 +66,7 @@ public class Action
 
         if(target != null){
             Debug.Log($"{actor.name} bumps into {target.name}!");
-            MeleeAction(actor, target);
+            // MeleeAction(actor, target);
             return false;
         }
         else{
@@ -85,6 +94,31 @@ public class Action
             GameManager.Instance.RemoveEntity(projectile);
             GameObject.Destroy(projectile.gameObject);
         }
+    }
+
+    static public void SlashAction(Actor actor, Vector3 direction){
+        // slashes in a fan shape area, dealing aoe damage to the enemies in the area
+        Weapon weapon = actor.GetComponent<Inventory>().Weapon;
+        int damage = weapon.Damage;
+        float area = weapon.Radius;
+        float fanAngle = 60f;
+        
+        foreach(Actor target in GameManager.Instance.Actors){
+            if(target == actor)
+                continue;
+            Vector3 targetDirection = target.transform.position - actor.transform.position;
+            float angle = Vector3.Angle(direction, targetDirection);
+            if(angle < fanAngle && targetDirection.magnitude < area){
+                int damageDealt = damage - target.GetComponent<Fighter>().Defense;
+                target.GetComponent<Fighter>().TakeDamage(damage);
+                UIManager.Instance.AddMessage($"{actor.name} slashes {target.name} for {damageDealt} damage!", "#FFFFFF");
+            }
+        }
+
+    }
+
+    static public void RangedAction(Actor actor, Vector3 direction){
+        MapManager.Instance.CreateProjectile(actor.transform.position, direction, actor.GetComponent<Fighter>().Power);
     }
 
 

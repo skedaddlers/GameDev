@@ -88,6 +88,7 @@ sealed class ProcGen : MonoBehaviour
         }
         rooms[0].IsCleared = true;
         MapManager.Instance.CreateEntity("Player", rooms[0].Center());
+        MapManager.Instance.CreateEntity("Dull Blade", rooms[0].Center());
         CreateBossRoom(rooms);
         MapManager.Instance.AssignEntitiesToRooms();
     }
