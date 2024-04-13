@@ -123,6 +123,23 @@ public class GameManager : MonoBehaviour
         return null;
     }
 
+    public Actor GetBlockingPlayerAtLocation(Vector3 location){
+        foreach(Actor actor in Actors){
+            // if the actor is not the player and blocks movement
+
+            if(actor.GetComponent<Player>() != null){
+                float offsetX = actor.transform.position.x - location.x;
+                float offsetY = actor.transform.position.y - location.y;
+                // if(Mathf.Abs(offsetX) < 2 && Mathf.Abs(offsetY) < 2)
+                    // Debug.Log("Offset X: " + offsetX + " Offset Y:" + offsetY);
+                if(Mathf.Abs(offsetX) < 0.5f && Mathf.Abs(offsetY) < 0.5f){
+                    return actor;
+                }
+            }
+        }
+        return null;
+    }
+
     public void AddEntity(Entity entity){
         if(!entity.gameObject.activeSelf)
             entity.gameObject.SetActive(true);

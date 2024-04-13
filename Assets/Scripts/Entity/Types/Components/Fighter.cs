@@ -58,6 +58,12 @@ public class Fighter : MonoBehaviour
     }
 
     public void TakeDamage(int damage){
+        if(GetComponent<Player>()){
+            if(GetComponent<Player>().IsDashing){
+                UIManager.Instance.AddMessage("You are invulnerable while dashing!", "#FF0000");
+                return;
+            }
+        }
         if(shieldHp > 0){
             shieldHp -= damage;
             if(shieldHp < 0){
@@ -96,6 +102,8 @@ public class Fighter : MonoBehaviour
         name = $"Remains of {name}";
         GetComponent<Actor>().BlocksMovement = false;
         if(!GetComponent<Player>()){
+            // add exp to player
+            GameManager.Instance.Actors[0].GetComponent<Player>().Exp += GetComponent<HostileEnemy>().ExpGiven;
             GameManager.Instance.RemoveActor(this.GetComponent<Actor>());
         }
     }

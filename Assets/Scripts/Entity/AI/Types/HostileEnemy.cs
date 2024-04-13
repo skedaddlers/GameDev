@@ -5,13 +5,16 @@ using UnityEngine;
 [RequireComponent(typeof(Fighter))]
 public class HostileEnemy : Ai
 {
-    [SerializeField] private Fighter fighter;
-    [SerializeField] private bool isFighting;
+    [SerializeField] protected Fighter fighter;
+    [SerializeField] protected bool isFighting;
 
     // [SerializeField] private float movementCooldown = 0.5f; // Adjust as needed
     [SerializeField] private float attackCooldown = 0.1f; // Adjust as needed
+    [SerializeField] int expGiven;
 
     private float actionTimer = 0.1f;
+
+    public int ExpGiven { get => expGiven; set => expGiven = value; }
     // private float movementTimer = 0.5f;
     private void OnValidateOverride(){
         fighter = GetComponent<Fighter>();
@@ -22,13 +25,9 @@ public class HostileEnemy : Ai
         if(actionTimer > 0){
             actionTimer -= Time.deltaTime;
         }
-        // if(movementTimer > 0){
-        //     movementTimer -= Time.deltaTime;
-        // }
-        // UIManager.Instance.UpdateEnemyHealthBar(this);
     }
 
-    public void RunAI(){
+    public virtual void RunAI(){
         
         if(!fighter.Target){
             fighter.Target = GameManager.Instance.Actors[0];

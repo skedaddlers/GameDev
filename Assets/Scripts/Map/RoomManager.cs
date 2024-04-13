@@ -6,8 +6,10 @@ public class RoomManager : MonoBehaviour
 {
     public static RoomManager Instance;
 
-    [SerializeField] private List<Room> rooms;
-    public List<Room> Rooms { get => rooms; }
+
+    [SerializeField] private List<RectangularRoom> rooms;
+    private bool hasAssignedEntities = false;
+    public List<RectangularRoom> Rooms { get => rooms; }
 
     void Awake()
     {
@@ -21,13 +23,141 @@ public class RoomManager : MonoBehaviour
         }
     }
 
-    public void AddRoom(Room room)
+    void Update()
+    {
+        if(!hasAssignedEntities){
+            AssignEntitiesToRooms();
+            hasAssignedEntities = true;
+        }
+        Actor player = GameManager.Instance.Actors[0];
+        foreach (RectangularRoom room in rooms)
+        {
+            float playerX = player.transform.position.x;
+            float playerY = player.transform.position.y;
+            if(playerX - 1f >= room.X  && playerX + 1f < room.X + room.Width && playerY - 1f >= room.Y && playerY + 1f < room.Y + room.Height)
+            {
+                room.ContainsPlayer = true;
+                break;
+            }
+            else
+            {
+                room.ContainsPlayer = false;
+            }
+        }
+
+        ActivateRooms();      
+    }
+
+    public void AssignEntitiesToRooms()
+    {
+        foreach (RectangularRoom room in rooms)
+        {
+            room.Entities.Clear();
+        }
+
+        foreach (Entity entity in GameManager.Instance.Entities)
+        {
+            foreach (RectangularRoom room in rooms)
+            {
+                float entityX = entity.transform.position.x;
+                float entityY = entity.transform.position.y;
+                if (entityX >= room.X && entityX < room.X + room.Width && entityY >= room.Y && entityY < room.Y + room.Height)
+                {
+                    room.AddEntity(entity);
+                    break;
+                }
+            }
+        }
+    }
+
+    private void ActivateRooms()
+    {
+        foreach(RectangularRoom room in rooms)
+        {
+            if (room.ContainsPlayer)
+            {
+                //Close off the room if it hasn't been done yet
+                if(!room.IsCleared){
+                    CloseOffRoom(room);
+                    foreach (Entity entity in room.Entities)
+                    {
+                        if (entity.GetComponent<Actor>() && entity.GetComponent<Actor>().IsAlive)
+                        {
+                            if (entity.GetComponent<HostileEnemy>())
+                            {
+                                entity.GetComponent<HostileEnemy>().RunAI();
+                            }
+                        }
+                    }
+                    if(AllEnemiesDead(room)){
+                        room.IsCleared = true;
+                    }
+                }
+                else{
+                    OpenRoom(room);
+                }
+            }
+        }
+    }
+
+    private bool AllEnemiesDead(RectangularRoom room)
+    {
+        foreach(Entity entity in room.Entities)
+        {
+            if(entity.GetComponent<Actor>() && entity.GetComponent<Actor>().IsAlive)
+            {
+                if(entity.GetComponent<Actor>().GetComponent<HostileEnemy>())
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private void CloseOffRoom(RectangularRoom room)
+    {
+        for (int x = room.X; x < room.X + room.Width; x++)
+        {
+            for (int y = room.Y; y < room.Y + room.Height; y++)
+            {
+                if (x == room.X || x == room.X + room.Width - 1 || y == room.Y || y == room.Y + room.Height - 1)
+                {
+                    if (MapManager.Instance.ObstacleMap.GetTile(new Vector3Int(x, y, 0)) == null)
+                    {
+                        MapManager.Instance.ObstacleMap.SetTile(new Vector3Int(x, y, 0), MapManager.Instance.WallTile[13]);
+                    }
+                }
+            }
+        }
+    }
+
+    private void OpenRoom(RectangularRoom room)
+    {
+        for (int x = room.X; x < room.X + room.Width; x++)
+        {
+            for (int y = room.Y; y < room.Y + room.Height; y++)
+            {
+                if (x == room.X || x == room.X + room.Width - 1 || y == room.Y || y == room.Y + room.Height - 1)
+                {
+                    if (MapManager.Instance.ObstacleMap.GetTile(new Vector3Int(x, y, 0)) == MapManager.Instance.WallTile[13])
+                    {
+                        MapManager.Instance.ObstacleMap.SetTile(new Vector3Int(x, y, 0), null);
+                    }
+                }
+            }
+        }
+    }
+
+
+    public void AddRoom(RectangularRoom room)
     {
         rooms.Add(room);
     }
 
-    public void RemoveRoom(Room room)
+    public void RemoveRoom(RectangularRoom room)
     {
         rooms.Remove(room);
     }
+
 }

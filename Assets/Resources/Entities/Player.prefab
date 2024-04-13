@@ -149,9 +149,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02755f9d669e20943aa8e52f19b2a6d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 7
+  exp: 0
   mana: 100
   maxMana: 100
+  stamina: 100
+  maxStamina: 100
+  critRate: 0.2
+  critDamage: 1.5
+  luck: 0.1
   manaRegen: 2
   manaRegenRate: 1
   manaRegenCounter: 1
@@ -169,12 +174,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19f992e9be67ad14cadc6e7f247ccfa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blocksMovement: 1
+  blocksMovement: 0
   isAlive: 1
   fieldOfViewRange: 18
   fieldOfView: []
   ai: {fileID: 0}
   inventory: {fileID: 1229510834712304930}
+  fighter: {fileID: -6452018366456817787}
+  player: {fileID: 642921031716020085}
 --- !u!114 &-6452018366456817787
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -208,6 +215,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   capacity: 26
   items: []
+  weapon: {fileID: 0}
 --- !u!114 &8262832105559861489
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -220,4 +228,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e75411dee864571429f62602c2b78bf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skills: []

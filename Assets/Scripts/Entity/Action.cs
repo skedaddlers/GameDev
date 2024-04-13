@@ -72,22 +72,26 @@ public class Action
         else{
             MovementAction(actor, dir);
             // Make the camera moving code here
-            Camera.main.transform.position = new Vector3(actor.transform.position.x, actor.transform.position.y, -10);
+            
             return true;
         }
     }
 
     static public void CheckForCollision(Projectile projectile){
-        Actor target = GameManager.Instance.GetBlockingActorAtLocation(projectile.transform.position);
+        Actor target = null;
+        if(projectile.GetComponent<Projectile>().IsPlayerProjectile){
+            target = GameManager.Instance.GetBlockingActorAtLocation(projectile.transform.position);
+        }
+        else{
+            target = GameManager.Instance.GetBlockingPlayerAtLocation(projectile.transform.position);
+        }
         Vector3Int gridPosition = MapManager.Instance.FloorMap.WorldToCell(projectile.transform.position);
         if(!MapManager.Instance.InBounds((int)gridPosition.x, (int)gridPosition.y) || MapManager.Instance.ObstacleMap.HasTile(gridPosition)){
             GameManager.Instance.RemoveEntity(projectile);
             GameObject.Destroy(projectile.gameObject);
             return;
         }
-        // Vector3Int gridPosition = MapManager.Instance.FloorMap.WorldToCell(futurePosition);
-        // if(!MapManager.Instance.InBounds(gridPosition.x, gridPosition.y) || MapManager.Instance.ObstacleMap.HasTile(gridPosition) || futurePosition == transform.position)
-        
+
         if(target != null){
             Debug.Log($"{projectile.name} hits {target.name}!");
             target.GetComponent<Fighter>().TakeDamage(projectile.GetComponent<Projectile>().Damage);
@@ -114,11 +118,16 @@ public class Action
                 UIManager.Instance.AddMessage($"{actor.name} slashes {target.name} for {damageDealt} damage!", "#FFFFFF");
             }
         }
-
     }
 
     static public void RangedAction(Actor actor, Vector3 direction){
-        MapManager.Instance.CreateProjectile(actor.transform.position, direction, actor.GetComponent<Fighter>().Power);
+        if(actor.GetComponent<Player>()){
+            MapManager.Instance.CreateProjectile(actor.transform.position, direction, actor.GetComponent<Fighter>().Power, true);
+        }
+        else{
+            MapManager.Instance.CreateProjectile(actor.transform.position, direction, actor.GetComponent<Fighter>().Power, false);
+        }
+
     }
 
 
@@ -159,9 +168,26 @@ public class Action
         // GameManager.Instance.EndTurn();
     }
 
+    static public void DashAction(Actor actor, Vector3 direction){
+        actor.Move(direction * 3);
+        // GameManager.Instance.EndTurn();
+    }
+
     static public void MovementAction(Actor actor, Vector3 direction){
+        if(!isValidPosition(actor, actor.transform.position + direction))
+            return;
         actor.Move(direction);
         // GameManager.Instance.EndTurn();
+        if(actor.GetComponent<Player>()){
+            Camera.main.transform.position = new Vector3(actor.transform.position.x, actor.transform.position.y, -10);
+        }
+    }
+    static private bool isValidPosition(Actor actor, Vector3 futurePosition)
+    {
+        Vector3Int gridPosition = MapManager.Instance.FloorMap.WorldToCell(futurePosition);
+        if(!MapManager.Instance.InBounds(gridPosition.x, gridPosition.y) || MapManager.Instance.ObstacleMap.HasTile(gridPosition) || futurePosition == actor.transform.position)
+            return false;
+        return true;
     }
 
     static public void SkipAction(){

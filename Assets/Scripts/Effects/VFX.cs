@@ -15,18 +15,21 @@ public class VFX : MonoBehaviour
     private float spriteInterval = 0.5f;
     private int maxSprteIndex;
     private float remainingDuration;
+    private Camera mainCamera; // Reference to the main camera
     public float Size { get => size; set => size = value; }
     public float Duration { get => duration; set => duration = value; }
 
     private void Start()
     {
         //enlarge it as the radius
+        mainCamera = Camera.main; // Get the main camera
         transform.localScale = new Vector3(size, size, 1);
         foreach(Entity entity in GameManager.Instance.Entities){
             if(entity.GetComponent<Player>()){
                 player = entity.GetComponent<Player>().transform;
             }
         }
+        mainCamera = Camera.main;
         if (player == null)
         {
             Debug.LogError("Player reference not set for SkillEffect script on " + gameObject.name);
@@ -50,6 +53,8 @@ public class VFX : MonoBehaviour
             GameManager.Instance.RemoveVFX(this);
             Destroy(gameObject);
         }
+        // Scale to camera size
+        // ScaleToCamera();
 
     }
 

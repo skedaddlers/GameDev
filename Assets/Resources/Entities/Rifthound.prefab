@@ -12,12 +12,12 @@ GameObject:
   - component: {fileID: 3291528750647799007}
   - component: {fileID: 3291528750647798994}
   - component: {fileID: 3291528750647799001}
-  - component: {fileID: -5024635588477587911}
-  - component: {fileID: 2062718751406112688}
-  - component: {fileID: -7863829816183178620}
-  - component: {fileID: 7005191824849677440}
+  - component: {fileID: -7356037982142339953}
+  - component: {fileID: -806051740714282425}
+  - component: {fileID: 4577567348277160934}
+  - component: {fileID: 3381034138953834852}
   m_Layer: 0
-  m_Name: Skeleton
+  m_Name: Rifthound
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -79,8 +79,8 @@ SpriteRenderer:
   m_SortingLayerID: 1901361099
   m_SortingLayer: 5
   m_SortingOrder: 2
-  m_Sprite: {fileID: 935778226, guid: 953489b83febc254daad5849d4359538, type: 3}
-  m_Color: {r: 0.3478074, g: 0.8207547, b: 0.23538621, a: 1}
+  m_Sprite: {fileID: -254227002, guid: 953489b83febc254daad5849d4359538, type: 3}
+  m_Color: {r: 0.98566103, g: 0, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -136,7 +136,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &-5024635588477587911
+--- !u!114 &-7356037982142339953
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -152,11 +152,11 @@ MonoBehaviour:
   isAlive: 1
   fieldOfViewRange: 16
   fieldOfView: []
-  ai: {fileID: 7005191824849677440}
+  ai: {fileID: 3381034138953834852}
   inventory: {fileID: 0}
-  fighter: {fileID: 2062718751406112688}
+  fighter: {fileID: -806051740714282425}
   player: {fileID: 0}
---- !u!114 &2062718751406112688
+--- !u!114 &-806051740714282425
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -168,14 +168,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b277014bef278241aa45bed70a91787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 15
-  hp: 15
-  defense: 0
-  power: 4
-  movementSpeed: 4
+  maxHp: 20
+  hp: 20
+  defense: 2
+  power: 3
+  movementSpeed: 2
   shieldHp: 0
   target: {fileID: 0}
---- !u!114 &-7863829816183178620
+--- !u!114 &4577567348277160934
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -187,7 +187,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e5a5427ca2524b40a66780396a8bebd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7005191824849677440
+--- !u!114 &3381034138953834852
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -196,11 +196,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 3291528750647798995}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d2fd12b237da07428ef169b9782c009, type: 3}
+  m_Script: {fileID: 11500000, guid: b3ac292bb6fa08944917c1892e8d09be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  aStar: {fileID: -7863829816183178620}
-  fighter: {fileID: 2062718751406112688}
+  aStar: {fileID: 4577567348277160934}
+  fighter: {fileID: -806051740714282425}
   isFighting: 0
-  attackCooldown: 1
-  expGiven: 10
+  attackCooldown: 0.1
+  expGiven: 0
+  type: 3

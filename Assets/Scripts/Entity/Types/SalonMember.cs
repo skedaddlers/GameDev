@@ -55,7 +55,7 @@ public class SalonMember : Entity
                     Vector2 gridPosition2D = new Vector2(enemyPosition.x, enemyPosition.y);
                     Vector2 salonPos = transform.position;
                     Vector2 direction = (gridPosition2D - salonPos).normalized;
-                    MapManager.Instance.CreateProjectile(salonPos, direction, damage);
+                    MapManager.Instance.CreateProjectile(salonPos, direction, damage, true);
                     break;
                 }
             }

@@ -5,7 +5,7 @@ using UnityEngine;
 sealed class ProcGen : MonoBehaviour
 {
     public void GenerateDungeon(int mapWidth, int mapHeight, int maxRoomSize, int minRoomSize, int maxRooms, 
-    int minMonstersPerRoom, int maxMonstersPerRoom, int maxItemsPerRoom, List<RectangularRoom> rooms)
+    int minMonstersPerRoom, int maxMonstersPerRoom, int maxItemsPerRoom)
     {
         for(int roomNum = 0; roomNum < maxRooms; roomNum++)
         {
@@ -17,7 +17,7 @@ sealed class ProcGen : MonoBehaviour
             RectangularRoom newRoom = new RectangularRoom(roomX, roomY, roomWidth, roomHeight);
             
 
-            if(newRoom.Overlaps(rooms))
+            if(newRoom.Overlaps(RoomManager.Instance.Rooms))
             {
                 roomNum--;
                 continue;
@@ -74,8 +74,8 @@ sealed class ProcGen : MonoBehaviour
                     }
                 }
             }
-            if(rooms.Count != 0){
-                TunnelBetween(MapManager.Instance.Rooms[MapManager.Instance.Rooms.Count - 1], newRoom);
+            if(RoomManager.Instance.Rooms.Count != 0){
+                TunnelBetween(RoomManager.Instance.Rooms[RoomManager.Instance.Rooms.Count - 1], newRoom);
             }
             else{
 
@@ -83,14 +83,14 @@ sealed class ProcGen : MonoBehaviour
             PlaceEntities(newRoom, minMonstersPerRoom, maxMonstersPerRoom, maxItemsPerRoom);
             
             newRoom.RoomNumber = roomNum;
-            rooms.Add(newRoom);
+            RoomManager.Instance.AddRoom(newRoom);
             
         }
-        rooms[0].IsCleared = true;
-        MapManager.Instance.CreateEntity("Player", rooms[0].Center());
-        MapManager.Instance.CreateEntity("Dull Blade", rooms[0].Center());
-        CreateBossRoom(rooms);
-        MapManager.Instance.AssignEntitiesToRooms();
+        RoomManager.Instance.Rooms[0].IsCleared = true;
+        MapManager.Instance.CreateEntity("Player", RoomManager.Instance.Rooms[0].Center());
+        MapManager.Instance.CreateEntity("Dull Blade", RoomManager.Instance.Rooms[0].Center());
+        CreateBossRoom(RoomManager.Instance.Rooms);
+        RoomManager.Instance.AssignEntitiesToRooms();
     }
 
     private void TunnelBetween(RectangularRoom oldRoom, RectangularRoom newRoom)
@@ -148,7 +148,7 @@ sealed class ProcGen : MonoBehaviour
     private void PlaceEntities(RectangularRoom newRoom, int minMonsters, int maxMonsters, int maxItems)
     {
         //Check if the room is the first room
-        if(MapManager.Instance.Rooms.Count == 0)
+        if(RoomManager.Instance.Rooms.Count == 0)
         {
             return;
         }
@@ -186,6 +186,50 @@ sealed class ProcGen : MonoBehaviour
             }
             monster++;
         }
+
+        //Chance for elite monster, the farthest room from the player, the higher the chance
+        if(Random.value < 0.75f){
+            float distance = Vector2.Distance(RoomManager.Instance.Rooms[0].Center(), newRoom.Center());
+            float mapDiagonal = Mathf.Sqrt(Mathf.Pow(MapManager.Instance.Width, 2) + Mathf.Pow(MapManager.Instance.Height, 2));
+            if(Random.value < distance / mapDiagonal){
+                while(true){
+                    int x = Random.Range(newRoom.X + 1, newRoom.X + newRoom.Width - 1);
+                    int y = Random.Range(newRoom.Y + 1, newRoom.Y + newRoom.Height - 1);
+                    // check for empty tiles
+                    for(int entity = 0; entity < GameManager.Instance.Entities.Count; entity++)
+                    {
+                        Vector3Int pos = MapManager.Instance.FloorMap.WorldToCell(GameManager.Instance.Entities[entity].transform.position);
+                        if(x == pos.x && y == pos.y)
+                        {
+                            continue;
+                        }
+                    }
+                    if(Random.value < 0.2f){
+                        GameObject mitachurl = MapManager.Instance.CreateEntity("Mitachurl", new Vector2(x, y));
+                        mitachurl.GetComponent<EliteEnemy>().Type = EliteEnemyType.Mitachurl;
+                    }
+                    else if(Random.value < 0.4f){
+                        GameObject abyssMage = MapManager.Instance.CreateEntity("Abyss Mage", new Vector2(x, y));
+                        abyssMage.GetComponent<EliteEnemy>().Type = EliteEnemyType.AbyssMage;
+                    }
+                    else if(Random.value < 0.6f){
+                        GameObject ruinGuard = MapManager.Instance.CreateEntity("Ruin Guard", new Vector2(x, y));
+                        ruinGuard.GetComponent<EliteEnemy>().Type = EliteEnemyType.RuinGuard;
+                    }
+                    else if(Random.value < 0.8f){
+                        GameObject ruinHunter = MapManager.Instance.CreateEntity("Rifthound", new Vector2(x, y));
+                        ruinHunter.GetComponent<EliteEnemy>().Type = EliteEnemyType.Rifthound;
+                    }
+                    else{
+                        GameObject ruinGrader = MapManager.Instance.CreateEntity("Mirror Maiden", new Vector2(x, y));
+                        ruinGrader.GetComponent<EliteEnemy>().Type = EliteEnemyType.MirrorMaiden;
+                    }
+                    break;
+                }
+                
+            }
+        }
+
 
         for(int item = 0; item < numItems;)
         {
