@@ -7,13 +7,21 @@ public class Projectile : Entity
     // Start is called before the first frame update
     [SerializeField] private float speed;
     [SerializeField] private int damage = 5;
+    //rotation var
+    [SerializeField] private float rotation;
     [SerializeField] private Vector3 direction;
     [SerializeField] private bool isPlayerProjectile = false;
 
     public int Damage { get => damage; set => damage = value;}
     public Vector3 Direction { get => direction; set => direction = value; }
     public bool IsPlayerProjectile { get => isPlayerProjectile; set => isPlayerProjectile = value; }
+    public float Rotation { get => rotation; set => rotation = value; }
 
+    void Start()
+    {
+        transform.rotation = Quaternion.Euler(0, 0, rotation);
+    }
+    
     void Update()
     {
         if(isPlayerProjectile){

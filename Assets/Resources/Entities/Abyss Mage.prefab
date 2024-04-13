@@ -175,6 +175,7 @@ MonoBehaviour:
   movementSpeed: 2
   shieldHp: 15
   target: {fileID: 0}
+  statusCondition: {fileID: 8203162054675032385, guid: 1788728237dfce54b864310b6db3ac7f, type: 3}
 --- !u!114 &4577567348277160934
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -202,14 +203,16 @@ MonoBehaviour:
   aStar: {fileID: 4577567348277160934}
   fighter: {fileID: -806051740714282425}
   isFighting: 0
+  canTakeDamage: 0
   attackCooldown: 1
   expGiven: 25
+  attackTimer: 0
   type: 1
+  chanceToDropWeapon: 0.6
+  highRareDropChance: 0
   shieldHp: 15
   shieldRegenTime: 7
   shieldBroken: 0
   shieldRegenTimer: 0
   teleportTimer: 0
   teleportRate: 5
-  attackTimer: 0
-  attackRate: 2

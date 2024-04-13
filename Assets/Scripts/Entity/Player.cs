@@ -37,14 +37,16 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
     private bool isDashing = false;
 
     public int Mana { get => mana; set => mana = value; }
-    public int MaxMana { get => maxMana; }
+    public int MaxMana { get => maxMana; set => maxMana = value;}
     public int EnemiesKilled { get => enemiesKilled; set => enemiesKilled = value; }
     public int Exp { get => exp; set => exp = value; }
     public int Stamina { get => stamina; set => stamina = value; }
     public float CritRate { get => critRate; }
     public float CritDamage { get => critDamage; }
-    public float Luck { get => luck; }
+    public float Luck { get => luck; set => luck = value; }
     public bool IsDashing { get => isDashing; set => isDashing = value; }
+    public int Level { get => level; }
+    public int ExpNeeded { get => expNeeded; }
     private Animator animator;
 
     private void Awake()
@@ -105,6 +107,7 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
                     mana -= 2;
                 }
             }
+            // UIManager.Instance.ToggleMenu();
         }
     }
 
@@ -155,6 +158,15 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
         {
             if(!UIManager.Instance.IsMenuOpen || UIManager.Instance.IsMessageHistoryOpen)
                 UIManager.Instance.ToggleMessageHistory();
+        }
+    }
+
+    public void OnInfo(InputAction.CallbackContext context)
+    {
+        if(context.performed)
+        {
+            if(!UIManager.Instance.IsMenuOpen || UIManager.Instance.IsPlayerInformationMenuOpen)
+                UIManager.Instance.TogglePlayerInformationMenu(GetComponent<Actor>());
         }
     }
 
@@ -210,7 +222,10 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
             }
         }
         UIManager.Instance.UpdateSkills(GetComponent<Actor>());
-
+        UIManager.Instance.SetStaminaMax(maxStamina);
+        UIManager.Instance.SetStamina(stamina, maxStamina);
+        UIManager.Instance.SetExpMax(expNeeded);
+        UIManager.Instance.SetExp(exp, expNeeded);
         if(stamina < maxStamina){
             staminaTimer -= Time.fixedDeltaTime;
             if(staminaTimer <= 0){
@@ -247,9 +262,6 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
         if(timer > 0){
             timer -= Time.fixedDeltaTime;
         }
-        if(exp >= expNeeded){
-            LevelUp();
-        }
     }
 
     private void MovePlayer(float moveSpeed = 1f)
@@ -261,14 +273,22 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
         UpdateAnimation();
     }
 
-    private void LevelUp()
+    public void AddExp(int amount)
+    {
+        exp += amount;
+        if(exp >= expNeeded){
+            if(UIManager.Instance.IsLevelUpMenuOpen)
+                return;
+            UIManager.Instance.ToggleLevelUpMenu(GetComponent<Actor>());
+        }
+    }
+
+    public void LevelUp()
     {
         if(level < maxLevel){
-            level++;
-            exp = 0;
+            exp = exp - expNeeded;
             expNeeded = (int)(expNeeded * (1f + level * 0.1f));
-            maxMana += 10;
-            maxStamina += 10;
+            level++;
             mana = maxMana;
             stamina = maxStamina;
             UIManager.Instance.AddMessage($"You leveled up to level {level}!", "#00FF00");

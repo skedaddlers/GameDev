@@ -15,8 +15,6 @@ public class AbyssMage : EliteEnemy
     [SerializeField] private float shieldRegenTimer = 0;
     [SerializeField] private float teleportTimer = 0;
     [SerializeField] private float teleportRate = 5f;
-    [SerializeField] private float attackTimer = 0;
-    [SerializeField] private float attackRate = 2f;
 
     void Start()
     {
@@ -50,12 +48,12 @@ public class AbyssMage : EliteEnemy
         else if(fighter.Target && fighter.Target.IsAlive){
             if(teleportTimer >= teleportRate)
             {
-                Teleport();
+                TeleportToPlayer(fighter.Target.GetComponent<Actor>());
                 teleportTimer = 0;
             }
-            if(attackTimer >= attackRate)
+            if(attackTimer >= attackCooldown)
             {
-                Attack();
+                FlameAttack(fighter.Target.GetComponent<Actor>());
                 attackTimer = 0;
             }
             teleportTimer += Time.deltaTime;
@@ -64,21 +62,18 @@ public class AbyssMage : EliteEnemy
         }
     }
 
-    public void Teleport()
+    public void TeleportToPlayer(Actor player)
     {
         // teleport to player
-        Player player = GameManager.Instance.Actors[0].GetComponent<Player>();
         Vector3Int playerPos = MapManager.Instance.FloorMap.WorldToCell(player.transform.position);
         Vector3Int newPos = playerPos;
         transform.position = MapManager.Instance.FloorMap.GetCellCenterWorld(newPos);
     }
 
-    public void Attack()
+    public void FlameAttack(Actor player)
     {
-        // cast spell
-        // spawn a projectile
-        // deal damage to player
-        // stun player
-        // apply debuff
+        Vector3Int targetPos = MapManager.Instance.FloorMap.WorldToCell(player.transform.position);
+        Vector2 direction = new Vector2(targetPos.x - transform.position.x, targetPos.y - transform.position.y);
+        MapManager.Instance.CreateProjectile("Flame", transform.position, direction, 2, false);
     }
 }

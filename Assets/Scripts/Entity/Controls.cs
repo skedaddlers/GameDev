@@ -107,6 +107,15 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Info"",
+                    ""type"": ""Button"",
+                    ""id"": ""3e3e8508-8170-4e7a-b7d2-7dfba77675cd"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -212,7 +221,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""c15f20f6-96b5-406b-bdcb-95b1864aa4ac"",
-                    ""path"": ""<Keyboard>/c"",
+                    ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Arrow Keys"",
@@ -252,6 +261,17 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""action"": ""Dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2bda5ace-a761-4cf9-b31f-533b45ce12c5"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Arrow Keys"",
+                    ""action"": ""Info"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -286,6 +306,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         m_Player_Click = m_Player.FindAction("Click", throwIfNotFound: true);
         m_Player_DropWeapon = m_Player.FindAction("DropWeapon", throwIfNotFound: true);
         m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
+        m_Player_Info = m_Player.FindAction("Info", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -354,6 +375,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Click;
     private readonly InputAction m_Player_DropWeapon;
     private readonly InputAction m_Player_Dash;
+    private readonly InputAction m_Player_Info;
     public struct PlayerActions
     {
         private @Controls m_Wrapper;
@@ -367,6 +389,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         public InputAction @Click => m_Wrapper.m_Player_Click;
         public InputAction @DropWeapon => m_Wrapper.m_Player_DropWeapon;
         public InputAction @Dash => m_Wrapper.m_Player_Dash;
+        public InputAction @Info => m_Wrapper.m_Player_Info;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -403,6 +426,9 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @Dash.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDash;
                 @Dash.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDash;
                 @Dash.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDash;
+                @Info.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInfo;
+                @Info.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInfo;
+                @Info.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInfo;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -434,6 +460,9 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @Dash.started += instance.OnDash;
                 @Dash.performed += instance.OnDash;
                 @Dash.canceled += instance.OnDash;
+                @Info.started += instance.OnInfo;
+                @Info.performed += instance.OnInfo;
+                @Info.canceled += instance.OnInfo;
             }
         }
     }
@@ -458,5 +487,6 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         void OnClick(InputAction.CallbackContext context);
         void OnDropWeapon(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
+        void OnInfo(InputAction.CallbackContext context);
     }
 }

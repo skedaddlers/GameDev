@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -7356037982142339953}
   - component: {fileID: -806051740714282425}
   - component: {fileID: 4577567348277160934}
-  - component: {fileID: 3381034138953834852}
+  - component: {fileID: 415654609297345970}
   m_Layer: 0
   m_Name: Mitachurl
   m_TagString: Untagged
@@ -152,7 +152,7 @@ MonoBehaviour:
   isAlive: 1
   fieldOfViewRange: 16
   fieldOfView: []
-  ai: {fileID: 3381034138953834852}
+  ai: {fileID: 415654609297345970}
   inventory: {fileID: 0}
   fighter: {fileID: -806051740714282425}
   player: {fileID: 0}
@@ -168,13 +168,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b277014bef278241aa45bed70a91787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 20
-  hp: 20
+  maxHp: 30
+  hp: 30
   defense: 2
   power: 3
   movementSpeed: 2
   shieldHp: 0
   target: {fileID: 0}
+  statusCondition: {fileID: 0}
 --- !u!114 &4577567348277160934
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -187,7 +188,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e5a5427ca2524b40a66780396a8bebd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3381034138953834852
+--- !u!114 &415654609297345970
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -196,12 +197,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 3291528750647798995}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3ac292bb6fa08944917c1892e8d09be, type: 3}
+  m_Script: {fileID: 11500000, guid: d5f04b61c0161f949af441759476532e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   aStar: {fileID: 4577567348277160934}
   fighter: {fileID: -806051740714282425}
   isFighting: 0
-  attackCooldown: 0.1
-  expGiven: 0
+  canTakeDamage: 0
+  attackCooldown: 1.5
+  expGiven: 30
+  attackTimer: 0.1
   type: 0
+  chanceToDropWeapon: 0.5
+  highRareDropChance: 0
+  dashTimer: 0
+  dashRate: 6.5
+  speedMultiplier: 2.4
+  dashDuration: 0.3
+  isDashing: 0
+  defaultSpeed: 0

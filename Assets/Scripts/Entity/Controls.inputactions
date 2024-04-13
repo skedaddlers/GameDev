@@ -85,6 +85,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Info",
+                    "type": "Button",
+                    "id": "3e3e8508-8170-4e7a-b7d2-7dfba77675cd",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -190,7 +199,7 @@
                 {
                     "name": "",
                     "id": "c15f20f6-96b5-406b-bdcb-95b1864aa4ac",
-                    "path": "<Keyboard>/c",
+                    "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
                     "groups": "Arrow Keys",
@@ -228,6 +237,17 @@
                     "processors": "",
                     "groups": "Arrow Keys",
                     "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2bda5ace-a761-4cf9-b31f-533b45ce12c5",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Arrow Keys",
+                    "action": "Info",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

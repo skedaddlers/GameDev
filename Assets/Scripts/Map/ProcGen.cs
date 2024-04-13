@@ -188,46 +188,51 @@ sealed class ProcGen : MonoBehaviour
         }
 
         //Chance for elite monster, the farthest room from the player, the higher the chance
-        if(Random.value < 0.75f){
-            float distance = Vector2.Distance(RoomManager.Instance.Rooms[0].Center(), newRoom.Center());
-            float mapDiagonal = Mathf.Sqrt(Mathf.Pow(MapManager.Instance.Width, 2) + Mathf.Pow(MapManager.Instance.Height, 2));
-            if(Random.value < distance / mapDiagonal){
-                while(true){
-                    int x = Random.Range(newRoom.X + 1, newRoom.X + newRoom.Width - 1);
-                    int y = Random.Range(newRoom.Y + 1, newRoom.Y + newRoom.Height - 1);
-                    // check for empty tiles
-                    for(int entity = 0; entity < GameManager.Instance.Entities.Count; entity++)
+        float distance = Vector2.Distance(RoomManager.Instance.Rooms[0].Center(), newRoom.Center());
+        float mapDiagonal = Mathf.Sqrt(Mathf.Pow(MapManager.Instance.Width, 2) + Mathf.Pow(MapManager.Instance.Height, 2));
+        float distanceChance = distance / mapDiagonal;
+        if(Random.value < distanceChance){
+            while(true){
+                int x = Random.Range(newRoom.X + 1, newRoom.X + newRoom.Width - 1);
+                int y = Random.Range(newRoom.Y + 1, newRoom.Y + newRoom.Height - 1);
+                // check for empty tiles
+                for(int entity = 0; entity < GameManager.Instance.Entities.Count; entity++)
+                {
+                    Vector3Int pos = MapManager.Instance.FloorMap.WorldToCell(GameManager.Instance.Entities[entity].transform.position);
+                    if(x == pos.x && y == pos.y)
                     {
-                        Vector3Int pos = MapManager.Instance.FloorMap.WorldToCell(GameManager.Instance.Entities[entity].transform.position);
-                        if(x == pos.x && y == pos.y)
-                        {
-                            continue;
-                        }
+                        continue;
                     }
-                    if(Random.value < 0.2f){
-                        GameObject mitachurl = MapManager.Instance.CreateEntity("Mitachurl", new Vector2(x, y));
-                        mitachurl.GetComponent<EliteEnemy>().Type = EliteEnemyType.Mitachurl;
-                    }
-                    else if(Random.value < 0.4f){
-                        GameObject abyssMage = MapManager.Instance.CreateEntity("Abyss Mage", new Vector2(x, y));
-                        abyssMage.GetComponent<EliteEnemy>().Type = EliteEnemyType.AbyssMage;
-                    }
-                    else if(Random.value < 0.6f){
-                        GameObject ruinGuard = MapManager.Instance.CreateEntity("Ruin Guard", new Vector2(x, y));
-                        ruinGuard.GetComponent<EliteEnemy>().Type = EliteEnemyType.RuinGuard;
-                    }
-                    else if(Random.value < 0.8f){
-                        GameObject ruinHunter = MapManager.Instance.CreateEntity("Rifthound", new Vector2(x, y));
-                        ruinHunter.GetComponent<EliteEnemy>().Type = EliteEnemyType.Rifthound;
-                    }
-                    else{
-                        GameObject ruinGrader = MapManager.Instance.CreateEntity("Mirror Maiden", new Vector2(x, y));
-                        ruinGrader.GetComponent<EliteEnemy>().Type = EliteEnemyType.MirrorMaiden;
-                    }
-                    break;
                 }
-                
-            }
+                float random = Random.value;
+                if(random < 0.2f){
+                    GameObject mitachurl = MapManager.Instance.CreateEntity("Mitachurl", new Vector2(x, y));
+                    mitachurl.GetComponent<EliteEnemy>().Type = EliteEnemyType.Mitachurl;
+                    // assign chance to drop weapon to be higher the farther the room is from the player
+                    mitachurl.GetComponent<EliteEnemy>().HighRareDropChance = (distanceChance);
+                }
+                else if(random < 0.4f){
+                    GameObject abyssMage = MapManager.Instance.CreateEntity("Abyss Mage", new Vector2(x, y));
+                    abyssMage.GetComponent<EliteEnemy>().Type = EliteEnemyType.AbyssMage;
+                    abyssMage.GetComponent<EliteEnemy>().HighRareDropChance = (distanceChance);
+                }
+                else if(random < 0.6f){
+                    GameObject ruinGuard = MapManager.Instance.CreateEntity("Ruin Guard", new Vector2(x, y));
+                    ruinGuard.GetComponent<EliteEnemy>().Type = EliteEnemyType.RuinGuard;
+                    ruinGuard.GetComponent<EliteEnemy>().HighRareDropChance = (distanceChance);
+                }
+                else if(random < 0.8f){
+                    GameObject ruinHunter = MapManager.Instance.CreateEntity("Rifthound", new Vector2(x, y));
+                    ruinHunter.GetComponent<EliteEnemy>().Type = EliteEnemyType.Rifthound;
+                    ruinHunter.GetComponent<EliteEnemy>().HighRareDropChance = (distanceChance);
+                }
+                else{
+                    GameObject ruinGrader = MapManager.Instance.CreateEntity("Mirror Maiden", new Vector2(x, y));
+                    ruinGrader.GetComponent<EliteEnemy>().Type = EliteEnemyType.MirrorMaiden;
+                    ruinGrader.GetComponent<EliteEnemy>().HighRareDropChance = (distanceChance);
+                }
+                break;
+            }      
         }
 
 

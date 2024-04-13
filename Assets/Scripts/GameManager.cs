@@ -77,34 +77,6 @@ public class GameManager : MonoBehaviour
         deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
     }
 
-    // private void StartTurn(){
-    //     if(actors[actorNum].GetComponent<Player>())
-    //         isPlayerTurn = true;
-    //     else {
-    //         if (actors[actorNum].GetComponent<HostileEnemy>()){
-    //             actors[actorNum].GetComponent<HostileEnemy>().RunAI();
-    //         }
-    //         else{
-    //             Action.SkipAction();
-    //         }
-    //     }
-    // }
-
-    // public void EndTurn(){
-    //     if(actors[actorNum].GetComponent<Player>())
-    //         isPlayerTurn = false;
-
-    //     if (actorNum == actors.Count - 1)
-    //         actorNum = 0;
-    //     else
-    //         actorNum++;
-    //     StartCoroutine(TurnDelay());
-    // }
-
-    // private IEnumerator TurnDelay(){
-    //     yield return new WaitForSeconds(delayTime);
-    //     StartTurn();
-    // }
 
     public Actor GetBlockingActorAtLocation(Vector3 location){
         foreach(Actor actor in Actors){

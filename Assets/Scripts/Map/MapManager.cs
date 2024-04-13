@@ -82,9 +82,6 @@ public class MapManager : MonoBehaviour
         AddTileMapToDictionary(obstacleMap);
     }
 
-    void Update(){
-    }
-
     public bool InBounds(int x, int y)
     {
         return x >= -10 && x < Width && y >= -10 && y < Height;
@@ -110,13 +107,16 @@ public class MapManager : MonoBehaviour
     }
 
 
-    public void CreateProjectile(Vector2 position, Vector2 direction, int damage, bool isPlayerProjectile)
+    public GameObject CreateProjectile(string projName, Vector2 position, Vector2 direction, int damage, bool isPlayerProjectile)
     {
-        GameObject projectile = Instantiate(Resources.Load<GameObject>("Entities/Projectile"), new Vector3(position.x, position.y, 0), Quaternion.identity);
+        string path = "Entities/Projectiles/" + projName;
+        GameObject projectile = Instantiate(Resources.Load<GameObject>(path), new Vector3(position.x, position.y, 0), Quaternion.identity);
         projectile.GetComponent<Projectile>().Direction = direction;
+        projectile.GetComponent<Projectile>().Rotation = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         projectile.GetComponent<Projectile>().Damage = damage;
         projectile.GetComponent<Projectile>().IsPlayerProjectile = isPlayerProjectile;
-        projectile.name = "Projectile";
+        projectile.name = projName;
+        return projectile;
     }
 
     public void UpdateFogMap(List<Vector3Int> playerFOV) {

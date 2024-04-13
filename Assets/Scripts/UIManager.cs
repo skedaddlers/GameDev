@@ -15,6 +15,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI hpSliderText;
     [SerializeField] private Slider manaSlider;
     [SerializeField] private TextMeshProUGUI manaSliderText;
+    [SerializeField] private Slider expSlider;
+    [SerializeField] private TextMeshProUGUI expSliderText;
+    [SerializeField] private Slider staminaSlider;
+    [SerializeField] private TextMeshProUGUI levelText;
 
     [Header("Message UI")]
     [SerializeField] private int sameMessageCount = 5;
@@ -49,11 +53,23 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject weaponImage;
     [SerializeField] private Sprite defaultWeaponSprite;
 
+    [Header("Player Information UI")]
+    [SerializeField] private GameObject playerInformationMenu;
+    [SerializeField] private bool isPlayerInformationMenuOpen = false;
+
+    [Header("Level Up UI")]
+    [SerializeField] private GameObject levelUpMenu;
+    [SerializeField] private GameObject levelUpMenuContent;
+    [SerializeField] private bool isLevelUpMenuOpen = false;
+
+
     public bool IsMessageHistoryOpen { get => isMessageHistoryOpen; }
     public bool IsInventoryOpen { get => isInventoryOpen; }
     public bool IsDropMenuOpen { get => isDropMenuOpen; }
     public bool IsMenuOpen { get => isMenuOpen; }
     public bool IsEscapeMenuOpen { get => isEscapeMenuOpen; }
+    public bool IsPlayerInformationMenuOpen { get => isPlayerInformationMenuOpen; }
+    public bool IsLevelUpMenuOpen { get => isLevelUpMenuOpen; }
 
     public static UIManager Instance;
     // Start is called before the first frame update
@@ -126,6 +142,31 @@ public class UIManager : MonoBehaviour
         hpSliderText.text = $"HP: {hp}/{maxHp}";
     }
 
+    public void SetExpMax(int MaxExp){
+        expSlider.maxValue = MaxExp;
+    }
+
+    public void SetExp(int exp, int maxExp){
+        expSlider.value = exp;
+        expSliderText.text = $"Exp: {exp}/{maxExp}";
+    }
+
+    public void SetStaminaMax(int MaxStamina){
+        staminaSlider.maxValue = MaxStamina;
+    }
+
+
+    public void SetStamina(int stamina, int maxStamina){
+        // is stamina is full, then disable the stamina bar
+        if(stamina == maxStamina){
+            staminaSlider.gameObject.SetActive(false);
+        }
+        else{
+            staminaSlider.gameObject.SetActive(true);
+        }
+        staminaSlider.value = stamina;
+    }
+
     public void ToggleMenu(){
         if(isMenuOpen)
         {
@@ -144,6 +185,9 @@ public class UIManager : MonoBehaviour
                     break;
                 case bool _ when isEscapeMenuOpen:
                     ToggleEscapeMenu();
+                    break;
+                case bool _ when isPlayerInformationMenuOpen:
+                    TogglePlayerInformationMenu();
                     break;
                 default:
                     break;
@@ -189,6 +233,94 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void TogglePlayerInformationMenu(Actor actor = null){
+        playerInformationMenu.SetActive(!playerInformationMenu.activeSelf);
+        isMenuOpen = playerInformationMenu.activeSelf;
+        isPlayerInformationMenuOpen = playerInformationMenu.activeSelf;
+
+        if(actor != null){
+            playerInformationMenu.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = $"Level: {actor.GetComponent<Player>().Level}";
+            playerInformationMenu.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = $"Exp: {actor.GetComponent<Player>().Exp}/{actor.GetComponent<Player>().ExpNeeded}";
+            playerInformationMenu.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = $"Power: {actor.GetComponent<Fighter>().Power}";
+            playerInformationMenu.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = $"Defense: {actor.GetComponent<Fighter>().Defense}";
+            playerInformationMenu.transform.GetChild(4).GetComponent<TextMeshProUGUI>().text = $"Shield: {actor.GetComponent<Fighter>().ShieldHp}";
+            playerInformationMenu.transform.GetChild(5).GetComponent<TextMeshProUGUI>().text = $"Speed: {actor.GetComponent<Fighter>().MovementSpeed}";
+            playerInformationMenu.transform.GetChild(6).GetComponent<TextMeshProUGUI>().text = $"Luck: {actor.GetComponent<Player>().Luck}";
+        }
+    }
+
+    public void ToggleLevelUpMenu(Actor actor){
+        levelUpMenu.SetActive(!levelUpMenu.activeSelf);
+        isMenuOpen = levelUpMenu.activeSelf;
+        isLevelUpMenuOpen = levelUpMenu.activeSelf;
+
+        Fighter fighter = actor.GetComponent<Fighter>();
+        int level = actor.GetComponent<Player>().Level;
+
+        string[] buttonLabels = {
+            $"Constitution (+5 HP, from {fighter.MaxHp} -> {fighter.MaxHp + 5})",
+            $"Strength (+1 Power, from {fighter.Power} -> {fighter.Power + 1})",
+            $"Resistance (+1 Defense, from {fighter.Defense} -> {fighter.Defense + 1})",
+            $"Agility (+1 Movement Speed, from {fighter.MovementSpeed} -> {fighter.MovementSpeed + 1})",
+            $"Fortune (+0.1 Luck, from {actor.GetComponent<Player>().Luck} -> {actor.GetComponent<Player>().Luck + 1})",
+            $"Sustainibility (+10 Mana, from {actor.GetComponent<Player>().MaxMana} -> {actor.GetComponent<Player>().MaxMana + 10})"
+        };
+
+        int buttonIndex = 0;
+        foreach(Transform child in levelUpMenuContent.transform){
+            TextMeshProUGUI buttonText = child.GetComponent<TextMeshProUGUI>();
+            Button button = child.GetComponent<Button>();
+
+            buttonText.text = buttonLabels[buttonIndex];
+            button.onClick.RemoveAllListeners();
+            int captureIndex = buttonIndex;
+            button.onClick.AddListener(() => {
+                ApplyLevelUp(level, captureIndex, actor);
+            });
+
+            buttonIndex++;
+        }
+        eventSystem.SetSelectedGameObject(levelUpMenuContent.transform.GetChild(0).gameObject);
+    }
+
+    private void ApplyLevelUp(int level, int choiceIndex, Actor actor){
+        Fighter fighter = actor.GetComponent<Fighter>();
+        Player player = actor.GetComponent<Player>();
+
+        switch(choiceIndex){
+            case 0:
+                fighter.MaxHp += 5;
+                fighter.Hp += 5;
+                AddMessage($"The Celestia blesses you with healthiness!", "#00FF00");
+                break;
+            case 1:
+                fighter.Power += 1;
+                AddMessage($"The Celestia blesses you with strength!", "#00FF00");
+                break;
+            case 2:
+                fighter.Defense += 1;
+                AddMessage($"The Celestia blesses you with resistance!", "#00FF00");
+                break;
+            case 3:
+                fighter.MovementSpeed += 1;
+                AddMessage($"The Celestia blesses you with agility!", "#00FF00");
+                break;
+            case 4:
+                player.Luck += 0.1f;
+                AddMessage($"The Celestia blesses you with fortune!", "#00FF00");
+                break;
+            case 5:
+                player.MaxMana += 10;
+                player.Mana = player.MaxMana;
+                AddMessage($"The Celestia blesses you with sustainibility!", "#00FF00");
+                break;
+        }
+
+        player.LevelUp();
+
+        ToggleLevelUpMenu(actor);
+    }
+
     public void Save(){
         SaveManager.Instance.SaveGame();
     }
@@ -232,6 +364,12 @@ public class UIManager : MonoBehaviour
     }
 
     public void UpdateWeapon(Actor player){
+        if(isMenuOpen){
+            weaponImage.SetActive(false);
+        }
+        else{
+            weaponImage.SetActive(true);
+        }
         if(player.GetComponent<Inventory>().Weapon != null){
             weaponImage.GetComponent<Image>().sprite = player.GetComponent<Inventory>().Weapon.GetComponent<SpriteRenderer>().sprite;
         }

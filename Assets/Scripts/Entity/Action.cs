@@ -30,7 +30,7 @@ public class Action
                 item.GetComponent<SpriteRenderer>().enabled = false;
                 UIManager.Instance.AddMessage($"You picked up the {item.name}.", "#00FF00");
             }
-            Debug.Log("Picking up item");
+            // Debug.Log("Picking up item");
             
         }
     }
@@ -93,7 +93,7 @@ public class Action
         }
 
         if(target != null){
-            Debug.Log($"{projectile.name} hits {target.name}!");
+            // Debug.Log($"{projectile.name} hits {target.name}!");
             target.GetComponent<Fighter>().TakeDamage(projectile.GetComponent<Projectile>().Damage);
             GameManager.Instance.RemoveEntity(projectile);
             GameObject.Destroy(projectile.gameObject);
@@ -112,20 +112,29 @@ public class Action
                 continue;
             Vector3 targetDirection = target.transform.position - actor.transform.position;
             float angle = Vector3.Angle(direction, targetDirection);
-            if(angle < fanAngle && targetDirection.magnitude < area){
-                int damageDealt = damage - target.GetComponent<Fighter>().Defense;
-                target.GetComponent<Fighter>().TakeDamage(damage);
-                UIManager.Instance.AddMessage($"{actor.name} slashes {target.name} for {damageDealt} damage!", "#FFFFFF");
+            if(angle < fanAngle && targetDirection.magnitude < area){  
+                int damageDealt = damage;
+                if(actor.GetComponent<Player>()){
+                    if(Random.value < actor.GetComponent<Player>().CritRate){
+                        damageDealt = (int)(damageDealt * actor.GetComponent<Player>().CritDamage);
+                        UIManager.Instance.AddMessage($"{actor.name} critically slashes {target.name} for {damageDealt} damage!", "#FFFFFF");
+                    }
+                    else{
+                        damageDealt = (int)(damageDealt * (1 - target.GetComponent<Fighter>().Defense / 20));
+                        UIManager.Instance.AddMessage($"{actor.name} slashes {target.name} for {damageDealt} damage!", "#d1a3a4");
+                    }
+                }
+                target.GetComponent<Fighter>().TakeDamage(damageDealt);
             }
         }
     }
 
     static public void RangedAction(Actor actor, Vector3 direction){
         if(actor.GetComponent<Player>()){
-            MapManager.Instance.CreateProjectile(actor.transform.position, direction, actor.GetComponent<Fighter>().Power, true);
+            MapManager.Instance.CreateProjectile("Bubble" ,actor.transform.position, direction, actor.GetComponent<Fighter>().Power, true);
         }
         else{
-            MapManager.Instance.CreateProjectile(actor.transform.position, direction, actor.GetComponent<Fighter>().Power, false);
+            MapManager.Instance.CreateProjectile("Bubble", actor.transform.position, direction, actor.GetComponent<Fighter>().Power, false);
         }
 
     }
@@ -133,7 +142,7 @@ public class Action
 
     static public void MeleeAction(Actor actor, Actor target){
 
-        int damage = actor.GetComponent<Fighter>().Power - target.GetComponent<Fighter>().Defense;
+        int damage = (int)(actor.GetComponent<Fighter>().Power * (1 - target.GetComponent<Fighter>().Defense / 20));
 
         string attackDesc = $"{actor.name} attacks {target.name}";
 

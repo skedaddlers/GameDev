@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -7356037982142339953}
   - component: {fileID: -806051740714282425}
   - component: {fileID: 4577567348277160934}
-  - component: {fileID: 3381034138953834852}
+  - component: {fileID: 4286005937240786842}
   m_Layer: 0
   m_Name: Ruin Guard
   m_TagString: Untagged
@@ -152,7 +152,7 @@ MonoBehaviour:
   isAlive: 1
   fieldOfViewRange: 16
   fieldOfView: []
-  ai: {fileID: 3381034138953834852}
+  ai: {fileID: 4286005937240786842}
   inventory: {fileID: 0}
   fighter: {fileID: -806051740714282425}
   player: {fileID: 0}
@@ -175,6 +175,7 @@ MonoBehaviour:
   movementSpeed: 2
   shieldHp: 0
   target: {fileID: 0}
+  statusCondition: {fileID: 0}
 --- !u!114 &4577567348277160934
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -187,7 +188,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e5a5427ca2524b40a66780396a8bebd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3381034138953834852
+--- !u!114 &4286005937240786842
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -196,12 +197,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 3291528750647798995}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3ac292bb6fa08944917c1892e8d09be, type: 3}
+  m_Script: {fileID: 11500000, guid: e067b813c276b564fb951f797418c07b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   aStar: {fileID: 4577567348277160934}
   fighter: {fileID: -806051740714282425}
   isFighting: 0
-  attackCooldown: 0.1
-  expGiven: 0
+  canTakeDamage: 0
+  attackCooldown: 1.8
+  expGiven: 26
+  attackTimer: 0.1
   type: 2
+  chanceToDropWeapon: 0
+  highRareDropChance: 0
+  specialAttackTimer: 0
+  specialAttackRate: 10
+  isPerformingSpecialAttack: 0
+  timeToPerformSpecialAttack: 2
+  performSpecialAttackTimer: 0
+  disableTimer: 0
+  disableDuration: 6.6
+  isDisabled: 0
+  hasDisabled: 0

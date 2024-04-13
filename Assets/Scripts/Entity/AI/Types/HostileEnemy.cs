@@ -7,14 +7,18 @@ public class HostileEnemy : Ai
 {
     [SerializeField] protected Fighter fighter;
     [SerializeField] protected bool isFighting;
+    [SerializeField] protected bool canTakeDamage = false;
+
 
     // [SerializeField] private float movementCooldown = 0.5f; // Adjust as needed
-    [SerializeField] private float attackCooldown = 0.1f; // Adjust as needed
+    [SerializeField] protected float attackCooldown = 0.1f; // Adjust as needed
     [SerializeField] int expGiven;
 
-    private float actionTimer = 0.1f;
+    [SerializeField]protected float attackTimer = 0.1f;
 
     public int ExpGiven { get => expGiven; set => expGiven = value; }
+    public bool IsFighting { get => isFighting; set => isFighting = value; }
+    public bool CanTakeDamage { get => canTakeDamage; set => canTakeDamage = value; }
     // private float movementTimer = 0.5f;
     private void OnValidateOverride(){
         fighter = GetComponent<Fighter>();
@@ -22,8 +26,8 @@ public class HostileEnemy : Ai
     }
 
     private void Update(){
-        if(actionTimer > 0){
-            actionTimer -= Time.deltaTime;
+        if(attackTimer > 0){
+            attackTimer -= Time.deltaTime;
         }
     }
 
@@ -48,13 +52,13 @@ public class HostileEnemy : Ai
                 float targetDistance = Vector3.Distance(transform.position, fighter.Target.transform.position);
 
                 if(targetDistance <= 1f){
-                    if(actionTimer > 0){
-                        // Debug.Log(actionTimer);
+                    if(attackTimer > 0){
+                        // Debug.Log(attackTimer);
                         return;
                     }
                     // Debug.Log("Attacking");
                     Action.MeleeAction(GetComponent<Actor>(), fighter.Target);
-                    actionTimer = attackCooldown;
+                    attackTimer = attackCooldown;
                     return;
                 }
                 else{

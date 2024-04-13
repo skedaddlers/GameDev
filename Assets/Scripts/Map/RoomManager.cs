@@ -85,6 +85,7 @@ public class RoomManager : MonoBehaviour
                         {
                             if (entity.GetComponent<HostileEnemy>())
                             {
+                                entity.GetComponent<HostileEnemy>().CanTakeDamage = true;
                                 entity.GetComponent<HostileEnemy>().RunAI();
                             }
                         }

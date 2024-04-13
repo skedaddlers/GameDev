@@ -7,8 +7,10 @@ public class Fighter : MonoBehaviour
 {
     [SerializeField] private int maxHp, hp, defense, power;
     [SerializeField] private float movementSpeed = 5f;
+    [SerializeField] private float baseMovementSpeed = 5f;
     [SerializeField] private int shieldHp = 0;
     [SerializeField] private Actor target;
+    [SerializeField] private bool isUnderStatusEffect = false;
 
     public int Hp{
         get => hp;
@@ -31,13 +33,14 @@ public class Fighter : MonoBehaviour
             }
         }
     }
-    public int MaxHp { get => maxHp; }
-    public int Defense { get => defense; }
+    public int MaxHp { get => maxHp; set => maxHp = value;}
+    public int Defense { get => defense; set => defense = value;}
     public int Power { get => power; set => power = value;}
     public int ShieldHp { get => shieldHp; set => shieldHp = value; }
     public float MovementSpeed { get => movementSpeed; set => movementSpeed = value;}
+    public float BaseMovementSpeed { get => baseMovementSpeed; set => baseMovementSpeed = value;}
     public Actor Target { get => target; set => target = value; }
-
+    public bool IsUnderStatusEffect { get => isUnderStatusEffect; set => isUnderStatusEffect = value; }
     private void Start(){
         if(GetComponent<Player>()){
             UIManager.Instance.SetHealthMax(maxHp);
@@ -57,10 +60,16 @@ public class Fighter : MonoBehaviour
         }
     }
 
+
     public void TakeDamage(int damage){
         if(GetComponent<Player>()){
             if(GetComponent<Player>().IsDashing){
                 UIManager.Instance.AddMessage("You are invulnerable while dashing!", "#FF0000");
+                return;
+            }
+        }
+        if(GetComponent<HostileEnemy>()){
+            if(GetComponent<HostileEnemy>().CanTakeDamage == false){
                 return;
             }
         }
@@ -93,7 +102,9 @@ public class Fighter : MonoBehaviour
             }
             GetComponent<Actor>().IsAlive = false;
         }
-
+        if(GetComponent<EliteEnemy>()){
+            GetComponent<EliteEnemy>().MayDropWeapon();
+        }
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = GameManager.Instance.DeadSprite;
         spriteRenderer.sortingOrder = 0;
@@ -103,7 +114,7 @@ public class Fighter : MonoBehaviour
         GetComponent<Actor>().BlocksMovement = false;
         if(!GetComponent<Player>()){
             // add exp to player
-            GameManager.Instance.Actors[0].GetComponent<Player>().Exp += GetComponent<HostileEnemy>().ExpGiven;
+            GameManager.Instance.Actors[0].GetComponent<Player>().AddExp(GetComponent<HostileEnemy>().ExpGiven);
             GameManager.Instance.RemoveActor(this.GetComponent<Actor>());
         }
     }
