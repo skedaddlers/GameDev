@@ -120,6 +120,7 @@ public class Fighter : MonoBehaviour
         GetComponent<Actor>().BlocksMovement = false;
         if(!GetComponent<Player>()){
             // add exp to player
+            GameManager.Instance.Actors[0].GetComponent<Player>().Mora += GetComponent<HostileEnemy>().MoraGiven;
             GameManager.Instance.Actors[0].GetComponent<Player>().AddExp(GetComponent<HostileEnemy>().ExpGiven);
             GameManager.Instance.RemoveActor(this.GetComponent<Actor>());
         }

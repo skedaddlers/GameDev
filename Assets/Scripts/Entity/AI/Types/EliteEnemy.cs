@@ -63,22 +63,22 @@ public class EliteEnemy : HostileEnemy
                 float randomValue = Random.Range(0, totalDropChance);
                 if(randomValue <= commonDropChance)
                 {
-                    MapManager.Instance.CreateEntity("Fleuve Cendre Ferryman", transform.position);
+                    MapManager.Instance.CreateEntity("Weapon1", transform.position);
                     UIManager.Instance.AddMessage($"The {name} dropped a Fleuve Cendre Ferryman!", "#17EA16");
                 }
                 else if(randomValue <= commonDropChance + rareDropChance)
                 {
-                    MapManager.Instance.CreateEntity("Festering Desire", transform.position);
+                    MapManager.Instance.CreateEntity("Weapon2", transform.position);
                     UIManager.Instance.AddMessage($"The {name} dropped a Festering Desire!", "#18C0E5");
                 }
                 else if(randomValue <= commonDropChance + rareDropChance + epicDropChance)
                 {
-                    MapManager.Instance.CreateEntity("Primordial Jade Cutter", transform.position);
+                    MapManager.Instance.CreateEntity("Weapon3", transform.position);
                     UIManager.Instance.AddMessage($"The {name} dropped a Primordial Jade Cutter!", "#B818E5");
                 }
                 else
                 {
-                    MapManager.Instance.CreateEntity("Splendor of Tranquil Waters", transform.position);
+                    MapManager.Instance.CreateEntity("Weapon4", transform.position);
                     UIManager.Instance.AddMessage($"The {name} dropped a Splendor of Tranquil Waters!", "#F3B714");
                     UIManager.Instance.AddMessage($"IT'S THE WEAPON OF FURINA DE FONTAINE!", "#F3B714");
                 }

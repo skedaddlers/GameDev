@@ -61,20 +61,42 @@ public class Action
         // GameManager.Instance.EndTurn();
 
     }
-    static public bool BumpAction(Actor actor, Vector3 dir){
-        Actor target = GameManager.Instance.GetBlockingActorAtLocation(actor.transform.position + (Vector3)dir);
 
-        if(target != null){
-            Debug.Log($"{actor.name} bumps into {target.name}!");
-            // MeleeAction(actor, target);
-            return false;
+    static public void InteractAction(Actor actor, Vector3 playerPos){
+        foreach(Entity entity in GameManager.Instance.Entities){
+            if(entity.GetComponent<Seller>())
+            {
+                float offsetX = entity.transform.position.x - playerPos.x;
+                float offsetY = entity.transform.position.y - playerPos.y;
+                if(Mathf.Abs(offsetX) > 1 || Mathf.Abs(offsetY) > 1)
+                    continue;
+                UIManager.Instance.ToggleShopMenu(entity.GetComponent<Seller>());
+                return;
+            }
         }
-        else{
-            MovementAction(actor, dir);
-            // Make the camera moving code here
-            
-            return true;
+    }
+
+    static public void BuySkill(Actor actor, Skill skill){
+        if(actor.GetComponent<Player>().Mora < skill.Cost){
+            UIManager.Instance.AddMessage("You don't have enough gold!", "#FF0000");
+            return;
         }
+        actor.GetComponent<Player>().Mora -= skill.Cost;
+        actor.GetComponent<Player>().AddSkill(skill);
+        UIManager.Instance.AddMessage($"You bought the {skill.SkillName} skill!", "#00FF00");
+        UIManager.Instance.ToggleShopMenu(null);
+    }
+
+    static public void BuyWeapon(Actor actor, Weapon weapon){
+        if(actor.GetComponent<Player>().Mora < weapon.Cost){
+            UIManager.Instance.AddMessage("You don't have enough gold!", "#FF0000");
+            return;
+        }
+        actor.GetComponent<Player>().Mora -= weapon.Cost;
+        actor.Inventory.EquipWeapon(weapon);
+        UIManager.Instance.UpdateWeapon(actor);
+        UIManager.Instance.AddMessage($"You bought the {weapon.WeaponName}!", "#00FF00");
+        UIManager.Instance.ToggleShopMenu(null);
     }
 
     static public void CheckForCollision(Projectile projectile){

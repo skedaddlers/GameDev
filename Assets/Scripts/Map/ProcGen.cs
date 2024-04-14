@@ -85,7 +85,7 @@ sealed class ProcGen : MonoBehaviour
         }
         RoomManager.Instance.Rooms[0].IsCleared = true;
         MapManager.Instance.CreateEntity("Player", RoomManager.Instance.Rooms[0].Center());
-        MapManager.Instance.CreateEntity("Dull Blade", RoomManager.Instance.Rooms[0].Center());
+        MapManager.Instance.CreateEntity("Weapon0", RoomManager.Instance.Rooms[0].Center());
         CreateBossRoom(RoomManager.Instance.Rooms);
         CreateShopRooms(RoomManager.Instance.Rooms,  maxRooms/4);
         for(int i = 1; i < RoomManager.Instance.Rooms.Count; i++)
@@ -334,6 +334,7 @@ sealed class ProcGen : MonoBehaviour
 
     private void CreateShopRooms(List<RectangularRoom> rooms, int totalShopRooms)
     {
+        bool allSkillsAvailable = false;
         //search for room nearest to the player
         RectangularRoom nearestRoom = rooms[0];
         float minDistance = Mathf.Infinity;
@@ -351,14 +352,104 @@ sealed class ProcGen : MonoBehaviour
             }
         }
         nearestRoom.IsShopRoom = true;
-        for(int i = 1; i < totalShopRooms; i++)
-        {
-            if(rooms[Random.Range(0, rooms.Count)].IsBossRoom || rooms[Random.Range(0, rooms.Count)].IsShopRoom)
+        GameObject firstSeller = MapManager.Instance.CreateEntity("Seller", nearestRoom.Center());
+        Seller sellerComponent = firstSeller.GetComponent<Seller>();
+        
+        for(int i = 0; i < sellerComponent.AmountOfSkillsForSale; i++){
+            int value = Random.Range(0, 6);
+            string name = "Skills/Skill" + value;
+            GameObject skill1 = Instantiate(Resources.Load<GameObject>(name));
+            if(sellerComponent.AlreadyHasSkill(skill1.GetComponent<Skill>().SkillName))
+            {
+                i--;
+                Destroy(skill1);
+                continue;
+            }
+            sellerComponent.AddSkillForSale(skill1.GetComponent<Skill>());
+            skill1.transform.SetParent(firstSeller.transform);
+            if(sellerComponent.SkillsForSale.Count == sellerComponent.AmountOfSkillsForSale){
+                break;
+            }
+        }
+
+        for(int i = 0; i < sellerComponent.AmountOfWeaponsForSale; i++){
+            int value = Random.Range(1, 5);
+            string name = "Weapon" + value;
+            GameObject weapon = MapManager.Instance.CreateEntity(name, nearestRoom.Center());
+            if(sellerComponent.AlreadyHasWeapon(weapon.GetComponent<Weapon>().WeaponName))
+            {
+                i--;
+                Destroy(weapon);
+                continue;
+            }
+            sellerComponent.AddWeaponForSale(weapon.GetComponent<Weapon>());
+            weapon.transform.SetParent(firstSeller.transform);
+            if(sellerComponent.WeaponsForSale.Count == sellerComponent.AmountOfWeaponsForSale){
+                break;
+            }
+        }
+
+        for(int i = 1; i < totalShopRooms; i++){
+
+            int randomIndex = Random.Range(0, rooms.Count);
+            if(rooms[randomIndex].IsBossRoom || rooms[randomIndex].IsShopRoom)
             {
                 i--;
                 continue;
             }
-            rooms[Random.Range(0, rooms.Count)].IsShopRoom = true;
+            rooms[randomIndex].IsShopRoom = true;
+
+            GameObject seller = MapManager.Instance.CreateEntity("Seller", rooms[randomIndex].Center());
+            Seller sellerComponent2 = seller.GetComponent<Seller>();
+            if(!allSkillsAvailable){
+                for(int j = 0; j < 6; j++){
+                    string name = "Skills/Skill" + j;
+                    GameObject skill = Instantiate(Resources.Load<GameObject>(name));
+                    if(sellerComponent.AlreadyHasSkill(skill.GetComponent<Skill>().SkillName))
+                    {
+                        Destroy(skill);
+                        continue;
+                    }
+                    sellerComponent2.AddSkillForSale(skill.GetComponent<Skill>());
+                    skill.transform.SetParent(seller.transform);
+                }
+                allSkillsAvailable = true;
+            }
+            else{
+                for(int j = 0; j < sellerComponent2.AmountOfSkillsForSale; j++){
+                    int value = Random.Range(0, 6);
+                    string name = "Skills/Skill" + value;
+                    GameObject skill = Instantiate(Resources.Load<GameObject>(name));
+                    if(sellerComponent2.AlreadyHasSkill(skill.GetComponent<Skill>().SkillName))
+                    {
+                        j--;
+                        Destroy(skill);
+                        continue;
+                    }
+                    sellerComponent2.AddSkillForSale(skill.GetComponent<Skill>());
+                    skill.transform.SetParent(seller.transform);
+                    if(sellerComponent2.SkillsForSale.Count == sellerComponent2.AmountOfSkillsForSale){
+                        break;
+                    }
+                }
+            }
+
+            for(int j = 0; j < sellerComponent2.AmountOfWeaponsForSale; j++){
+                int value = Random.Range(1, 5);
+                string name = "Weapon" + value;
+                GameObject weapon = MapManager.Instance.CreateEntity(name, rooms[randomIndex].Center());
+                if(sellerComponent2.AlreadyHasWeapon(weapon.GetComponent<Weapon>().WeaponName))
+                {
+                    j--;
+                    Destroy(weapon);
+                    continue;
+                }
+                sellerComponent2.AddWeaponForSale(weapon.GetComponent<Weapon>());
+                weapon.transform.SetParent(seller.transform);
+                if(sellerComponent2.WeaponsForSale.Count == sellerComponent2.AmountOfWeaponsForSale){
+                    break;
+                }
+            }
         }
     }
 }

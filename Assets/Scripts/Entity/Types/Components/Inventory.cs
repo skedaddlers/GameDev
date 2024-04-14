@@ -34,18 +34,18 @@ public class Inventory : MonoBehaviour
             weapon = wp;
             weapon.transform.SetParent(transform);
             GameManager.Instance.RemoveEntity(weapon);
-            UIManager.Instance.AddMessage($"You equipped the {wp.name}.", "#00FF00");
+            UIManager.Instance.AddMessage($"You equipped the {wp.WeaponName}.", "#00FF00");
             
         }
         else{
             weapon.transform.SetParent(null);
             weapon.GetComponent<SpriteRenderer>().enabled = true;
             weapon.AddToGameManager();
-            UIManager.Instance.AddMessage($"You unequipped the {weapon.name}.", "#FF0000");
+            UIManager.Instance.AddMessage($"You unequipped the {weapon.WeaponName}.", "#FF0000");
             weapon = wp;
             weapon.transform.SetParent(transform);
             GameManager.Instance.RemoveEntity(weapon);
-            UIManager.Instance.AddMessage($"You equipped the {wp.name}.", "#00FF00");
+            UIManager.Instance.AddMessage($"You equipped the {wp.WeaponName}.", "#00FF00");
         }
     }
 

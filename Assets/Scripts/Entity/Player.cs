@@ -7,6 +7,7 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
     private Controls controls;
     private bool moveKeyHeld;
 
+    [SerializeField] private int mora = 0;
     [SerializeField] private int exp = 0;
     [SerializeField] private int level = 1;
     [SerializeField] private int maxLevel = 10;
@@ -19,10 +20,10 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
     [SerializeField] private float critDamage = 1.5f;
     [SerializeField] private int luck = 1;
     [SerializeField] private int manaRegen = 1;
-    [SerializeField] private float manaRegenRate = 1f;
-    [SerializeField] private float manaRegenCounter = 2f;
     [SerializeField] private SkillManager skillManager;
     [SerializeField] private int enemiesKilled = 0;
+    private float manaRegenRate = 1f;
+    private float manaRegenCounter = 2f;
     private float attackCd = 0.7f;
     private float timer = 0f;
     private float weaponCd = 0f;
@@ -36,6 +37,7 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
     private float staminaRegenRate = 1f;
     private bool isDashing = false;
 
+    public int Mora { get => mora; set => mora = value; }
     public int Mana { get => mana; set => mana = value; }
     public int MaxMana { get => maxMana; set => maxMana = value;}
     public int EnemiesKilled { get => enemiesKilled; set => enemiesKilled = value; }
@@ -55,7 +57,7 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
         animator = GetComponent<Animator>();
         // Camera.main.transform.position = new Vector3(transform.position.x, transform.position.y,0);
         skillManager = GetComponent<SkillManager>();
-        InitializeSkills();
+        UIManager.Instance.UpdateSkills(GetComponent<Actor>(), skillManager.Skills);
     }
     private void OnEnable()
     {
@@ -118,6 +120,69 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
                 stamina -= 20;
                 dashTimer = dashCd;
                 isDashing = true;
+            }
+        }
+    }
+
+    void Controls.IPlayerActions.OnInteract(InputAction.CallbackContext context)
+    {
+        if(context.performed){
+            if(GetComponent<Actor>().IsAlive && !UIManager.Instance.IsMenuOpen){
+                Action.InteractAction(GetComponent<Actor>(), transform.position);
+            }
+        }
+    }
+    void Controls.IPlayerActions.OnSkill1(InputAction.CallbackContext context)
+    {
+        if(context.performed){
+            if(GetComponent<Actor>().IsAlive && !UIManager.Instance.IsMenuOpen){
+                if(skillManager.Skills.Count > 0)
+                skillManager.UseSkill(0);
+            }
+        }
+    }
+    void Controls.IPlayerActions.OnSkill2(InputAction.CallbackContext context)
+    {
+        if(context.performed){
+            if(GetComponent<Actor>().IsAlive && !UIManager.Instance.IsMenuOpen){
+                if(skillManager.Skills.Count > 1)
+                skillManager.UseSkill(1);
+            }
+        }
+    }
+    void Controls.IPlayerActions.OnSkill3(InputAction.CallbackContext context)
+    {
+        if(context.performed){
+            if(GetComponent<Actor>().IsAlive && !UIManager.Instance.IsMenuOpen){
+                if(skillManager.Skills.Count > 2)
+                skillManager.UseSkill(2);
+            }
+        }
+    }
+    void Controls.IPlayerActions.OnSkill4(InputAction.CallbackContext context)
+    {
+        if(context.performed){
+            if(GetComponent<Actor>().IsAlive && !UIManager.Instance.IsMenuOpen){
+                if(skillManager.Skills.Count > 3)
+                skillManager.UseSkill(3);
+            }
+        }
+    }
+    void Controls.IPlayerActions.OnSkill5(InputAction.CallbackContext context)
+    {
+        if(context.performed){
+            if(GetComponent<Actor>().IsAlive && !UIManager.Instance.IsMenuOpen){
+                if(skillManager.Skills.Count > 4)
+                skillManager.UseSkill(4);
+            }
+        }
+    }
+    void Controls.IPlayerActions.OnSkill6(InputAction.CallbackContext context)
+    {
+        if(context.performed){
+            if(GetComponent<Actor>().IsAlive && !UIManager.Instance.IsMenuOpen){
+                if(skillManager.Skills.Count > 5)
+                skillManager.UseSkill(5);
             }
         }
     }
@@ -221,7 +286,6 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
                     MovePlayer(3f);
             }
         }
-        UIManager.Instance.UpdateSkills(GetComponent<Actor>());
         UIManager.Instance.SetStaminaMax(maxStamina);
         UIManager.Instance.SetStamina(stamina, maxStamina);
         UIManager.Instance.SetExpMax(expNeeded);
@@ -295,16 +359,19 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
         }
     }
 
-    private void InitializeSkills(){
-        skillManager.AddSkill(new SalonSolitaire());
-        skillManager.AddSkill(new LetThePeopleRejoice());
-        skillManager.AddSkill(new SingerOfManyWaters());
-        skillManager.AddSkill(new AuraOfTheFormerArchon());
-        skillManager.AddSkill(new WatersAspirations());
-        skillManager.AddSkill(new TearsOfTheSinners());
-
-        
+    public void AddSkill(Skill skill)
+    {
+        foreach(Skill s in skillManager.Skills){
+            if(s.SkillName == skill.SkillName){
+                UIManager.Instance.AddMessage($"You already know {skill.SkillName}!", "#FF0000");
+                return;
+            }
+        }
+        skillManager.AddSkill(skill);
+        UIManager.Instance.AddMessage($"You learned {skill.SkillName}!", "#00FF00");
+        UIManager.Instance.UpdateSkills(GetComponent<Actor>(), skillManager.Skills);
     }
+
     public void UseSkill(int index){
         skillManager.UseSkill(index);
     }

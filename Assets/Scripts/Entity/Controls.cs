@@ -116,6 +116,69 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Skill1"",
+                    ""type"": ""Button"",
+                    ""id"": ""1a1c8a1f-759a-4740-82b3-9cb5567666c5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Skill2"",
+                    ""type"": ""Button"",
+                    ""id"": ""0508c35d-2bf3-4d1e-b1e3-db37c8cff202"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Skill3"",
+                    ""type"": ""Button"",
+                    ""id"": ""1a4c17a5-e468-4451-b67c-390b806fbe5d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Skill4"",
+                    ""type"": ""Button"",
+                    ""id"": ""e63a2f8b-19f1-4185-a6f6-cb4b8f1ce413"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Skill5"",
+                    ""type"": ""Button"",
+                    ""id"": ""81e021b0-9c3c-4c88-884d-4c9ccbdd3c99"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Skill6"",
+                    ""type"": ""Button"",
+                    ""id"": ""62cdd748-a28d-490b-85fe-98aab7212549"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""784c6430-6ff4-4515-98b5-64d1d1155d60"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -272,6 +335,83 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""action"": ""Info"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b29330cc-6621-4573-9d18-5c2b584200b4"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Arrow Keys"",
+                    ""action"": ""Skill1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1e757a79-0185-47bf-8517-bf3ada6b19b0"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Arrow Keys"",
+                    ""action"": ""Skill2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""eae7cef5-8807-49d1-98ce-791c7ba27fd8"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Arrow Keys"",
+                    ""action"": ""Skill3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bcb564d8-0792-4bc6-8d90-58b01d250ab2"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Arrow Keys"",
+                    ""action"": ""Skill4"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a14e18b7-e0ca-4b27-ac2f-91c55461c665"",
+                    ""path"": ""<Keyboard>/5"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Skill5"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""11c2a1db-ef7f-49b5-81ae-03b98e2338c7"",
+                    ""path"": ""<Keyboard>/6"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Arrow Keys"",
+                    ""action"": ""Skill6"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b402c8e8-d677-4c15-adbd-a6129eb2410d"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -307,6 +447,13 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         m_Player_DropWeapon = m_Player.FindAction("DropWeapon", throwIfNotFound: true);
         m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
         m_Player_Info = m_Player.FindAction("Info", throwIfNotFound: true);
+        m_Player_Skill1 = m_Player.FindAction("Skill1", throwIfNotFound: true);
+        m_Player_Skill2 = m_Player.FindAction("Skill2", throwIfNotFound: true);
+        m_Player_Skill3 = m_Player.FindAction("Skill3", throwIfNotFound: true);
+        m_Player_Skill4 = m_Player.FindAction("Skill4", throwIfNotFound: true);
+        m_Player_Skill5 = m_Player.FindAction("Skill5", throwIfNotFound: true);
+        m_Player_Skill6 = m_Player.FindAction("Skill6", throwIfNotFound: true);
+        m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -376,6 +523,13 @@ public partial class @Controls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_DropWeapon;
     private readonly InputAction m_Player_Dash;
     private readonly InputAction m_Player_Info;
+    private readonly InputAction m_Player_Skill1;
+    private readonly InputAction m_Player_Skill2;
+    private readonly InputAction m_Player_Skill3;
+    private readonly InputAction m_Player_Skill4;
+    private readonly InputAction m_Player_Skill5;
+    private readonly InputAction m_Player_Skill6;
+    private readonly InputAction m_Player_Interact;
     public struct PlayerActions
     {
         private @Controls m_Wrapper;
@@ -390,6 +544,13 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         public InputAction @DropWeapon => m_Wrapper.m_Player_DropWeapon;
         public InputAction @Dash => m_Wrapper.m_Player_Dash;
         public InputAction @Info => m_Wrapper.m_Player_Info;
+        public InputAction @Skill1 => m_Wrapper.m_Player_Skill1;
+        public InputAction @Skill2 => m_Wrapper.m_Player_Skill2;
+        public InputAction @Skill3 => m_Wrapper.m_Player_Skill3;
+        public InputAction @Skill4 => m_Wrapper.m_Player_Skill4;
+        public InputAction @Skill5 => m_Wrapper.m_Player_Skill5;
+        public InputAction @Skill6 => m_Wrapper.m_Player_Skill6;
+        public InputAction @Interact => m_Wrapper.m_Player_Interact;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -429,6 +590,27 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @Info.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInfo;
                 @Info.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInfo;
                 @Info.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInfo;
+                @Skill1.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill1;
+                @Skill1.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill1;
+                @Skill1.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill1;
+                @Skill2.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill2;
+                @Skill2.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill2;
+                @Skill2.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill2;
+                @Skill3.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill3;
+                @Skill3.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill3;
+                @Skill3.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill3;
+                @Skill4.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill4;
+                @Skill4.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill4;
+                @Skill4.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill4;
+                @Skill5.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill5;
+                @Skill5.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill5;
+                @Skill5.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill5;
+                @Skill6.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill6;
+                @Skill6.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill6;
+                @Skill6.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill6;
+                @Interact.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
+                @Interact.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
+                @Interact.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -463,6 +645,27 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @Info.started += instance.OnInfo;
                 @Info.performed += instance.OnInfo;
                 @Info.canceled += instance.OnInfo;
+                @Skill1.started += instance.OnSkill1;
+                @Skill1.performed += instance.OnSkill1;
+                @Skill1.canceled += instance.OnSkill1;
+                @Skill2.started += instance.OnSkill2;
+                @Skill2.performed += instance.OnSkill2;
+                @Skill2.canceled += instance.OnSkill2;
+                @Skill3.started += instance.OnSkill3;
+                @Skill3.performed += instance.OnSkill3;
+                @Skill3.canceled += instance.OnSkill3;
+                @Skill4.started += instance.OnSkill4;
+                @Skill4.performed += instance.OnSkill4;
+                @Skill4.canceled += instance.OnSkill4;
+                @Skill5.started += instance.OnSkill5;
+                @Skill5.performed += instance.OnSkill5;
+                @Skill5.canceled += instance.OnSkill5;
+                @Skill6.started += instance.OnSkill6;
+                @Skill6.performed += instance.OnSkill6;
+                @Skill6.canceled += instance.OnSkill6;
+                @Interact.started += instance.OnInteract;
+                @Interact.performed += instance.OnInteract;
+                @Interact.canceled += instance.OnInteract;
             }
         }
     }
@@ -488,5 +691,12 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         void OnDropWeapon(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
         void OnInfo(InputAction.CallbackContext context);
+        void OnSkill1(InputAction.CallbackContext context);
+        void OnSkill2(InputAction.CallbackContext context);
+        void OnSkill3(InputAction.CallbackContext context);
+        void OnSkill4(InputAction.CallbackContext context);
+        void OnSkill5(InputAction.CallbackContext context);
+        void OnSkill6(InputAction.CallbackContext context);
+        void OnInteract(InputAction.CallbackContext context);
     }
 }

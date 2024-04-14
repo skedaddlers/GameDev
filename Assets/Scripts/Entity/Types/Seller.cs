@@ -6,20 +6,55 @@ using UnityEngine;
 // this class is used to represent a seller in the game
 // a seller is an entity that sells skills, weapons, and other items to the player
 // the player can interact with the seller to buy items
-public class Seller : MonoBehaviour
+public class Seller : Entity
 {
-    [SerializeField] private List<Item> itemsForSale = new List<Item>();
     [SerializeField] private List<Skill> skillsForSale = new List<Skill>();
+    [SerializeField] private int amountOfSkillsForSale = 3;
     [SerializeField] private List<Weapon> weaponsForSale = new List<Weapon>();
+    [SerializeField] private int amountOfWeaponsForSale = 3;
 
-    public List<Item> ItemsForSale { get => itemsForSale; set => itemsForSale = value; }
     public List<Skill> SkillsForSale { get => skillsForSale; set => skillsForSale = value; }
+    public int AmountOfSkillsForSale { get => amountOfSkillsForSale; set => amountOfSkillsForSale = value; }
     public List<Weapon> WeaponsForSale { get => weaponsForSale; set => weaponsForSale = value; }
+    public int AmountOfWeaponsForSale { get => amountOfWeaponsForSale; set => amountOfWeaponsForSale = value; }
 
-    // this method is called when the player interacts with the seller
-    // it opens the seller's shop and allows the player to buy items
-    public void OpenShop()
+    private void Start()
     {
-        // open the shop UI
+        // add the seller to the game manager
+        AddToGameManager();
     }
+
+    public void AddSkillForSale(Skill skill)
+    {
+        skillsForSale.Add(skill);
+    }
+    public void AddWeaponForSale(Weapon weapon)
+    {
+        weaponsForSale.Add(weapon);
+    }
+
+    public bool AlreadyHasSkill(string name)
+    {
+        foreach(Skill skill in skillsForSale)
+        {
+            if(skill.SkillName == name)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    public bool AlreadyHasWeapon(string name)
+    {
+        foreach(Weapon weapon in weaponsForSale)
+        {
+            if(weapon.WeaponName == name)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 }

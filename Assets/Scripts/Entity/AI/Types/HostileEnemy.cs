@@ -12,13 +12,14 @@ public class HostileEnemy : Ai
 
     // [SerializeField] private float movementCooldown = 0.5f; // Adjust as needed
     [SerializeField] protected float attackCooldown = 0.1f; // Adjust as needed
-    [SerializeField] int expGiven;
-
+    [SerializeField] protected int expGiven;
+    [SerializeField] protected int moraGiven;
     [SerializeField]protected float attackTimer = 0.1f;
 
     public int ExpGiven { get => expGiven; set => expGiven = value; }
     public bool IsFighting { get => isFighting; set => isFighting = value; }
     public bool CanTakeDamage { get => canTakeDamage; set => canTakeDamage = value; }
+    public int MoraGiven { get => moraGiven; set => moraGiven = value; }
     // private float movementTimer = 0.5f;
     private void OnValidateOverride(){
         fighter = GetComponent<Fighter>();

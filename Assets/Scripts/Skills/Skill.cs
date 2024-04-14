@@ -13,6 +13,8 @@ public class Skill : MonoBehaviour {
     [SerializeField] protected bool isActive = false;
     [SerializeField] protected float remainingCooldown;
     [SerializeField] protected float remainingDuration;
+    [SerializeField] protected int cost;
+    [SerializeField] protected string description;
 
     public virtual string SkillName { get => skillName; }
     public virtual int ManaCost { get => manaCost; }
@@ -22,6 +24,8 @@ public class Skill : MonoBehaviour {
     public virtual bool IsActive { get => isActive; }
     public virtual float RemainingCooldown { get => remainingCooldown; }
     public virtual float RemainingDuration { get => remainingDuration; }
+    public virtual int Cost { get => cost; }
+    public virtual string Description { get => description; }
 
 
     public virtual void Update()

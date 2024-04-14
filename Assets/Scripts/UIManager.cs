@@ -62,6 +62,13 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject levelUpMenuContent;
     [SerializeField] private bool isLevelUpMenuOpen = false;
 
+    [Header("Shop UI")]
+    [SerializeField] private GameObject shopMenu;
+    [SerializeField] private GameObject shopMenuContentSkill;
+    [SerializeField] private GameObject shopMenuContentWeapon;
+    [SerializeField] private bool isShopMenuOpen = false;
+
+    [Header("Slash UI")]
     [SerializeField] private GameObject slashSprite;
     [SerializeField] private bool isSlashActive = false;
     [SerializeField] private float slashDuration = 0.2f;
@@ -76,6 +83,7 @@ public class UIManager : MonoBehaviour
     public bool IsEscapeMenuOpen { get => isEscapeMenuOpen; }
     public bool IsPlayerInformationMenuOpen { get => isPlayerInformationMenuOpen; }
     public bool IsLevelUpMenuOpen { get => isLevelUpMenuOpen; }
+    public bool IsShopMenuOpen { get => isShopMenuOpen; }
 
     public static UIManager Instance;
     public void Awake(){
@@ -215,6 +223,9 @@ public class UIManager : MonoBehaviour
                 case bool _ when isPlayerInformationMenuOpen:
                     TogglePlayerInformationMenu();
                     break;
+                case bool _ when isShopMenuOpen:
+                    ToggleShopMenu(null);
+                    break;
                 default:
                     break;
             }
@@ -306,6 +317,91 @@ public class UIManager : MonoBehaviour
             buttonIndex++;
         }
         eventSystem.SetSelectedGameObject(levelUpMenuContent.transform.GetChild(0).gameObject);
+    }
+
+    public void ToggleShopMenu(Seller seller){
+        shopMenu.SetActive(!shopMenu.activeSelf);
+        isMenuOpen = shopMenu.activeSelf;
+        isShopMenuOpen = shopMenu.activeSelf;
+
+        if(isMenuOpen){
+            DisplayShopMenuContent(seller);
+        }
+    }
+
+    private void DisplayShopMenuContent(Seller seller){
+        if(seller != null){
+            for(int i = 0; i < shopMenuContentSkill.transform.childCount; i++){
+                GameObject skill = shopMenuContentSkill.transform.GetChild(i).gameObject;
+                skill.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "";
+                skill.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "";
+
+                skill.GetComponent<Button>().onClick.RemoveAllListeners();
+                skill.SetActive(false);
+            }
+
+            for(int i = 0; i < shopMenuContentSkill.transform.childCount; i++){
+                int index = i;
+                GameObject skill = shopMenuContentSkill.transform.GetChild(i).gameObject;
+                skill.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = $"{seller.SkillsForSale[i].SkillName} - {seller.SkillsForSale[i].Cost} coins";
+                skill.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = $"{seller.SkillsForSale[i].Description}";
+                if(skill.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text != "Sold Out!"){
+                    skill.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = "";
+                }
+                skill.GetComponent<Button>().onClick.AddListener(() => {
+                    if(skill.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text == "Sold Out!"){
+                        AddMessage("This skill is sold out!", "#FF0000");
+                        return;
+                    }
+                    Debug.Log($"Buying skill {index}");
+                    Actor player = GameManager.Instance.Actors[0];
+                    Action.BuySkill(player, seller.SkillsForSale[index]);
+                    DisplayShopMenuContent(seller);
+                    // disable the skill button
+                    skill.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = "Sold Out!";
+                });
+                SpriteRenderer spriteRenderer = seller.SkillsForSale[i].GetComponent<SpriteRenderer>();
+                Sprite sprite = spriteRenderer.sprite;
+                skill.GetComponent<Image>().sprite = sprite;
+                skill.SetActive(true);
+            }
+
+            for(int i = 0; i < shopMenuContentWeapon.transform.childCount; i++){
+                GameObject weapon = shopMenuContentWeapon.transform.GetChild(i).gameObject;
+                weapon.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "";
+                weapon.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "";
+                weapon.GetComponent<Button>().onClick.RemoveAllListeners();
+                weapon.SetActive(false);
+            }
+
+            for(int i = 0; i < shopMenuContentWeapon.transform.childCount; i++){
+                int index = i;
+                GameObject weapon = shopMenuContentWeapon.transform.GetChild(i).gameObject;
+                weapon.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = $"{seller.WeaponsForSale[i].WeaponName} - {seller.WeaponsForSale[i].Cost} coins";
+                weapon.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = $"{seller.WeaponsForSale[i].Description}";
+                if(weapon.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text != "Sold Out!"){
+                    weapon.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = "";
+                }
+                weapon.GetComponent<Button>().onClick.AddListener(() => {
+                    if(weapon.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text == "Sold Out!"){
+                        AddMessage("This weapon is sold out!", "#FF0000");
+                        return;
+                    }
+                    Debug.Log($"Buying weapon {index}");
+                    Actor player = GameManager.Instance.Actors[0];
+                    Action.BuyWeapon(player, seller.WeaponsForSale[index]);
+                    DisplayShopMenuContent(seller);
+                    // disable the weapon button
+                    weapon.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = "Sold Out!";
+                });
+                SpriteRenderer spriteRenderer = seller.WeaponsForSale[i].GetComponent<SpriteRenderer>();
+                Sprite sprite = spriteRenderer.sprite;
+                weapon.GetComponent<Image>().sprite = sprite;
+                weapon.SetActive(true);
+            }
+
+        }
+        eventSystem.SetSelectedGameObject(shopMenuContentSkill.transform.GetChild(0).gameObject);
     }
 
     private void ApplyLevelUp(int level, int choiceIndex, Actor actor){
@@ -403,7 +499,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void UpdateSkills(Actor actor){
+    public void UpdateSkills(Actor actor, List<Skill> skillList){
         if(skills.activeSelf){
             for(int i = 0; i < skillsContent.transform.childCount; i++){
                 GameObject skill = skillsContent.transform.GetChild(i).gameObject;
@@ -412,32 +508,22 @@ public class UIManager : MonoBehaviour
                 skill.SetActive(false);
             }
 
-            for(int i = 0; i < 6; i++){
+            for(int i = 0; i < skillList.Count; i++){
+                int index = i;
                 GameObject skill = skillsContent.transform.GetChild(i).gameObject;
-                skill.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text ="";
+                skill.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "";
                 skill.GetComponent<Button>().onClick.AddListener(() => {
-                    if(skill == skillsContent.transform.GetChild(0).gameObject){
-                        actor.GetComponent<Player>().UseSkill(0);
-                    }  
-                    else if(skill == skillsContent.transform.GetChild(1).gameObject){
-                        actor.GetComponent<Player>().UseSkill(1);
-                    }
-                    else if(skill == skillsContent.transform.GetChild(2).gameObject){
-                        actor.GetComponent<Player>().UseSkill(2);
-                    }
-                    else if(skill == skillsContent.transform.GetChild(3).gameObject){
-                        actor.GetComponent<Player>().UseSkill(3);
-                    }
-                    else if(skill == skillsContent.transform.GetChild(4).gameObject){
-                        actor.GetComponent<Player>().UseSkill(4);
-                    }
-                    else if(skill == skillsContent.transform.GetChild(5).gameObject){
-                        actor.GetComponent<Player>().UseSkill(5);
-                    }
+                    Debug.Log($"Using skill {index}");
+                    SkillManager.Instance.UseSkill(index);
+                    UpdateSkills(actor, skillList);
                 });
+                SpriteRenderer spriteRenderer = skillList[i].GetComponent<SpriteRenderer>();
+                Sprite sprite = spriteRenderer.sprite;
+                skill.GetComponent<Image>().sprite = sprite;
                 skill.SetActive(true);
             }
         }
+        eventSystem.SetSelectedGameObject(skillsContent.transform.GetChild(0).gameObject);
     }
 
     public void UpdateCooldown(int index, float cooldown){
@@ -468,9 +554,6 @@ public class UIManager : MonoBehaviour
             enemyHpSliders.Add(enemy, enemyHpSlider);
         }    
     }
-
-    
-
 
     public Vector3 GetHealthBarPosition(Vector3 position){
         Vector3 screenPosition = Camera.main.WorldToScreenPoint(position);

@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7768523064398455200
+--- !u!1 &2745012981962075068
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,38 +8,67 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1202358043539186292}
-  - component: {fileID: 4329650861473980295}
-  - component: {fileID: 8052596996724064786}
+  - component: {fileID: 5720728191975859956}
+  - component: {fileID: 8989586695152540631}
+  - component: {fileID: 6371252214678061844}
   m_Layer: 0
-  m_Name: Festering Desire
+  m_Name: Skill2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1202358043539186292
+--- !u!4 &5720728191975859956
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7768523064398455200}
+  m_GameObject: {fileID: 2745012981962075068}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
-  m_ConstrainProportionsScale: 1
+  m_LocalPosition: {x: 54.81862, y: 19.373888, z: 0.17197925}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &4329650861473980295
+--- !u!114 &8989586695152540631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2745012981962075068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9827668446e586d48aee1ee6196aeadd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillName: Let The People Rejoice
+  manaCost: 45
+  cooldown: 20
+  duration: 10
+  onCooldown: 0
+  isActive: 1
+  remainingCooldown: 0
+  remainingDuration: 0
+  cost: 50
+  description: Your HP will be reduced overtime, but your power will be doubled!
+    And you'll also heal when you defeat enemies! Let My Name Echo In Song!
+  reduceHpInterval: 1
+  remainingReduceHpInterval: 1
+  healIfDefeatEnemyInterval: 2.5
+  remainingHealIfDefeatEnemyInterval: 2.5
+  initialAmountOfEnemiesKilled: 0
+  powerGain: 0
+--- !u!212 &6371252214678061844
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7768523064398455200}
+  m_GameObject: {fileID: 2745012981962075068}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -71,34 +100,17 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1901361099
-  m_SortingLayer: 5
-  m_SortingOrder: 1
-  m_Sprite: {fileID: -1856449772, guid: bbf609a1229715543838cc3e9e1e2c65, type: 3}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 21300000, guid: 07b3d26afe4226e40a272de4ffdd2869, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.5, y: 1.5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &8052596996724064786
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7768523064398455200}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cca2188546945f742968634f55065ce9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  blocksMovement: 0
-  damage: 5
-  radius: 2
-  icon: {fileID: 0}
-  attackSpeed: 0.8

@@ -6,6 +6,17 @@ public class SkillManager : MonoBehaviour
 {
     public static SkillManager Instance;
    [SerializeField] private List<Skill> skills = new List<Skill>();
+   
+   public List<Skill> Skills { get => skills; }
+
+    private void Awake(){
+        if(Instance == null){
+            Instance = this;
+        }
+        else{
+            Destroy(gameObject);
+        }
+    }
 
    public void AddSkill(Skill skill){
         skills.Add(skill);
