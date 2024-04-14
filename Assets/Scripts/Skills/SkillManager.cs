@@ -8,10 +8,10 @@ public class SkillManager : MonoBehaviour
    [SerializeField] private List<Skill> skills = new List<Skill>();
 
    public void AddSkill(Skill skill){
-       skills.Add(skill);
-   }
+        skills.Add(skill);
+    }
     public void RemoveSkill(Skill skill){
-         skills.Remove(skill);
+        skills.Remove(skill);
     }
     public void UseSkill(int index){
         Skill skill = skills[index];
@@ -31,19 +31,6 @@ public class SkillManager : MonoBehaviour
     }
 
     private void Update(){
-        UpdateCooldowns();
-        UpdateDurations();
-    }
-
-    private void UpdateDurations(){
-        for(int i = 0; i < skills.Count; i++){
-            if(skills[i].IsActive){
-                skills[i].UpdateDuration();
-            }
-        }
-    }
-
-    private void UpdateCooldowns(){
         for(int i = 0; i < skills.Count; i++){
             if(skills[i].OnCooldown){
                 UIManager.Instance.UpdateCooldown(i, skills[i].RemainingCooldown);

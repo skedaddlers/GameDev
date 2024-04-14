@@ -3,38 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 public class SalonSolitaire : Skill
 {
-    [Header("Specific Attribute")]
-    [SerializeField] private string skillName = "Salon Solitaire";
-    [SerializeField] private float duration = 10f;
-    [SerializeField] private int manaCost = 10;
-    [SerializeField] private float cooldown = 15f;
-    [SerializeField] private bool onCooldown = false;
-    [SerializeField] private float remainingCooldown = 0f;
-    private float remainingDuration = 10f;
-    private bool isActive = false;
-
-    public override string SkillName { get => skillName; }
-    public override float Duration { get => duration; }
-    public override int ManaCost { get => manaCost; }   
-    public override float Cooldown { get => cooldown; }
-    public override bool OnCooldown { get => onCooldown;}
-    public override float RemainingCooldown { get => remainingCooldown; }
-    public override bool IsActive { get => isActive; }
-
-
-    public override void UpdateDuration()
+    public override void Update()
     {
-        // Debug.Log("Update Duration salon solitaire");
-        remainingDuration -= Time.deltaTime;
-        if(remainingDuration <= 0f)
+        if(isActive)
         {
-            remainingDuration = duration;
-            UIManager.Instance.AddMessage(skillName + " has ended!", "#00FFFF");
-            isActive = false;
-            DestroySalonMembers();
+            remainingDuration -= Time.deltaTime;
+            if(remainingDuration <= 0f)
+            {
+                remainingDuration = duration;
+                isActive = false;
+                UIManager.Instance.AddMessage($"{skillName} has ended!", "#00FFFF");
+                DestroySalonMembers();
+            }
         }
     }
-
     public override void Use()
     {
         UIManager.Instance.AddMessage("You used " + skillName + "!", "#00FFFF");
@@ -65,19 +47,6 @@ public class SalonSolitaire : Skill
             }
         }
     }
-
-    public override IEnumerator CooldownRoutine()
-    {
-        onCooldown = true;
-        remainingCooldown = cooldown;
-        while (remainingCooldown > 0f)
-        {
-            remainingCooldown -= Time.deltaTime;
-            yield return null;
-        }
-        onCooldown = false;
-    }
-
     // Override other properties and methods as needed
 }
 

@@ -6,37 +6,23 @@ using UnityEngine;
 public class TearsOfTheSinners : Skill
 {
     [Header("Specific Attribute")]
-    [SerializeField] private string skillName = "Tears Of The Sinners";
-    [SerializeField] private float duration = 3f;
-    [SerializeField] private int manaCost = 50;
-    [SerializeField] private float cooldown = 30f;
-    [SerializeField] private bool onCooldown = false;
-    [SerializeField] private float remainingCooldown = 0f;
-    [SerializeField] private bool isActive = false;
     [SerializeField] private int damage = 8;
     [SerializeField] private float damageInterval = 1f;
     private float remainingDamageInterval = 0f;
-    private float remainingDuration = 3f;
-
-    public override string SkillName { get => skillName; }
-    public override float Duration { get => duration; }
-    public override int ManaCost { get => manaCost; }   
-    public override float Cooldown { get => cooldown; }
-    public override bool OnCooldown { get => onCooldown;}
-    public override float RemainingCooldown { get => remainingCooldown; }
-    public override bool IsActive { get => isActive; }
-
-    public override void UpdateDuration(){
-        remainingDuration -= Time.deltaTime;
-        remainingDamageInterval -= Time.deltaTime;
-        if(remainingDamageInterval <= 0f){
-            DealDamage();
-            remainingDamageInterval = damageInterval;
-        }
-        if(remainingDuration <= 0f){
-            remainingDuration = duration;
-            UIManager.Instance.AddMessage(skillName + " has ended!", "#00FFFF");
-            isActive = false;
+    
+    public override void Update(){
+        if(isActive){
+            remainingDuration -= Time.deltaTime;
+            remainingDamageInterval -= Time.deltaTime;
+            if(remainingDuration <= 0f){
+                remainingDuration = duration;
+                isActive = false;
+                UIManager.Instance.AddMessage($"{skillName} has ended!", "#00FFFF");
+            }
+            if(remainingDamageInterval <= 0f){
+                DealDamage();
+                remainingDamageInterval = damageInterval;
+            }
         }
     }
 
@@ -50,9 +36,6 @@ public class TearsOfTheSinners : Skill
                 entity.GetComponent<Actor>().IsAlive){
                     entity.GetComponent<Fighter>().TakeDamage(damage);
                 }           
-                // if(Vector3.Distance(player.transform.position, entity.transform.position) <= Camera.main.orthographicSize){
-                //     entity.GetComponent<Fighter>().Hp -= damage;
-                // }
             }
         }
     }
@@ -64,15 +47,4 @@ public class TearsOfTheSinners : Skill
         MapManager.Instance.GenerateEffect("Rain", player, duration, 1, 3);
     }
 
-    public override IEnumerator CooldownRoutine()
-    {
-        onCooldown = true;
-        remainingCooldown = cooldown;
-        while (remainingCooldown > 0f)
-        {
-            remainingCooldown -= Time.deltaTime;
-            yield return null;
-        }
-        onCooldown = false;
-    }
 }

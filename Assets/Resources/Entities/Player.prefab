@@ -159,7 +159,7 @@ MonoBehaviour:
   maxStamina: 100
   critRate: 0.2
   critDamage: 1.5
-  luck: 0.1
+  luck: 0
   manaRegen: 2
   manaRegenRate: 1
   manaRegenCounter: 1
@@ -232,3 +232,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e75411dee864571429f62602c2b78bf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skills:
+  - {fileID: 4342160914423185909, guid: 07fc3b57d94ee4540b5df43b140b510a, type: 3}
+  - {fileID: 270388253495587502, guid: 021e68a732d86534ab2d33eb5e5f2ea3, type: 3}
+  - {fileID: 8989586695152540631, guid: 050c441c675362545b4216cda3e59026, type: 3}
+  - {fileID: 1995983674546143727, guid: a15e7ae57bec7c34fb65fd60d13547ad, type: 3}
+  - {fileID: 5836990778400706901, guid: 46538da8c98dd164c976eb1470d802c9, type: 3}
+  - {fileID: 5795700371636442372, guid: a82dc66d231578b41b6c81b66f97451a, type: 3}

@@ -9,67 +9,54 @@ using UnityEngine;
 public class LetThePeopleRejoice : Skill
 {
     [Header("Specific Attribute")]
-    [SerializeField] private string skillName = "Let The People Rejoice";
-    [SerializeField] private float duration = 10f;
-    [SerializeField] private int manaCost = 30;
-    [SerializeField] private float cooldown = 20f;
-    [SerializeField] private bool onCooldown = false;
-    [SerializeField] private float remainingCooldown = 0f;
-    private float reduceHpInterval = 1f;
-    private float remainingReduceHpInterval = 1f;
-    private float healIfDefeatEnemyInterval = 2.5f;
-    private float remainingHealIfDefeatEnemyInterval = 2.5f;
-    private float remainingDuration = 10f;
-    private bool isActive = false;
-    private int initialAmountOfEnemiesKilled;
+    [SerializeField] private float reduceHpInterval = 1f;
+    [SerializeField] private float remainingReduceHpInterval = 1f;
+    [SerializeField] private float healIfDefeatEnemyInterval = 2.5f;
+    [SerializeField] private float remainingHealIfDefeatEnemyInterval = 2.5f;
+    [SerializeField] private int initialAmountOfEnemiesKilled;
+    [SerializeField] private int powerGain;
 
-    public override string SkillName { get => skillName; }
-    public override float Duration { get => duration; }
-    public override int ManaCost { get => manaCost; }   
-    public override float Cooldown { get => cooldown; }
-    public override bool OnCooldown { get => onCooldown;}
-    public override float RemainingCooldown { get => remainingCooldown; }
-    public override bool IsActive { get => isActive; }
-
-    public override void UpdateDuration()
+    public override void Update()
     {
-        remainingDuration -= Time.deltaTime;
-        remainingReduceHpInterval -= Time.deltaTime;
-        remainingHealIfDefeatEnemyInterval -= Time.deltaTime;
-        Actor player = GameManager.Instance.Actors[0];
-        if(remainingReduceHpInterval <= 0f)
+        if(isActive)
         {
-            // Player can't die from this skill
-            if(player.GetComponent<Fighter>().Hp > 1)
-                player.GetComponent<Fighter>().Hp -= 1;
-            remainingReduceHpInterval = reduceHpInterval;
-        }
-        if(remainingHealIfDefeatEnemyInterval <= 0f)
-        {
-            // if the player has defeated an enemy logic
-            if(player.GetComponent<Player>().EnemiesKilled > initialAmountOfEnemiesKilled)
+            remainingDuration -= Time.deltaTime;
+            remainingReduceHpInterval -= Time.deltaTime;
+            remainingHealIfDefeatEnemyInterval -= Time.deltaTime;
+            Actor player = GameManager.Instance.Actors[0];
+            if(remainingDuration <= 0f)
             {
-                initialAmountOfEnemiesKilled = player.GetComponent<Player>().EnemiesKilled;
-                player.GetComponent<Fighter>().Heal(2);
-                UIManager.Instance.AddMessage("You have been healed by Let The People Rejoice!", "#00FFFF");
+                remainingDuration = duration;
+                isActive = false;
+                UIManager.Instance.AddMessage($"{skillName} has ended!", "#00FFFF");
+                player.GetComponent<Fighter>().Power -= powerGain;
+                if(player.GetComponent<Player>().EnemiesKilled > initialAmountOfEnemiesKilled)
+                {
+                    player.GetComponent<Fighter>().Heal(5);
+                }
             }
-            remainingHealIfDefeatEnemyInterval = healIfDefeatEnemyInterval;
+            if(remainingReduceHpInterval <= 0f)
+            {
+                player.GetComponent<Fighter>().TakeDamage(1);
+                remainingReduceHpInterval = reduceHpInterval;
+            }
+            if(remainingHealIfDefeatEnemyInterval <= 0f)
+            {
+                if(player.GetComponent<Player>().EnemiesKilled > initialAmountOfEnemiesKilled)
+                {
+                    player.GetComponent<Fighter>().Heal(5);
+                }
+                remainingHealIfDefeatEnemyInterval = healIfDefeatEnemyInterval;
+            }
         }
-        if(remainingDuration <= 0f)
-        {
-            remainingDuration = duration;
-            UIManager.Instance.AddMessage(skillName + " has ended!", "#00FFFF");
-            player.GetComponent<Fighter>().Power /= 2;
-            isActive = false;
-        }
-
     }
     public override void Use()
     {
         UIManager.Instance.AddMessage("You used " + skillName + "!", "#00FFFF");
         isActive = true;
         Actor player = GameManager.Instance.Actors[0];
-        player.GetComponent<Fighter>().Power *= 2; 
+        int powerGain = player.GetComponent<Fighter>().Power;
+        player.GetComponent<Fighter>().Power += powerGain;
         initialAmountOfEnemiesKilled = player.GetComponent<Player>().EnemiesKilled;
         MapManager.Instance.GenerateEffect("Let", player, duration, 1, 2);
     }

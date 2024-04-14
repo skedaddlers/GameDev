@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2745012981962075068
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5720728191975859956}
+  - component: {fileID: 8989586695152540631}
+  m_Layer: 0
+  m_Name: Let The People Rejoice
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5720728191975859956
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2745012981962075068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 54.81862, y: 19.373888, z: 0.17197925}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8989586695152540631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2745012981962075068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9827668446e586d48aee1ee6196aeadd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillName: Let The People Rejoice
+  manaCost: 45
+  cooldown: 20
+  duration: 10
+  onCooldown: 0
+  isActive: 0
+  remainingCooldown: 0
+  remainingDuration: 0
+  reduceHpInterval: 1
+  remainingReduceHpInterval: 1
+  healIfDefeatEnemyInterval: 2.5
+  remainingHealIfDefeatEnemyInterval: 2.5
+  initialAmountOfEnemiesKilled: 0
+  powerGain: 0

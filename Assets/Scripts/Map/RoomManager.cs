@@ -6,7 +6,6 @@ public class RoomManager : MonoBehaviour
 {
     public static RoomManager Instance;
 
-
     [SerializeField] private List<RectangularRoom> rooms;
     private bool hasAssignedEntities = false;
     public List<RectangularRoom> Rooms { get => rooms; }

@@ -21,6 +21,5 @@ public class Seller : MonoBehaviour
     public void OpenShop()
     {
         // open the shop UI
-        UIManager.Instance.OpenShop(this);
     }
 }
