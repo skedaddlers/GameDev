@@ -69,36 +69,14 @@ public class Rifthound : EliteEnemy
     private void BleedAttack(Actor target){
         target.GetComponent<Fighter>().TakeDamage(GetComponent<Fighter>().Power);
 
-        GameObject bleedEffect = new GameObject("Bleed");
-        Bleed bleed = bleedEffect.AddComponent<Bleed>();
-        bleed.Duration = bleedDuration;
-        bleed.ApplyRate = bleedRate;
-        bleed.Damage = bleedDamage;
-        bleed.Fighter = target.GetComponent<Fighter>();
+        GameObject bleedEffect = Instantiate(Resources.Load<GameObject>("Entities/Effect/Bleed"), target.transform.position, Quaternion.identity);
+        bleedEffect.GetComponent<Bleed>().Duration = bleedDuration;
+        bleedEffect.GetComponent<Bleed>().ApplyRate = bleedRate;
+        bleedEffect.GetComponent<Bleed>().Damage = bleedDamage;
+        bleedEffect.GetComponent<Bleed>().Fighter = target.GetComponent<Fighter>();
+        bleedEffect.name = "Bleed";
 
-        if(!target.GetComponent<Fighter>().IsUnderStatusEffect){
-            bleedEffect.gameObject.SetActive(true);
-            bleedEffect.transform.SetParent(target.transform, false);
-            target.GetComponent<Fighter>().IsUnderStatusEffect = true;
-        }
-        else{
-            Destroy(bleedEffect);
-        }
-
-        // GameObject bleedEffect = Instantiate(Resources.Load<GameObject>("Entities/Effect/Bleed"), target.transform.position, Quaternion.identity);
-        // bleedEffect.GetComponent<Bleed>().Duration = bleedDuration;
-        // bleedEffect.GetComponent<Bleed>().ApplyRate = bleedRate;
-        // bleedEffect.GetComponent<Bleed>().Damage = bleedDamage;
-        // bleedEffect.GetComponent<Bleed>().Fighter = target.GetComponent<Fighter>();
-        // bleedEffect.name = "Bleed";
-        // if(!target.GetComponent<Fighter>().IsUnderStatusEffect){
-        //     bleedEffect.gameObject.SetActive(true);
-        //     bleedEffect.transform.SetParent(target.transform, false);
-        //     target.GetComponent<Fighter>().IsUnderStatusEffect = true;
-        // }
-        // else{
-        //     Destroy(bleedEffect);
-        // }
+        target.GetComponent<Fighter>().ApplyEffect(bleedEffect.GetComponent<Bleed>());
         // apply bleed effect to player
         UIManager.Instance.AddMessage("Rifthound attacked you and tried to bleed you!", "#FF0000");
     }

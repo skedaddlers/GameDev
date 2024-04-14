@@ -168,14 +168,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b277014bef278241aa45bed70a91787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 20
-  hp: 20
-  defense: 2
-  power: 3
+  maxHp: 30
+  hp: 30
+  defense: 6
+  power: 4
   movementSpeed: 1.1
   shieldHp: 0
   target: {fileID: 0}
-  statusCondition: {fileID: 0}
+  isUnderStatusEffect: 0
 --- !u!114 &4577567348277160934
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -205,13 +205,13 @@ MonoBehaviour:
   isFighting: 0
   canTakeDamage: 0
   attackCooldown: 1.5
-  expGiven: 0
+  expGiven: 40
   attackTimer: 0.1
   type: 3
   chanceToDropWeapon: 0
   highRareDropChance: 0
   teleportTimer: 0
   teleportRate: 7.5
-  bleedRate: 2
+  bleedRate: 1.9
   bleedDamage: 1
   bleedDuration: 6

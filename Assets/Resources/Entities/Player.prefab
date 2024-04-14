@@ -197,15 +197,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b277014bef278241aa45bed70a91787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 30
-  hp: 30
-  defense: 2
-  power: 5
+  maxHp: 40
+  hp: 40
+  defense: 8
+  power: 8
   movementSpeed: 7
-  baseMovementSpeed: 7
   shieldHp: 0
   target: {fileID: 0}
-  statusCondition: {fileID: 0}
+  isUnderStatusEffect: 0
 --- !u!114 &1229510834712304930
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -29,7 +29,9 @@ public class MirrorMaiden : EliteEnemy
                 TeleportAway(fighter.Target.GetComponent<Actor>());
                 teleportTimer = 0;
             }
-            teleportTimer += Time.deltaTime;
+            if(teleportTimer < teleportRate){
+                teleportTimer += Time.deltaTime;
+            }
             specialAttackTimer += Time.deltaTime;
             attackTimer += Time.deltaTime;
             if(specialAttackTimer >= specialAttackRate){
@@ -45,50 +47,32 @@ public class MirrorMaiden : EliteEnemy
 
     private void SpecialAttack(Actor target){
 
-        GameObject ensnare = new GameObject("Ensnare");
-        Ensnare ensnareEffect = ensnare.AddComponent<Ensnare>();
-        ensnareEffect.Duration = ensnareDuration;
-        ensnareEffect.Fighter = target.GetComponent<Fighter>();
+        GameObject ensnare = Instantiate(Resources.Load<GameObject>("Entities/Effect/Ensnare"), target.transform.position, Quaternion.identity);
+        ensnare.GetComponent<Ensnare>().Duration = ensnareDuration;
+        ensnare.GetComponent<Ensnare>().Fighter = target.GetComponent<Fighter>();
+        ensnare.name = "Ensnare";
+        
+        target.GetComponent<Fighter>().ApplyEffect(ensnare.GetComponent<StatusEffect>());
 
-        ensnare.transform.SetParent(target.transform);
-        if(!target.GetComponent<Fighter>().IsUnderStatusEffect){
-            ensnare.gameObject.SetActive(true);
-            target.GetComponent<Fighter>().IsUnderStatusEffect = true;
-        }
-        else{
-            Destroy(ensnare);
-        }
-        // GameObject ensnare = Instantiate(Resources.Load<GameObject>("Entities/Effect/Ensnare"), target.transform.position, Quaternion.identity);
-        // ensnare.GetComponent<Ensnare>().Duration = ensnareDuration;
-        // ensnare.GetComponent<Ensnare>().Fighter = target.GetComponent<Fighter>();
-        // ensnare.name = "Ensnare";
-        // if(!target.GetComponent<Fighter>().IsUnderStatusEffect){
-        //     ensnare.gameObject.SetActive(true);
-        //     ensnare.gameObject.transform.SetParent(target.transform);
-        //     target.GetComponent<Fighter>().IsUnderStatusEffect = true;
-        // }
-        // else{
-        //     Destroy(ensnare);
-        // }
         UIManager.Instance.AddMessage("Mirror Maiden used Ensnare!", "#FF0000");
     }
 
     private void TeleportAway(Actor target){
+        Debug.Log("Teleporting away");
         RectangularRoom room = null;
         foreach(RectangularRoom r in RoomManager.Instance.Rooms){
-            float roomX = r.X;
-            float roomY = r.Y;
-            if(target.transform.position.x >= roomX && target.transform.position.x <= roomX + r.Width &&
-                target.transform.position.y >= roomY && target.transform.position.y <= roomY + r.Height){
-                room = r;
-                break;
+            foreach(Entity entity in r.Entities){
+                if(GetComponent<Actor>() == entity.GetComponent<Actor>()){
+                    room = r;
+                    break;
+                }
             }
         }
 
         while(true){
             float distanceToPlayer = Vector3.Distance(transform.position, target.transform.position);
-            Vector3Int randomPos = new Vector3Int(Random.Range(room.X, room.X + room.Width), Random.Range(room.Y, room.Y + room.Height), 0);
-            if(distanceToPlayer >= 3f){
+            Vector3Int randomPos = new Vector3Int(Random.Range(room.X + 1, room.X + room.Width - 1), Random.Range(room.Y - 1, room.Y + room.Height + 1), 0);
+            if(distanceToPlayer >= 1f){
                 transform.position = MapManager.Instance.FloorMap.CellToWorld(randomPos);
                 break;
             }

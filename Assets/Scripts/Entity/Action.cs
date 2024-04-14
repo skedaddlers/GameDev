@@ -103,7 +103,7 @@ public class Action
     static public void SlashAction(Actor actor, Vector3 direction){
         // slashes in a fan shape area, dealing aoe damage to the enemies in the area
         Weapon weapon = actor.GetComponent<Inventory>().Weapon;
-        int damage = weapon.Damage;
+        int damage = weapon.Damage + actor.GetComponent<Fighter>().Power;
         float area = weapon.Radius;
         float fanAngle = 60f;
         
@@ -120,13 +120,16 @@ public class Action
                         UIManager.Instance.AddMessage($"{actor.name} critically slashes {target.name} for {damageDealt} damage!", "#FFFFFF");
                     }
                     else{
-                        damageDealt = (int)(damageDealt * (1 - target.GetComponent<Fighter>().Defense / 20));
+                        int targetDefense = target.GetComponent<Fighter>().Defense;
+                        damageDealt = (int)(damageDealt * (0.5f + (1 - (targetDefense / 20f))/2));
                         UIManager.Instance.AddMessage($"{actor.name} slashes {target.name} for {damageDealt} damage!", "#d1a3a4");
                     }
                 }
                 target.GetComponent<Fighter>().TakeDamage(damageDealt);
             }
         }
+
+        UIManager.Instance.DrawFanSprite(actor.transform.position, direction, fanAngle, area);
     }
 
     static public void RangedAction(Actor actor, Vector3 direction){
@@ -141,8 +144,8 @@ public class Action
 
 
     static public void MeleeAction(Actor actor, Actor target){
-
-        int damage = (int)(actor.GetComponent<Fighter>().Power * (1 - target.GetComponent<Fighter>().Defense / 20));
+        int targetDefense = target.GetComponent<Fighter>().Defense;
+        int damage = (int)(actor.GetComponent<Fighter>().Power * (0.5f + (1 - (targetDefense / 20f))/2));
 
         string attackDesc = $"{actor.name} attacks {target.name}";
 

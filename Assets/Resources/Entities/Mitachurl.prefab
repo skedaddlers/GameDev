@@ -168,14 +168,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b277014bef278241aa45bed70a91787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 30
-  hp: 30
-  defense: 2
-  power: 3
-  movementSpeed: 2
+  maxHp: 40
+  hp: 40
+  defense: 7
+  power: 8
+  movementSpeed: 2.5
   shieldHp: 0
   target: {fileID: 0}
-  statusCondition: {fileID: 0}
+  isUnderStatusEffect: 0
 --- !u!114 &4577567348277160934
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -205,14 +205,14 @@ MonoBehaviour:
   isFighting: 0
   canTakeDamage: 0
   attackCooldown: 1.5
-  expGiven: 30
+  expGiven: 35
   attackTimer: 0.1
   type: 0
   chanceToDropWeapon: 0.5
   highRareDropChance: 0
   dashTimer: 0
-  dashRate: 6.5
+  dashRate: 4.5
   speedMultiplier: 2.4
-  dashDuration: 0.3
+  dashDuration: 0.5
   isDashing: 0
   defaultSpeed: 0

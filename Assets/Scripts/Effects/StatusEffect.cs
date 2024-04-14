@@ -19,18 +19,6 @@ public class StatusEffect : MonoBehaviour
     public float ApplyTimer { get => applyTimer; set => applyTimer = value; }
     public Fighter Fighter { get => fighter; set => fighter = value; }
 
-    void Start()
-    {
-        Debug.Log("StatusEffect Start");
-    }
-    private void Awake()
-    {
-        Debug.Log("StatusEffect Awake");
-        // Get the parent GameObject
-        GameObject parentObject = transform.parent.gameObject;
-        // Get the Fighter component from the parent GameObject
-        fighter = parentObject.GetComponent<Fighter>();
-    }
 
     void Update()
     {
@@ -54,6 +42,11 @@ public class StatusEffect : MonoBehaviour
         {
             applyTimer += Time.deltaTime;
         }
+    }
+
+    public virtual void Start()
+    {
+        
     }
 
     public virtual void ApplyEffect()

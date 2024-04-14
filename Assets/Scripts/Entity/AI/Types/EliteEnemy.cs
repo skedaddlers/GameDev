@@ -72,22 +72,6 @@ public class EliteEnemy : HostileEnemy
                     MapManager.Instance.CreateEntity("Splendor of Tranquil Waters", transform.position);
                     UIManager.Instance.AddMessage($"The {name} dropped a Splendor of Tranquil Waters!", "#F3B714");
                 }
-            // if(Random.value <= 0.50f)
-            // {
-            //     MapManager.Instance.CreateEntity("Fleuve Cendre Ferryman", transform.position);
-            // }
-            // else if(Random.value <= 0.75f)
-            // {
-            //     MapManager.Instance.CreateEntity("Festering Desire", transform.position);
-            // }
-            // else if(Random.value <= 0.90f)
-            // {
-            //     MapManager.Instance.CreateEntity("Primordial Jade Cutter", transform.position);
-            // }
-            // else
-            // {
-            //     MapManager.Instance.CreateEntity("Splendor of Tranquil Waters", transform.position);
-            // }
         }
     }
 

@@ -62,6 +62,12 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject levelUpMenuContent;
     [SerializeField] private bool isLevelUpMenuOpen = false;
 
+    [SerializeField] private GameObject slashSprite;
+    [SerializeField] private bool isSlashActive = false;
+    [SerializeField] private float slashDuration = 0.2f;
+    [SerializeField] private float slashTimer = 0f;
+
+
 
     public bool IsMessageHistoryOpen { get => isMessageHistoryOpen; }
     public bool IsInventoryOpen { get => isInventoryOpen; }
@@ -72,7 +78,6 @@ public class UIManager : MonoBehaviour
     public bool IsLevelUpMenuOpen { get => isLevelUpMenuOpen; }
 
     public static UIManager Instance;
-    // Start is called before the first frame update
     public void Awake(){
         if(Instance == null){
             Instance = this;
@@ -83,6 +88,27 @@ public class UIManager : MonoBehaviour
     }
 
     public void Start() => AddMessage("Welcome to the game!", "#FFFFFF");
+
+    public void Update(){
+        if(isSlashActive){
+            slashTimer += Time.deltaTime;
+            if(slashTimer >= slashDuration){
+                slashSprite.SetActive(false);
+                slashTimer = 0f;
+            }
+        }
+    }
+
+    public void DrawFanSprite(Vector3 position, Vector3 direction, float fanAngle, float area){
+        slashSprite.SetActive(!slashSprite.activeSelf);
+        isSlashActive = true;
+        
+        Vector3 placingPosition = new Vector3(position.x, position.y, 0) + direction.normalized;
+        slashSprite.transform.position = placingPosition;
+        
+        slashSprite.transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(-direction.y, -direction.x) * Mathf.Rad2Deg) ;
+        slashSprite.transform.localScale = new Vector3(18 * area, 18 * area, 0);
+    }
 
      public void AddMessage(string newMessage, string colorHex) {
         if (lastMessage == newMessage) {
@@ -208,7 +234,6 @@ public class UIManager : MonoBehaviour
 
         if(isMenuOpen){
             UpdateMenu(actor, inventoryContent);
-            // skills.SetActive(false);
         }
     }
 
@@ -259,8 +284,8 @@ public class UIManager : MonoBehaviour
 
         string[] buttonLabels = {
             $"Constitution (+5 HP, from {fighter.MaxHp} -> {fighter.MaxHp + 5})",
-            $"Strength (+1 Power, from {fighter.Power} -> {fighter.Power + 1})",
-            $"Resistance (+1 Defense, from {fighter.Defense} -> {fighter.Defense + 1})",
+            $"Strength (+2 Power, from {fighter.Power} -> {fighter.Power + 2})",
+            $"Resistance (+2 Defense, from {fighter.Defense} -> {fighter.Defense + 2})",
             $"Agility (+1 Movement Speed, from {fighter.MovementSpeed} -> {fighter.MovementSpeed + 1})",
             $"Fortune (+0.1 Luck, from {actor.GetComponent<Player>().Luck} -> {actor.GetComponent<Player>().Luck + 1})",
             $"Sustainibility (+10 Mana, from {actor.GetComponent<Player>().MaxMana} -> {actor.GetComponent<Player>().MaxMana + 10})"
@@ -291,28 +316,28 @@ public class UIManager : MonoBehaviour
             case 0:
                 fighter.MaxHp += 5;
                 fighter.Hp += 5;
-                AddMessage($"The Celestia blesses you with healthiness!", "#00FF00");
+                AddMessage($"You are blessed with healthiness by The Tsaritsa!", "#32E9F1");
                 break;
             case 1:
-                fighter.Power += 1;
-                AddMessage($"The Celestia blesses you with strength!", "#00FF00");
+                fighter.Power += 2;
+                AddMessage($"You are blessed with strength by Murata!", "#F14A32");
                 break;
             case 2:
-                fighter.Defense += 1;
-                AddMessage($"The Celestia blesses you with resistance!", "#00FF00");
+                fighter.Defense += 2;
+                AddMessage($"You are blessed with resistance by Morax!", "#F1B432");
                 break;
             case 3:
                 fighter.MovementSpeed += 1;
-                AddMessage($"The Celestia blesses you with agility!", "#00FF00");
+                AddMessage($"You are blessed with agility by Barbatos!", "#32F1A3");
                 break;
             case 4:
                 player.Luck += 0.1f;
-                AddMessage($"The Celestia blesses you with fortune!", "#00FF00");
+                AddMessage($"You are blessed with fortune by Buer!", "#8CF132");
                 break;
             case 5:
                 player.MaxMana += 10;
                 player.Mana = player.MaxMana;
-                AddMessage($"The Celestia blesses you with sustainibility!", "#00FF00");
+                AddMessage($"You are blessed with sustainibility by Beelzebul!", "#CA32F1");
                 break;
         }
 
@@ -433,7 +458,6 @@ public class UIManager : MonoBehaviour
         if(enemyHpSliders.ContainsKey(enemy)){
             enemyHpSliders[enemy].value = enemy.GetComponent<Fighter>().Hp;
             enemyHpSliders[enemy].transform.position = GetHealthBarPosition(enemy.GetComponent<Fighter>().transform.position); // Set position above the enemy
-            // Debug.Log(enemyHpSliders[enemy].transform.position);
         }
         else{
             Slider enemyHpSlider = Instantiate(Resources.Load<Slider>("EnemyHpSlider")) as Slider;
@@ -445,6 +469,8 @@ public class UIManager : MonoBehaviour
         }    
     }
 
+    
+
 
     public Vector3 GetHealthBarPosition(Vector3 position){
         Vector3 screenPosition = Camera.main.WorldToScreenPoint(position);
@@ -452,18 +478,10 @@ public class UIManager : MonoBehaviour
     }
 
     public bool ContainsSkillButton(Vector3 position){
-        // Vector3 screenPosition = Camera.main.WorldToScreenPoint(position);
-        // Debug.Log(position);
+
         if(skills.GetComponent<RectTransform>().rect.Contains(position)){
             return true;
         }
-        // for(int i = 0; i < skillsContent.transform.childCount; i++){
-        //     GameObject skill = skillsContent.transform.GetChild(i).gameObject;
-        //     Debug.Log(skillsContent.GetComponent<RectTransform>().rect);
-        //     if(skill.GetComponent<RectTransform>().rect.Contains(position)){
-        //         return true;
-        //     }
-        // }
         return false;
     }
 }

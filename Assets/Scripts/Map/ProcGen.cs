@@ -191,7 +191,7 @@ sealed class ProcGen : MonoBehaviour
         float distance = Vector2.Distance(RoomManager.Instance.Rooms[0].Center(), newRoom.Center());
         float mapDiagonal = Mathf.Sqrt(Mathf.Pow(MapManager.Instance.Width, 2) + Mathf.Pow(MapManager.Instance.Height, 2));
         float distanceChance = distance / mapDiagonal;
-        if(Random.value < distanceChance){
+        if(Random.value < 0.5f + (distanceChance / 2)){
             while(true){
                 int x = Random.Range(newRoom.X + 1, newRoom.X + newRoom.Width - 1);
                 int y = Random.Range(newRoom.Y + 1, newRoom.Y + newRoom.Height - 1);

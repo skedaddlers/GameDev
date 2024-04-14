@@ -171,10 +171,11 @@ MonoBehaviour:
   maxHp: 20
   hp: 20
   defense: 2
-  power: 3
+  power: 6
   movementSpeed: 2
   shieldHp: 0
   target: {fileID: 0}
+  isUnderStatusEffect: 0
 --- !u!114 &4577567348277160934
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -202,5 +203,7 @@ MonoBehaviour:
   aStar: {fileID: 4577567348277160934}
   fighter: {fileID: -806051740714282425}
   isFighting: 0
+  canTakeDamage: 0
   attackCooldown: 1
-  expGiven: 10
+  expGiven: 15
+  attackTimer: 0.1

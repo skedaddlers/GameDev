@@ -7,7 +7,6 @@ public class Fighter : MonoBehaviour
 {
     [SerializeField] private int maxHp, hp, defense, power;
     [SerializeField] private float movementSpeed = 5f;
-    [SerializeField] private float baseMovementSpeed = 5f;
     [SerializeField] private int shieldHp = 0;
     [SerializeField] private Actor target;
     [SerializeField] private bool isUnderStatusEffect = false;
@@ -38,7 +37,6 @@ public class Fighter : MonoBehaviour
     public int Power { get => power; set => power = value;}
     public int ShieldHp { get => shieldHp; set => shieldHp = value; }
     public float MovementSpeed { get => movementSpeed; set => movementSpeed = value;}
-    public float BaseMovementSpeed { get => baseMovementSpeed; set => baseMovementSpeed = value;}
     public Actor Target { get => target; set => target = value; }
     public bool IsUnderStatusEffect { get => isUnderStatusEffect; set => isUnderStatusEffect = value; }
     private void Start(){
@@ -60,6 +58,14 @@ public class Fighter : MonoBehaviour
         }
     }
 
+    public void ApplyEffect(StatusEffect effect){
+        if(isUnderStatusEffect){
+            UIManager.Instance.AddMessage("Already under a status effect!", "#FF0000");
+            Destroy(effect.gameObject);
+            return;
+        }
+        
+    }
 
     public void TakeDamage(int damage){
         if(GetComponent<Player>()){

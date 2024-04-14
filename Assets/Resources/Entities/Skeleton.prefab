@@ -168,13 +168,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b277014bef278241aa45bed70a91787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 15
-  hp: 15
+  maxHp: 20
+  hp: 20
   defense: 0
-  power: 4
+  power: 8
   movementSpeed: 4
   shieldHp: 0
   target: {fileID: 0}
+  isUnderStatusEffect: 0
 --- !u!114 &-7863829816183178620
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -202,5 +203,7 @@ MonoBehaviour:
   aStar: {fileID: -7863829816183178620}
   fighter: {fileID: 2062718751406112688}
   isFighting: 0
+  canTakeDamage: 0
   attackCooldown: 1
-  expGiven: 10
+  expGiven: 15
+  attackTimer: 0.1
