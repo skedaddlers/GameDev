@@ -59,15 +59,7 @@ public class MirrorMaiden : EliteEnemy
 
     private void TeleportAway(Actor target){
         Debug.Log("Teleporting away");
-        RectangularRoom room = null;
-        foreach(RectangularRoom r in RoomManager.Instance.Rooms){
-            foreach(Entity entity in r.Entities){
-                if(GetComponent<Actor>() == entity.GetComponent<Actor>()){
-                    room = r;
-                    break;
-                }
-            }
-        }
+        RectangularRoom room = RoomManager.Instance.GetRoomWithEntity(GetComponent<Entity>());    
 
         while(true){
             float distanceToPlayer = Vector3.Distance(transform.position, target.transform.position);

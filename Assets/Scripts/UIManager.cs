@@ -287,7 +287,7 @@ public class UIManager : MonoBehaviour
             $"Strength (+2 Power, from {fighter.Power} -> {fighter.Power + 2})",
             $"Resistance (+2 Defense, from {fighter.Defense} -> {fighter.Defense + 2})",
             $"Agility (+1 Movement Speed, from {fighter.MovementSpeed} -> {fighter.MovementSpeed + 1})",
-            $"Fortune (+0.1 Luck, from {actor.GetComponent<Player>().Luck} -> {actor.GetComponent<Player>().Luck + 1})",
+            $"Fortune (+1 Luck, from {actor.GetComponent<Player>().Luck} -> {actor.GetComponent<Player>().Luck + 1})",
             $"Sustainibility (+10 Mana, from {actor.GetComponent<Player>().MaxMana} -> {actor.GetComponent<Player>().MaxMana + 10})"
         };
 
@@ -316,28 +316,28 @@ public class UIManager : MonoBehaviour
             case 0:
                 fighter.MaxHp += 5;
                 fighter.Hp += 5;
-                AddMessage($"You are blessed with healthiness by The Tsaritsa!", "#32E9F1");
+                AddMessage($"You are blessed with more healthiness by The Tsaritsa!", "#32E9F1");
                 break;
             case 1:
                 fighter.Power += 2;
-                AddMessage($"You are blessed with strength by Murata!", "#F14A32");
+                AddMessage($"You are blessed with more strength by Murata!", "#F14A32");
                 break;
             case 2:
                 fighter.Defense += 2;
-                AddMessage($"You are blessed with resistance by Morax!", "#F1B432");
+                AddMessage($"You are blessed with more resistance by Morax!", "#F1B432");
                 break;
             case 3:
                 fighter.MovementSpeed += 1;
-                AddMessage($"You are blessed with agility by Barbatos!", "#32F1A3");
+                AddMessage($"You are blessed with more agility by Barbatos!", "#32F1A3");
                 break;
             case 4:
-                player.Luck += 0.1f;
-                AddMessage($"You are blessed with fortune by Buer!", "#8CF132");
+                player.Luck += 1;
+                AddMessage($"You are blessed with more fortune by Buer!", "#8CF132");
                 break;
             case 5:
                 player.MaxMana += 10;
                 player.Mana = player.MaxMana;
-                AddMessage($"You are blessed with sustainibility by Beelzebul!", "#CA32F1");
+                AddMessage($"You are blessed with more sustainibility by Beelzebul!", "#CA32F1");
                 break;
         }
 
@@ -390,10 +390,10 @@ public class UIManager : MonoBehaviour
 
     public void UpdateWeapon(Actor player){
         if(isMenuOpen){
-            weaponImage.SetActive(false);
+            weaponImage.gameObject.SetActive(false);
         }
         else{
-            weaponImage.SetActive(true);
+            weaponImage.gameObject.SetActive(true);
         }
         if(player.GetComponent<Inventory>().Weapon != null){
             weaponImage.GetComponent<Image>().sprite = player.GetComponent<Inventory>().Weapon.GetComponent<SpriteRenderer>().sprite;

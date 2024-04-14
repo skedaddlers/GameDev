@@ -535,15 +535,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17874aa16c8ccae40ba7cf597651fd97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomNumber: 0
-  isBossRoom: 0
-  containsPlayer: 0
-  isCleared: 0
-  x: 0
-  y: 0
-  width: 0
-  height: 0
-  entities: []
 --- !u!114 &725485649
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1074,13 +1065,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c9f9aa07c547634ca01f8c42254d436, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 100
-  height: 100
-  roomMaxSize: 20
-  roomMinSize: 10
-  maxRooms: 10
+  width: 120
+  height: 120
+  roomMaxSize: 25
+  roomMinSize: 15
+  maxRooms: 14
   minMonsterPerRoom: 2
-  maxMonsterPerRoom: 4
+  maxMonsterPerRoom: 6
   maxItemsPerRoom: 2
   darkColor:
     serializedVersion: 2
@@ -1126,15 +1117,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17874aa16c8ccae40ba7cf597651fd97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomNumber: 0
-  isBossRoom: 0
-  containsPlayer: 0
-  isCleared: 0
-  x: 0
-  y: 0
-  width: 0
-  height: 0
-  entities: []
 --- !u!1001 &5017341945363345257
 PrefabInstance:
   m_ObjectHideFlags: 0

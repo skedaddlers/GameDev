@@ -17,7 +17,7 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
     [SerializeField] private int maxStamina = 100;
     [SerializeField] private float critRate = 0.2f;
     [SerializeField] private float critDamage = 1.5f;
-    [SerializeField] private float luck = 0.1f;
+    [SerializeField] private int luck = 1;
     [SerializeField] private int manaRegen = 1;
     [SerializeField] private float manaRegenRate = 1f;
     [SerializeField] private float manaRegenCounter = 2f;
@@ -43,7 +43,7 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
     public int Stamina { get => stamina; set => stamina = value; }
     public float CritRate { get => critRate; }
     public float CritDamage { get => critDamage; }
-    public float Luck { get => luck; set => luck = value; }
+    public int Luck { get => luck; set => luck = value; }
     public bool IsDashing { get => isDashing; set => isDashing = value; }
     public int Level { get => level; }
     public int ExpNeeded { get => expNeeded; }
@@ -212,7 +212,7 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
             if(weaponTimer > 0)
                 weaponTimer -= Time.fixedDeltaTime;
         }
-        if(!UIManager.Instance.IsMenuOpen){
+        if(!UIManager.Instance.IsMenuOpen || UIManager.Instance.IsLevelUpMenuOpen){
             if (GameManager.Instance.IsPlayerTurn && moveKeyHeld && GetComponent<Actor>().IsAlive)
             {
                 if(!isDashing)

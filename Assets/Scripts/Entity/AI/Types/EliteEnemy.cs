@@ -24,33 +24,42 @@ public class EliteEnemy : HostileEnemy
     {
         float commonDropChance = 0.5f;
         float rareDropChance = 0.25f;
-        float highRareDropChance = 0.15f;
-        float ultraRareDropChance = 0.10f;
-        if (Random.value <= chanceToDropWeapon)
+        float epicDropChance = 0.15f;
+        float legendaryDropChance = 0.10f;
+        float playersLuck = GameManager.Instance.Actors[0].GetComponent<Player>().Luck;
+        float dropChance = chanceToDropWeapon * (1 + playersLuck / 10);
+        if (Random.value <= dropChance)
         {
-            switch(HighRareDropChance){
-                case < 0.25f:
+            float rarityChance = highRareDropChance * (1 + playersLuck / 10);
+            switch(rarityChance){
+                case < 0.2f:
                     break;
-                case < 0.50f:
+                case < 0.4f:
                     commonDropChance = 0.35f;
                     rareDropChance = 0.3f;
-                    highRareDropChance = 0.2f;
-                    ultraRareDropChance = 0.15f;
+                    epicDropChance = 0.2f;
+                    legendaryDropChance = 0.15f;
                     break;
-                case < 0.75f:
+                case < 0.6f:
                     commonDropChance = 0.25f;
                     rareDropChance = 0.25f;
-                    highRareDropChance = 0.25f;
-                    ultraRareDropChance = 0.25f;
+                    epicDropChance = 0.25f;
+                    legendaryDropChance = 0.25f;
+                    break;
+                case < 0.8f:
+                    commonDropChance = 0.2f;
+                    rareDropChance = 0.2f;
+                    epicDropChance = 0.3f;
+                    legendaryDropChance = 0.3f;
                     break;
                 default:
-                    commonDropChance = 0.15f;
-                    rareDropChance = 0.2f;
-                    highRareDropChance = 0.3f;
-                    ultraRareDropChance = 0.35f;
+                    commonDropChance = 0.1f;
+                    rareDropChance = 0.15f;
+                    epicDropChance = 0.35f;
+                    legendaryDropChance = 0.4f;
                     break;
-                }
-                float totalDropChance = commonDropChance + rareDropChance + highRareDropChance + ultraRareDropChance;
+            }   
+                float totalDropChance = commonDropChance + rareDropChance + highRareDropChance + legendaryDropChance;
                 float randomValue = Random.Range(0, totalDropChance);
                 if(randomValue <= commonDropChance)
                 {
@@ -62,7 +71,7 @@ public class EliteEnemy : HostileEnemy
                     MapManager.Instance.CreateEntity("Festering Desire", transform.position);
                     UIManager.Instance.AddMessage($"The {name} dropped a Festering Desire!", "#18C0E5");
                 }
-                else if(randomValue <= commonDropChance + rareDropChance + highRareDropChance)
+                else if(randomValue <= commonDropChance + rareDropChance + epicDropChance)
                 {
                     MapManager.Instance.CreateEntity("Primordial Jade Cutter", transform.position);
                     UIManager.Instance.AddMessage($"The {name} dropped a Primordial Jade Cutter!", "#B818E5");
@@ -71,6 +80,7 @@ public class EliteEnemy : HostileEnemy
                 {
                     MapManager.Instance.CreateEntity("Splendor of Tranquil Waters", transform.position);
                     UIManager.Instance.AddMessage($"The {name} dropped a Splendor of Tranquil Waters!", "#F3B714");
+                    UIManager.Instance.AddMessage($"IT'S THE WEAPON OF FURINA DE FONTAINE!", "#F3B714");
                 }
         }
     }

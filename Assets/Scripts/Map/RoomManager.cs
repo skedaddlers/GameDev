@@ -48,6 +48,20 @@ public class RoomManager : MonoBehaviour
         ActivateRooms();      
     }
 
+
+    public RectangularRoom GetRoomWithEntity(Entity entity)
+    {
+        foreach (RectangularRoom room in rooms)
+        {
+            if (room.Entities.Contains(entity))
+            {
+                return room;
+            }
+        }
+        return null;
+    }
+
+
     public void AssignEntitiesToRooms()
     {
         foreach (RectangularRoom room in rooms)
@@ -147,6 +161,19 @@ public class RoomManager : MonoBehaviour
                     }
                 }
             }
+        }
+    }
+
+    private bool SetWallTileIfEmpty(Vector3Int position, int tileIndex)
+    {
+        if(MapManager.Instance.FloorMap.GetTile(new Vector3Int(position.x, position.y, 0)))
+        {
+            return true;
+        }
+        else
+        {
+            MapManager.Instance.ObstacleMap.SetTile(new Vector3Int(position.x, position.y, 0), MapManager.Instance.WallTile[tileIndex]);
+            return false;
         }
     }
 

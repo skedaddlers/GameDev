@@ -79,17 +79,19 @@ sealed class ProcGen : MonoBehaviour
             }
             else{
 
-            }
-            PlaceEntities(newRoom, minMonstersPerRoom, maxMonstersPerRoom, maxItemsPerRoom);
-            
+            }            
             newRoom.RoomNumber = roomNum;
             RoomManager.Instance.AddRoom(newRoom);
-            
         }
         RoomManager.Instance.Rooms[0].IsCleared = true;
         MapManager.Instance.CreateEntity("Player", RoomManager.Instance.Rooms[0].Center());
         MapManager.Instance.CreateEntity("Dull Blade", RoomManager.Instance.Rooms[0].Center());
         CreateBossRoom(RoomManager.Instance.Rooms);
+        CreateShopRooms(RoomManager.Instance.Rooms,  maxRooms/4);
+        for(int i = 1; i < RoomManager.Instance.Rooms.Count; i++)
+        {
+            PlaceEntities(RoomManager.Instance.Rooms[i], minMonstersPerRoom, maxMonstersPerRoom, maxItemsPerRoom);
+        }
         RoomManager.Instance.AssignEntitiesToRooms();
     }
 
@@ -147,15 +149,11 @@ sealed class ProcGen : MonoBehaviour
 
     private void PlaceEntities(RectangularRoom newRoom, int minMonsters, int maxMonsters, int maxItems)
     {
-        //Check if the room is the first room
-        if(RoomManager.Instance.Rooms.Count == 0)
+        if(newRoom.IsBossRoom || newRoom.IsShopRoom )
         {
             return;
         }
-        // if(newRoom == MapManager.Instance.Rooms[0])
-        // {
-        //     return;
-        // }
+
         int numMonsters = Random.Range(minMonsters, maxMonsters + 1);
         int numItems = Random.Range(0, maxItems + 1);
 
@@ -332,5 +330,35 @@ sealed class ProcGen : MonoBehaviour
         farthestRoom.IsBossRoom = true;
         MapManager.Instance.CreateEntity("Boss", farthestRoom.Center());
         Debug.Log("Boss room created");
+    }
+
+    private void CreateShopRooms(List<RectangularRoom> rooms, int totalShopRooms)
+    {
+        //search for room nearest to the player
+        RectangularRoom nearestRoom = rooms[0];
+        float minDistance = Mathf.Infinity;
+        foreach(RectangularRoom room in rooms)
+        {
+            if(room == rooms[0])
+            {
+                continue;
+            }
+            float distance = Vector2.Distance(RoomManager.Instance.Rooms[0].Center(), room.Center());
+            if(distance < minDistance)
+            {
+                minDistance = distance;
+                nearestRoom = room;
+            }
+        }
+        nearestRoom.IsShopRoom = true;
+        for(int i = 1; i < totalShopRooms; i++)
+        {
+            if(rooms[Random.Range(0, rooms.Count)].IsBossRoom || rooms[Random.Range(0, rooms.Count)].IsShopRoom)
+            {
+                i--;
+                continue;
+            }
+            rooms[Random.Range(0, rooms.Count)].IsShopRoom = true;
+        }
     }
 }

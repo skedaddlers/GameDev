@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class RectangularRoom : MonoBehaviour
+public class RectangularRoom
 {
     // Start is called before the first frame update
     [SerializeField] private int roomNumber;
     [SerializeField] private bool isBossRoom = false;
+    [SerializeField] private bool isShopRoom = false;
     [SerializeField] private bool containsPlayer = false;
     [SerializeField] private bool isCleared = false;
     [SerializeField] private int x, y, width, height;
@@ -18,6 +19,7 @@ public class RectangularRoom : MonoBehaviour
     public int Height { get => height; set => height = value; }
     public int RoomNumber { get => roomNumber; set => roomNumber = value; }
     public bool IsBossRoom { get => isBossRoom; set => isBossRoom = value; }
+    public bool IsShopRoom { get => isShopRoom; set => isShopRoom = value; }
     public bool ContainsPlayer { get => containsPlayer; set => containsPlayer = value; }
     public bool IsCleared { get => isCleared; set => isCleared = value; }
     public List<Entity> Entities { get => entities; set => entities = value; }
