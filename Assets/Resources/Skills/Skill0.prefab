@@ -52,7 +52,7 @@ MonoBehaviour:
   onCooldown: 0
   isActive: 0
   remainingCooldown: 0
-  remainingDuration: 0
+  remainingDuration: 10
   cost: 40
   description: Summons Furina's Salon Members to attack enemies, they're adorable!
 --- !u!212 &4461305108886406478

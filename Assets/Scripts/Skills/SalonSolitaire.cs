@@ -10,10 +10,10 @@ public class SalonSolitaire : Skill
             remainingDuration -= Time.deltaTime;
             if(remainingDuration <= 0f)
             {
+                DestroySalonMembers();
                 remainingDuration = duration;
                 isActive = false;
                 UIManager.Instance.AddMessage($"{skillName} has ended!", "#00FFFF");
-                DestroySalonMembers();
             }
         }
     }

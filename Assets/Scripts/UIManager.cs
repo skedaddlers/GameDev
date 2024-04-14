@@ -335,7 +335,7 @@ public class UIManager : MonoBehaviour
                 GameObject skill = shopMenuContentSkill.transform.GetChild(i).gameObject;
                 skill.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "";
                 skill.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "";
-
+                
                 skill.GetComponent<Button>().onClick.RemoveAllListeners();
                 skill.SetActive(false);
             }
@@ -343,9 +343,12 @@ public class UIManager : MonoBehaviour
             for(int i = 0; i < shopMenuContentSkill.transform.childCount; i++){
                 int index = i;
                 GameObject skill = shopMenuContentSkill.transform.GetChild(i).gameObject;
-                skill.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = $"{seller.SkillsForSale[i].SkillName} - {seller.SkillsForSale[i].Cost} coins";
+                skill.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = $"{seller.SkillsForSale[i].SkillName} - {seller.SkillsForSale[i].Cost} mora";
                 skill.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = $"{seller.SkillsForSale[i].Description}";
-                if(skill.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text != "Sold Out!"){
+                if(seller.GetSoldOutSkill(index)){
+                    skill.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = "Sold Out!";
+                }
+                else{
                     skill.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = "";
                 }
                 skill.GetComponent<Button>().onClick.AddListener(() => {
@@ -353,10 +356,21 @@ public class UIManager : MonoBehaviour
                         AddMessage("This skill is sold out!", "#FF0000");
                         return;
                     }
-                    Debug.Log($"Buying skill {index}");
                     Actor player = GameManager.Instance.Actors[0];
+                    if(player.GetComponent<Player>().Mora < seller.SkillsForSale[index].Cost){
+                        AddMessage("You don't have enough mora!", "#FF0000");
+                        return;
+                    }
+                    foreach(Skill skill1 in SkillManager.Instance.Skills){
+                        if(skill1.SkillName == seller.SkillsForSale[index].SkillName){
+                            AddMessage("You already have this skill!", "#FF0000");
+                            return;
+                        }
+                    }
+                    Debug.Log($"Buying skill {index}");
                     Action.BuySkill(player, seller.SkillsForSale[index]);
                     DisplayShopMenuContent(seller);
+                    seller.SetSoldOutSkill(index, true);
                     // disable the skill button
                     skill.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = "Sold Out!";
                 });
@@ -377,9 +391,12 @@ public class UIManager : MonoBehaviour
             for(int i = 0; i < shopMenuContentWeapon.transform.childCount; i++){
                 int index = i;
                 GameObject weapon = shopMenuContentWeapon.transform.GetChild(i).gameObject;
-                weapon.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = $"{seller.WeaponsForSale[i].WeaponName} - {seller.WeaponsForSale[i].Cost} coins";
+                weapon.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = $"{seller.WeaponsForSale[i].WeaponName} - {seller.WeaponsForSale[i].Cost} mora";
                 weapon.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = $"{seller.WeaponsForSale[i].Description}";
-                if(weapon.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text != "Sold Out!"){
+                if(seller.GetSoldOutWeapon(index)){
+                    weapon.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = "Sold Out!";
+                }
+                else{
                     weapon.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = "";
                 }
                 weapon.GetComponent<Button>().onClick.AddListener(() => {
@@ -387,11 +404,22 @@ public class UIManager : MonoBehaviour
                         AddMessage("This weapon is sold out!", "#FF0000");
                         return;
                     }
-                    Debug.Log($"Buying weapon {index}");
                     Actor player = GameManager.Instance.Actors[0];
+                    if(player.GetComponent<Player>().Mora < seller.WeaponsForSale[index].Cost){
+                        AddMessage("You don't have enough mora!", "#FF0000");
+                        return;
+                    }
+                    if(player.GetComponent<Inventory>().Weapon != null){
+                        if(player.GetComponent<Inventory>().Weapon.WeaponName == seller.WeaponsForSale[index].WeaponName){
+                            AddMessage("You already have this weapon equipped!", "#FF0000");
+                            return;
+                        }
+                    }
+                    Debug.Log($"Buying weapon {index}");
                     Action.BuyWeapon(player, seller.WeaponsForSale[index]);
                     DisplayShopMenuContent(seller);
                     // disable the weapon button
+                    seller.SetSoldOutWeapon(index, true);
                     weapon.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = "Sold Out!";
                 });
                 SpriteRenderer spriteRenderer = seller.WeaponsForSale[i].GetComponent<SpriteRenderer>();
@@ -529,6 +557,10 @@ public class UIManager : MonoBehaviour
     public void UpdateCooldown(int index, float cooldown){
         GameObject skill = skillsContent.transform.GetChild(index).gameObject;
         int cooldownInt = Mathf.CeilToInt(cooldown);
+        if(cooldownInt <= 0){
+            skill.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "";
+            return;
+        }
         skill.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = $"{cooldownInt}";
     }
 

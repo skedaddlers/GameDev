@@ -22,13 +22,13 @@ public class SingerOfManyWaters : Skill
 
     private void DestroySinger()
     {
-        foreach (Entity entity in GameManager.Instance.Entities)
+        for (int i = GameManager.Instance.Entities.Count - 1; i >= 0; i--)
         {
+            Entity entity = GameManager.Instance.Entities[i];
             if (entity.GetComponent<Singer>())
             {
                 GameObject.Destroy(entity.gameObject);
-                GameManager.Instance.Entities.Remove(entity);
-                
+                GameManager.Instance.Entities.RemoveAt(i);
             }
         }
     }

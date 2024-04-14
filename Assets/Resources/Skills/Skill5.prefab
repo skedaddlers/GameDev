@@ -52,7 +52,7 @@ MonoBehaviour:
   onCooldown: 0
   isActive: 0
   remainingCooldown: 0
-  remainingDuration: 0
+  remainingDuration: 3.5
   cost: 80
   description: Alas. for you sinner to cry is normal. your tears will damage all
     enemies in the screen overtime!

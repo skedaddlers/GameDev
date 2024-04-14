@@ -12,6 +12,9 @@ public class Seller : Entity
     [SerializeField] private int amountOfSkillsForSale = 3;
     [SerializeField] private List<Weapon> weaponsForSale = new List<Weapon>();
     [SerializeField] private int amountOfWeaponsForSale = 3;
+    //check for sold out
+    [SerializeField] private bool[] soldOutSkill = new bool[3];
+    [SerializeField] private bool[] soldOutWeapon = new bool[3];
 
     public List<Skill> SkillsForSale { get => skillsForSale; set => skillsForSale = value; }
     public int AmountOfSkillsForSale { get => amountOfSkillsForSale; set => amountOfSkillsForSale = value; }
@@ -31,6 +34,26 @@ public class Seller : Entity
     public void AddWeaponForSale(Weapon weapon)
     {
         weaponsForSale.Add(weapon);
+    }
+
+    public void SetSoldOutSkill(int index, bool value)
+    {
+        soldOutSkill[index] = value;
+    }
+
+    public void SetSoldOutWeapon(int index, bool value)
+    {
+        soldOutWeapon[index] = value;
+    }
+
+    public bool GetSoldOutSkill(int index)
+    {
+        return soldOutSkill[index];
+    }
+    
+    public bool GetSoldOutWeapon(int index)
+    {
+        return soldOutWeapon[index];
     }
 
     public bool AlreadyHasSkill(string name)

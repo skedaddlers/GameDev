@@ -50,9 +50,9 @@ MonoBehaviour:
   cooldown: 20
   duration: 10
   onCooldown: 0
-  isActive: 1
+  isActive: 0
   remainingCooldown: 0
-  remainingDuration: 0
+  remainingDuration: 10
   cost: 50
   description: Your HP will be reduced overtime, but your power will be doubled!
     And you'll also heal when you defeat enemies! Let My Name Echo In Song!
