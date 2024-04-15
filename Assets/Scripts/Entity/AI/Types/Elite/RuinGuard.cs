@@ -69,11 +69,11 @@ public class RuinGuard : EliteEnemy
                 }
                 else{
                     if(targetDistance <= 1f){
-                        if(attackTimer > 0){
+                        if(attackTimer >= attackCooldown){
+                            Action.MeleeAction(GetComponent<Actor>(), fighter.Target);
+                            attackTimer = attackCooldown;
                             return;
                         }
-                        Action.MeleeAction(GetComponent<Actor>(), fighter.Target);
-                        attackTimer = attackCooldown;
                     }
                     else{
                         MoveAlongPath(targetPos, GetComponent<Fighter>().MovementSpeed);
@@ -83,8 +83,8 @@ public class RuinGuard : EliteEnemy
                         isPerformingSpecialAttack = true;
                     }
                 }  
-            }
-
+            }   
+            attackTimer += Time.deltaTime;
             specialAttackTimer += Time.deltaTime;
             
         }

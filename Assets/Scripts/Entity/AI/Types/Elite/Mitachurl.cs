@@ -41,17 +41,17 @@ public class Mitachurl : EliteEnemy
                 float targetDistance = Vector3.Distance(transform.position, fighter.Target.transform.position);
 
                 if(targetDistance <= 1f){
-                    if(attackTimer > 0){
+                    if(attackTimer > attackCooldown){
+                        Action.MeleeAction(GetComponent<Actor>(), fighter.Target);
+                        attackTimer = attackCooldown;
                         return;
                     }
-                    Action.MeleeAction(GetComponent<Actor>(), fighter.Target);
-                    attackTimer = attackCooldown;
                 }
                 else{
                     MoveAlongPath(targetPos, GetComponent<Fighter>().MovementSpeed);
                 }
             }
-
+            attackTimer += Time.deltaTime;
             dashTimer += Time.deltaTime;
             if(dashTimer >= dashRate){
                 Dash();

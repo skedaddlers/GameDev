@@ -47,6 +47,7 @@ public class Inventory : MonoBehaviour
             GameManager.Instance.RemoveEntity(weapon);
             UIManager.Instance.AddMessage($"You equipped the {wp.WeaponName}.", "#00FF00");
         }
+        // UIManager.Instance.UpdateWeapon(GetComponent<Actor>(), weapon);
     }
 
     public void DropWeapon()

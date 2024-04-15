@@ -98,11 +98,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blocksMovement: 0
-  speed: 3
+  speed: 4
   damage: 2
   rotation: 0
   direction: {x: 0, y: 0, z: 0}
   isPlayerProjectile: 0
-  isAOE: 0
+  isAOE: 1
   aoeRadius: 1
   targetPosition: {x: 0, y: 0, z: 0}

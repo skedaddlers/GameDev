@@ -81,10 +81,12 @@ public class Action
             UIManager.Instance.AddMessage("You don't have enough gold!", "#FF0000");
             return;
         }
+        skill.gameObject.SetActive(true);
+        skill.transform.SetParent(actor.transform);
         actor.GetComponent<Player>().Mora -= skill.Cost;
         actor.GetComponent<Player>().AddSkill(skill);
         UIManager.Instance.AddMessage($"You bought the {skill.SkillName} skill!", "#00FF00");
-        UIManager.Instance.ToggleShopMenu(null);
+        // UIManager.Instance.ToggleShopMenu(null);
     }
 
     static public void BuyWeapon(Actor actor, Weapon weapon){
@@ -92,13 +94,72 @@ public class Action
             UIManager.Instance.AddMessage("You don't have enough gold!", "#FF0000");
             return;
         }
-        actor.GetComponent<Player>().Mora -= weapon.Cost;
-        actor.Inventory.EquipWeapon(weapon);
-        UIManager.Instance.UpdateWeapon(actor);
         UIManager.Instance.AddMessage($"You bought the {weapon.WeaponName}!", "#00FF00");
-        UIManager.Instance.ToggleShopMenu(null);
+        // weapon.gameObject.SetActive(true);
+        actor.GetComponent<Player>().Mora -= weapon.Cost;
+        GameObject newWeapon = MapManager.Instance.CreateEntity(weapon.name, actor.transform.position);
+        // actor.Inventory.EquipWeapon(newWeapon.GetComponent<Weapon>());
+        // UIManager.Instance.UpdateWeapon(actor);
+        // UIManager.Instance.ToggleShopMenu(null);
     }
 
+    static public void CheckForCollision(Projectile projectile){
+        Actor target = null;
+        if(projectile.GetComponent<Projectile>().IsPlayerProjectile){
+            target = GameManager.Instance.GetBlockingActorAtLocation(projectile.transform.position);
+        }
+        else{
+            target = GameManager.Instance.GetBlockingPlayerAtLocation(projectile.transform.position);
+        }
+        Vector3Int gridPosition = MapManager.Instance.FloorMap.WorldToCell(projectile.transform.position);
+        if(!MapManager.Instance.InBounds((int)gridPosition.x, (int)gridPosition.y) || MapManager.Instance.ObstacleMap.HasTile(gridPosition)){
+            GameManager.Instance.RemoveEntity(projectile);
+            GameObject.Destroy(projectile.gameObject);
+            return;
+        }
+
+        if(target != null){
+            if(projectile.GetComponent<Projectile>().IsAOE){
+                AOEAttack(projectile);
+            }
+            else{        
+                int damage = projectile.GetComponent<Projectile>().Damage;
+                int targetDefense = target.GetComponent<Fighter>().Defense;
+                int damageDealt = (int)(damage * (0.5f + (1 - (targetDefense / 20f))/2));
+                target.GetComponent<Fighter>().TakeDamage(damageDealt);
+                Debug.Log($"Original damage: {damage}, Damage dealt: {damageDealt}");
+                UIManager.Instance.AddMessage($"{target.name} takes a {damageDealt} damage from the {projectile.name}!", "#FF0000");
+                if(projectile.GetComponent<Flame>()){
+                    GameObject burnEffect = GameObject.Instantiate(Resources.Load<GameObject>("Entities/Effect/Burn"), target.transform.position, Quaternion.identity);
+                    burnEffect.GetComponent<Burn>().Duration = projectile.GetComponent<Flame>().BurnDuration;
+                    burnEffect.GetComponent<Burn>().Damage = projectile.GetComponent<Flame>().BurnDamage;
+                    burnEffect.GetComponent<Burn>().ApplyRate = projectile.GetComponent<Flame>().BurnRate;
+                    burnEffect.GetComponent<Burn>().Fighter = target.GetComponent<Fighter>();
+                    target.GetComponent<Fighter>().ApplyEffect(burnEffect.GetComponent<StatusEffect>());
+                }
+            }
+            GameManager.Instance.RemoveEntity(projectile);
+            GameObject.Destroy(projectile.gameObject);
+        }
+    }
+
+    static public void AOEAttack(Projectile projectile){
+        foreach(Actor target in GameManager.Instance.Actors) {
+            if ((projectile.GetComponent<Projectile>().IsPlayerProjectile && target.GetComponent<Player>()) 
+                || (!projectile.GetComponent<Projectile>().IsPlayerProjectile && !target.GetComponent<Player>()))
+                continue;
+
+            float distance = Vector3.Distance(projectile.transform.position, target.transform.position);
+            if (distance <= projectile.GetComponent<Projectile>().AoeRadius) {
+                int damage = projectile.GetComponent<Projectile>().Damage;
+                int targetDefense = target.GetComponent<Fighter>().Defense;
+                int damageDealt = (int)(damage * (0.5f + (1 - (targetDefense / 20f))/2));
+                target.GetComponent<Fighter>().TakeDamage(damageDealt);
+                Debug.Log($"Original damage: {damage}, Damage dealt: {damageDealt}");   
+                UIManager.Instance.AddMessage($"{target.name} takes a {damageDealt} damage because of the AOE from the {projectile.name}!", "#FF0000");
+            }
+        }
+    }
 
     static public void SlashAction(Actor actor, Vector3 direction){
         // slashes in a fan shape area, dealing aoe damage to the enemies in the area
@@ -106,8 +167,9 @@ public class Action
         int damage = weapon.Damage + actor.GetComponent<Fighter>().Power;
         float area = weapon.Radius;
         float fanAngle = 60f;
-        
-        foreach(Actor target in GameManager.Instance.Actors){
+
+        for(int i = 0; i < GameManager.Instance.Actors.Count; i++){
+            Actor target = GameManager.Instance.Actors[i];
             if(target == actor)
                 continue;
             Vector3 targetDirection = target.transform.position - actor.transform.position;
@@ -128,17 +190,38 @@ public class Action
                 target.GetComponent<Fighter>().TakeDamage(damageDealt);
             }
         }
+        
+        // foreach(Actor target in GameManager.Instance.Actors){
+        //     if(target == actor)
+        //         continue;
+        //     Vector3 targetDirection = target.transform.position - actor.transform.position;
+        //     float angle = Vector3.Angle(direction, targetDirection);
+        //     if(angle < fanAngle && targetDirection.magnitude < area){  
+        //         int damageDealt = damage;
+        //         if(actor.GetComponent<Player>()){
+        //             if(Random.value < actor.GetComponent<Player>().CritRate){
+        //                 damageDealt = (int)(damageDealt * actor.GetComponent<Player>().CritDamage);
+        //                 UIManager.Instance.AddMessage($"{actor.name} critically slashes {target.name} for {damageDealt} damage!", "#FFFFFF");
+        //             }
+        //             else{
+        //                 int targetDefense = target.GetComponent<Fighter>().Defense;
+        //                 damageDealt = (int)(damageDealt * (0.5f + (1 - (targetDefense / 20f))/2));
+        //                 UIManager.Instance.AddMessage($"{actor.name} slashes {target.name} for {damageDealt} damage!", "#d1a3a4");
+        //             }
+        //         }
+        //         target.GetComponent<Fighter>().TakeDamage(damageDealt);
+        //     }
+        // }
 
         UIManager.Instance.DrawFanSprite(actor.transform.position, direction, fanAngle, area);
     }
 
     static public void RangedAction(Actor actor, Vector3 direction){
         if(actor.GetComponent<Player>()){
-            GameObject proj = MapManager.Instance.CreateProjectile("Bubble" ,actor.transform.position, direction, actor.GetComponent<Fighter>().Power, true);
-            proj.gameObject.SetActive(true);
+            MapManager.Instance.CreateProjectile("Bubble" ,actor.transform.position, direction, actor.GetComponent<Fighter>().Power, true);
         }
         else{
-            GameObject proj = MapManager.Instance.CreateProjectile("Bubble", actor.transform.position, direction, actor.GetComponent<Fighter>().Power, false);
+            MapManager.Instance.CreateProjectile("Bubble", actor.transform.position, direction, actor.GetComponent<Fighter>().Power, false);
         }
 
     }

@@ -516,7 +516,7 @@ public class UIManager : MonoBehaviour
         eventSystem.SetSelectedGameObject(menuContent.transform.GetChild(0).gameObject);
     }
 
-    public void UpdateWeapon(Actor player){
+    public void UpdateWeapon(Actor player, Weapon wp = null){
         if(isMenuOpen){
             weaponImage.gameObject.SetActive(false);
         }
@@ -527,6 +527,10 @@ public class UIManager : MonoBehaviour
             weaponImage.GetComponent<Image>().sprite = player.GetComponent<Inventory>().Weapon.GetComponent<SpriteRenderer>().sprite;
         }
         else{
+            if(wp != null){
+                weaponImage.GetComponent<Image>().sprite = wp.GetComponent<SpriteRenderer>().sprite;
+            }
+            else
             weaponImage.GetComponent<Image>().sprite = defaultWeaponSprite;
         }
     }

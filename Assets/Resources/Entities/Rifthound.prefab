@@ -206,6 +206,7 @@ MonoBehaviour:
   canTakeDamage: 0
   attackCooldown: 1.5
   expGiven: 40
+  moraGiven: 45
   attackTimer: 0.1
   type: 3
   chanceToDropWeapon: 0

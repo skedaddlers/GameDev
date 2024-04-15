@@ -35,11 +35,11 @@ public class Rifthound : EliteEnemy
                 float targetDistance = Vector3.Distance(transform.position, fighter.Target.transform.position);
 
                 if(targetDistance <= 1f){
-                    if(attackTimer > 0){
+                    if(attackTImer >= attackCooldown){
+                        BleedAttack(fighter.Target);
+                        attackTimer = attackCooldown;
                         return;
                     }
-                    BleedAttack(fighter.Target);
-                    attackTimer = attackCooldown;
                 }
                 else{
                     MoveAlongPath(targetPos, GetComponent<Fighter>().MovementSpeed);
@@ -50,7 +50,7 @@ public class Rifthound : EliteEnemy
                     teleportTimer = 0;
                 }
             }
-
+            attackTimer += Time.deltaTime;
             teleportTimer += Time.deltaTime;
             
         }

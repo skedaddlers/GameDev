@@ -98,7 +98,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blocksMovement: 0
-  speed: 0
+  speed: 11
   damage: 5
   rotation: 0
   direction: {x: 0, y: 0, z: 0}
@@ -106,6 +106,6 @@ MonoBehaviour:
   isAOE: 0
   aoeRadius: 1
   targetPosition: {x: 0, y: 0, z: 0}
-  burnDuration: 0
-  burnRate: 0
-  burnDamage: 0
+  burnDuration: 4
+  burnRate: 2
+  burnDamage: 1

@@ -368,6 +368,7 @@ sealed class ProcGen : MonoBehaviour
                 continue;
             }
             sellerComponent.AddSkillForSale(skill1.GetComponent<Skill>());
+            skill1.gameObject.SetActive(false);
             skill1.transform.SetParent(firstSeller.transform);
             if(sellerComponent.SkillsForSale.Count == sellerComponent.AmountOfSkillsForSale){
                 break;
@@ -385,6 +386,7 @@ sealed class ProcGen : MonoBehaviour
                 continue;
             }
             sellerComponent.AddWeaponForSale(weapon.GetComponent<Weapon>());
+            weapon.gameObject.SetActive(false);
             weapon.transform.SetParent(firstSeller.transform);
             if(sellerComponent.WeaponsForSale.Count == sellerComponent.AmountOfWeaponsForSale){
                 break;
@@ -414,7 +416,9 @@ sealed class ProcGen : MonoBehaviour
                         continue;
                     }
                     sellerComponent2.AddSkillForSale(skill.GetComponent<Skill>());
+                    skill.gameObject.SetActive(false);
                     skill.transform.SetParent(seller.transform);
+
                 }
                 allSkillsAvailable = true;
             }
@@ -430,6 +434,7 @@ sealed class ProcGen : MonoBehaviour
                         continue;
                     }
                     sellerComponent2.AddSkillForSale(skill.GetComponent<Skill>());
+                    skill.gameObject.SetActive(false);
                     skill.transform.SetParent(seller.transform);
                     if(sellerComponent2.SkillsForSale.Count == sellerComponent2.AmountOfSkillsForSale){
                         break;
@@ -448,6 +453,7 @@ sealed class ProcGen : MonoBehaviour
                     continue;
                 }
                 sellerComponent2.AddWeaponForSale(weapon.GetComponent<Weapon>());
+                weapon.gameObject.SetActive(false);
                 weapon.transform.SetParent(seller.transform);
                 if(sellerComponent2.WeaponsForSale.Count == sellerComponent2.AmountOfWeaponsForSale){
                     break;

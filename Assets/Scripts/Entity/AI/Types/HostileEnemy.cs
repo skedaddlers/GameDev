@@ -26,11 +26,6 @@ public class HostileEnemy : Ai
         AStar = GetComponent<AStar>();
     }
 
-    private void Update(){
-        if(attackTimer > 0){
-            attackTimer -= Time.deltaTime;
-        }
-    }
 
     public virtual void RunAI(){
         
@@ -53,14 +48,11 @@ public class HostileEnemy : Ai
                 float targetDistance = Vector3.Distance(transform.position, fighter.Target.transform.position);
 
                 if(targetDistance <= 1f){
-                    if(attackTimer > 0){
-                        // Debug.Log(attackTimer);
+                    if(attackTimer > attackCooldown){
+                        Action.MeleeAction(GetComponent<Actor>(), fighter.Target);
+                        attackTimer = 0;
                         return;
                     }
-                    // Debug.Log("Attacking");
-                    Action.MeleeAction(GetComponent<Actor>(), fighter.Target);
-                    attackTimer = attackCooldown;
-                    return;
                 }
                 else{
                     
@@ -73,6 +65,7 @@ public class HostileEnemy : Ai
                     return;
                 }
             }
+            attackTimer += Time.deltaTime;
         }
     }
 
