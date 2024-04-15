@@ -788,6 +788,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2699369110980815209, guid: aa8fa34288de3304eafaf0f90df5a799, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2798295614125122995, guid: aa8fa34288de3304eafaf0f90df5a799, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1036,6 +1040,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -278.99994
       objectReference: {fileID: 0}
+    - target: {fileID: 6718780820920274503, guid: aa8fa34288de3304eafaf0f90df5a799, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6943674899014408498, guid: aa8fa34288de3304eafaf0f90df5a799, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1070,11 +1078,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7327210021374821367, guid: aa8fa34288de3304eafaf0f90df5a799, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 48.07782
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7327210021374821367, guid: aa8fa34288de3304eafaf0f90df5a799, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 39.17401
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7402324885643700513, guid: aa8fa34288de3304eafaf0f90df5a799, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1086,6 +1094,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7402324885643700513, guid: aa8fa34288de3304eafaf0f90df5a799, type: 3}
       propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427077906157401633, guid: aa8fa34288de3304eafaf0f90df5a799, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7444674380315468268, guid: aa8fa34288de3304eafaf0f90df5a799, type: 3}

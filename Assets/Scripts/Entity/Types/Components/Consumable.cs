@@ -36,12 +36,12 @@ public class Consumable : MonoBehaviour
         int amountHealed = actor.GetComponent<Fighter>().Heal(amount);
 
         if(amountHealed > 0){
-            UIManager.Instance.AddMessage($"You consumed the {name} and healed for {amountHealed} HP!", "#00FF00");
+            UIManager.Instance.AddMessage($"You consumed the {name} and healed for {amountHealed} HP!", Utilz.GREEN);
             Consume(actor, item);
             return true;
         }
         else{
-            UIManager.Instance.AddMessage("You are already at full health!", "#FF0000");
+            UIManager.Instance.AddMessage("You are already at full health!", Utilz.RED);
             return false;
         }
     }

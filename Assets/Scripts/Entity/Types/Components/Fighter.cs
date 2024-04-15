@@ -102,7 +102,7 @@ public class Fighter : MonoBehaviour
                 UIManager.Instance.ShowDefeatScreen();
             }
             else{
-                UIManager.Instance.AddMessage($"{name} died!", "#FFa500");
+                UIManager.Instance.AddMessage($"{name} died!", "#FFA500");
             }
             GetComponent<Actor>().IsAlive = false;
         }

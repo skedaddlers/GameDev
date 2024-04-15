@@ -10,6 +10,11 @@ public class Bleed : StatusEffect
     public override void ApplyEffect()
     {
         fighter.Hp -= damage;
-        UIManager.Instance.AddMessage($"{fighter.name} is bleeding for {damage} damage!", "#FF0000");
+        UIManager.Instance.AddMessage($"{fighter.name} is bleeding for {damage} damage!", Utilz.RED);
+    }
+
+    public override void EndEffect()
+    {
+        UIManager.Instance.AddMessage($"{fighter.name} has stopped bleeding.", Utilz.YELLOW);
     }
 }

@@ -22,7 +22,7 @@ public class Action
             }
             else if(GameManager.Instance.Entities[i].GetComponent<Item>()){
                 if(actor.Inventory.Items.Count >= actor.Inventory.Capacity){
-                    UIManager.Instance.AddMessage("Your inventory is full!", "#FF0000");
+                    UIManager.Instance.AddMessage("Your inventory is full!", Utilz.RED);
                     return;
                 }
                 Item item = GameManager.Instance.Entities[i].GetComponent<Item>();
@@ -78,23 +78,22 @@ public class Action
 
     static public void BuySkill(Actor actor, Skill skill){
         if(actor.GetComponent<Player>().Mora < skill.Cost){
-            UIManager.Instance.AddMessage("You don't have enough gold!", "#FF0000");
+            UIManager.Instance.AddMessage("You don't have enough gold!", Utilz.RED);
             return;
         }
-        skill.gameObject.SetActive(true);
         skill.transform.SetParent(actor.transform);
         actor.GetComponent<Player>().Mora -= skill.Cost;
         actor.GetComponent<Player>().AddSkill(skill);
-        UIManager.Instance.AddMessage($"You bought the {skill.SkillName} skill!", "#00FF00");
+        UIManager.Instance.AddMessage($"You bought the {skill.SkillName} skill!", Utilz.GREEN);
         // UIManager.Instance.ToggleShopMenu(null);
     }
 
     static public void BuyWeapon(Actor actor, Weapon weapon){
         if(actor.GetComponent<Player>().Mora < weapon.Cost){
-            UIManager.Instance.AddMessage("You don't have enough gold!", "#FF0000");
+            UIManager.Instance.AddMessage("You don't have enough gold!", Utilz.RED);
             return;
         }
-        UIManager.Instance.AddMessage($"You bought the {weapon.WeaponName}!", "#00FF00");
+        UIManager.Instance.AddMessage($"You bought the {weapon.WeaponName}!", Utilz.GREEN);
         // weapon.gameObject.SetActive(true);
         actor.GetComponent<Player>().Mora -= weapon.Cost;
         GameObject newWeapon = MapManager.Instance.CreateEntity(weapon.name, actor.transform.position);
@@ -127,8 +126,8 @@ public class Action
                 int targetDefense = target.GetComponent<Fighter>().Defense;
                 int damageDealt = (int)(damage * (0.5f + (1 - (targetDefense / 20f))/2));
                 target.GetComponent<Fighter>().TakeDamage(damageDealt);
-                Debug.Log($"Original damage: {damage}, Damage dealt: {damageDealt}");
-                UIManager.Instance.AddMessage($"{target.name} takes a {damageDealt} damage from the {projectile.name}!", "#FF0000");
+                // Debug.Log($"Original damage: {damage}, Damage dealt: {damageDealt}");
+                // UIManager.Instance.AddMessage($"{target.name} takes a {damageDealt} damage from the {projectile.name}!", "#FF0000");
                 if(projectile.GetComponent<Flame>()){
                     GameObject burnEffect = GameObject.Instantiate(Resources.Load<GameObject>("Entities/Effect/Burn"), target.transform.position, Quaternion.identity);
                     burnEffect.GetComponent<Burn>().Duration = projectile.GetComponent<Flame>().BurnDuration;
@@ -155,8 +154,8 @@ public class Action
                 int targetDefense = target.GetComponent<Fighter>().Defense;
                 int damageDealt = (int)(damage * (0.5f + (1 - (targetDefense / 20f))/2));
                 target.GetComponent<Fighter>().TakeDamage(damageDealt);
-                Debug.Log($"Original damage: {damage}, Damage dealt: {damageDealt}");   
-                UIManager.Instance.AddMessage($"{target.name} takes a {damageDealt} damage because of the AOE from the {projectile.name}!", "#FF0000");
+                // Debug.Log($"Original damage: {damage}, Damage dealt: {damageDealt}");   
+                UIManager.Instance.AddMessage($"{target.name} takes a {damageDealt} damage because of the AOE from the {projectile.name}!", Utilz.RED);
             }
         }
     }
@@ -179,12 +178,12 @@ public class Action
                 if(actor.GetComponent<Player>()){
                     if(Random.value < actor.GetComponent<Player>().CritRate){
                         damageDealt = (int)(damageDealt * actor.GetComponent<Player>().CritDamage);
-                        UIManager.Instance.AddMessage($"{actor.name} critically slashes {target.name} for {damageDealt} damage!", "#FFFFFF");
+                        UIManager.Instance.AddMessage($"{actor.name} critically slashes {target.name} for {damageDealt} damage!", Utilz.ORANGE);
                     }
                     else{
                         int targetDefense = target.GetComponent<Fighter>().Defense;
                         damageDealt = (int)(damageDealt * (0.5f + (1 - (targetDefense / 20f))/2));
-                        UIManager.Instance.AddMessage($"{actor.name} slashes {target.name} for {damageDealt} damage!", "#d1a3a4");
+                        // UIManager.Instance.AddMessage($"{actor.name} slashes {target.name} for {damageDealt} damage!",Utilz.RED);
                     }
                 }
                 target.GetComponent<Fighter>().TakeDamage(damageDealt);
@@ -233,32 +232,24 @@ public class Action
 
         string attackDesc = $"{actor.name} attacks {target.name}";
 
-        string colorHex = "";
-
-        if(actor.GetComponent<Player>()){
-            colorHex = "#FFFFFF";
-        }
-        else{
-            colorHex = "#d1a3a4";
-        }
         if(damage > 0){
             if(target.GetComponent<Fighter>().ShieldHp > 0){
                 int shieldDamage = Mathf.Min(target.GetComponent<Fighter>().ShieldHp, damage);
                 int damageDealt = damage - shieldDamage;
                 if(shieldDamage >= damage){
-                    UIManager.Instance.AddMessage($"{attackDesc} but is blocked by the shield.", colorHex);
+                    UIManager.Instance.AddMessage($"{attackDesc} but is blocked by the shield.", Utilz.RED);
                 }
                 else{
-                    UIManager.Instance.AddMessage($"{attackDesc} and breaks the shield!", colorHex);
+                    UIManager.Instance.AddMessage($"{attackDesc} and breaks the shield!", Utilz.ORANGE);
                 }
             }
             else{
-                UIManager.Instance.AddMessage($"{attackDesc} for {damage} damage!", colorHex);
+                // UIManager.Instance.AddMessage($"{attackDesc} for {damage} damage!", colorHex);
             }
             target.GetComponent<Fighter>().TakeDamage(damage);
         }
         else{
-            UIManager.Instance.AddMessage($"{attackDesc} but does no damage.", colorHex);
+            // UIManager.Instance.AddMessage($"{attackDesc} but does no damage.", colorHex);
         }
 
         // GameManager.Instance.EndTurn();

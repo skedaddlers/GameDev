@@ -80,6 +80,7 @@ public class RuinGuard : EliteEnemy
                     }
 
                     if(specialAttackTimer >= specialAttackRate){
+                        UIManager.Instance.AddMessage("Ruin Guard is preparing to launch a missile!", "#FF0000");
                         isPerformingSpecialAttack = true;
                     }
                 }  
@@ -94,6 +95,7 @@ public class RuinGuard : EliteEnemy
         // perform special attack
         // ;aunch a missile projectile at the target position
         // deal massive damage to the player
+
         Vector3Int targetPos = MapManager.Instance.FloorMap.WorldToCell(player.transform.position);
         Vector2 direction = (new Vector2(targetPos.x - transform.position.x, targetPos.y - transform.position.y)).normalized;
         int damage = (int)(GetComponent<Fighter>().Power * 1.35f);

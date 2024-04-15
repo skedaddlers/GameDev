@@ -159,7 +159,7 @@ public class UIManager : MonoBehaviour
         if (ColorUtility.TryParseHtmlString(v, out color)) {
             return color;
         } else {
-            Debug.Log("GetColorFromHex: Could not parse color from string");
+            // Debug.Log("GetColorFromHex: Could not parse color from string");
             return Color.white;
         }
     }
@@ -379,7 +379,7 @@ public class UIManager : MonoBehaviour
                             return;
                         }
                     }
-                    Debug.Log($"Buying skill {index}");
+                    // Debug.Log($"Buying skill {index}");
                     Action.BuySkill(player, seller.SkillsForSale[index]);
                     DisplayShopMenuContent(seller);
                     seller.SetSoldOutSkill(index, true);
@@ -427,7 +427,7 @@ public class UIManager : MonoBehaviour
                             return;
                         }
                     }
-                    Debug.Log($"Buying weapon {index}");
+                    // Debug.Log($"Buying weapon {index}");
                     Action.BuyWeapon(player, seller.WeaponsForSale[index]);
                     DisplayShopMenuContent(seller);
                     // disable the weapon button
@@ -510,11 +510,11 @@ public class UIManager : MonoBehaviour
             menuContentChild.GetComponent<Button>().onClick.AddListener(() => {
                 if (menuContent == inventoryContent) 
                 {
-                    Debug.Log("Use item");
+                    // Debug.Log("Use item");
                     Action.UseAction(actor, i - 1);
                 } else if (menuContent == dropMenuContent) 
                 {
-                    Debug.Log("Drop item");
+                    // Debug.Log("Drop item");
                     Action.DropAction(actor, actor.Inventory.Items[i - 1]);
                 }
                 UpdateMenu(actor, menuContent);
@@ -557,7 +557,7 @@ public class UIManager : MonoBehaviour
                 GameObject skill = skillsContent.transform.GetChild(i).gameObject;
                 skill.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "";
                 skill.GetComponent<Button>().onClick.AddListener(() => {
-                    Debug.Log($"Using skill {index}");
+                    // Debug.Log($"Using skill {index}");
                     SkillManager.Instance.UseSkill(index);
                     UpdateSkills(actor, skillList);
                 });

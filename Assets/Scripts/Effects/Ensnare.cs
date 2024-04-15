@@ -10,13 +10,13 @@ public class Ensnare : StatusEffect{
         base.Start();
         fighterMovementSpeed = fighter.MovementSpeed;
         fighter.MovementSpeed = 0.1f;
-        UIManager.Instance.AddMessage($"{fighter.name} is ensnared!", "#FF0000");
+        UIManager.Instance.AddMessage($"{fighter.name} is ensnared!", Utilz.PURPLE);
     }
 
     public override void EndEffect()
     {
         fighter.MovementSpeed = fighterMovementSpeed;
-        UIManager.Instance.AddMessage($"{fighter.name} is no longer ensnared!", "#FF0000");
+        UIManager.Instance.AddMessage($"{fighter.name} is no longer ensnared!", Utilz.YELLOW);
     }
 
 }

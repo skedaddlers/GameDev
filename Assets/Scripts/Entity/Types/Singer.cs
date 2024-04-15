@@ -38,7 +38,7 @@ public class Singer : Entity
             Actor player = GameManager.Instance.Actors[0];
             if(Vector3.Distance(transform.position, player.transform.position) < healRadius){
                 player.GetComponent<Fighter>().Heal(healAmount);
-                UIManager.Instance.AddMessage("You were healed by the Singer of Many Waters!", "#00FFFF");
+                UIManager.Instance.AddMessage("You were healed by the Singer of Many Waters!", Utilz.BLUE);
             }
         }
     }

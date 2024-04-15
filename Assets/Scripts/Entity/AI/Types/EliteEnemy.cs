@@ -64,23 +64,23 @@ public class EliteEnemy : HostileEnemy
                 if(randomValue <= commonDropChance)
                 {
                     MapManager.Instance.CreateEntity("Weapon1", transform.position);
-                    UIManager.Instance.AddMessage($"The {name} dropped a Fleuve Cendre Ferryman!", "#17EA16");
+                    UIManager.Instance.AddMessage($"The {name} dropped a Fleuve Cendre Ferryman!", Utilz.GREEN);
                 }
                 else if(randomValue <= commonDropChance + rareDropChance)
                 {
                     MapManager.Instance.CreateEntity("Weapon2", transform.position);
-                    UIManager.Instance.AddMessage($"The {name} dropped a Festering Desire!", "#18C0E5");
+                    UIManager.Instance.AddMessage($"The {name} dropped a Festering Desire!", Utilz.BLUE);
                 }
                 else if(randomValue <= commonDropChance + rareDropChance + epicDropChance)
                 {
                     MapManager.Instance.CreateEntity("Weapon3", transform.position);
-                    UIManager.Instance.AddMessage($"The {name} dropped a Primordial Jade Cutter!", "#B818E5");
+                    UIManager.Instance.AddMessage($"The {name} dropped a Primordial Jade Cutter!", Utilz.PURPLE);
                 }
                 else
                 {
                     MapManager.Instance.CreateEntity("Weapon4", transform.position);
-                    UIManager.Instance.AddMessage($"The {name} dropped a Splendor of Tranquil Waters!", "#F3B714");
-                    UIManager.Instance.AddMessage($"IT'S THE WEAPON OF FURINA DE FONTAINE!", "#F3B714");
+                    UIManager.Instance.AddMessage($"The {name} dropped a Splendor of Tranquil Waters!", Utilz.ORANGE);
+                    UIManager.Instance.AddMessage($"IT'S THE WEAPON OF FURINA DE FONTAINE!", Utilz.ORANGE);
                 }
         }
     }

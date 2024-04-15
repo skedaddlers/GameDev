@@ -195,11 +195,11 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
             if(GetComponent<Inventory>().Weapon != null){
                 Weapon weapon = GetComponent<Inventory>().Weapon;
                 GetComponent<Inventory>().DropWeapon();
-                UIManager.Instance.AddMessage($"You dropped the {weapon.name}.", "#FF0000");
+                UIManager.Instance.AddMessage($"You dropped the {weapon.name}.", Utilz.RED);
                 UIManager.Instance.UpdateWeapon(GetComponent<Actor>());
             }
             else{
-                UIManager.Instance.AddMessage("You have no weapon equipped!", "#FF0000");
+                UIManager.Instance.AddMessage("You have no weapon equipped!", Utilz.RED);
             }
         }
     }
@@ -251,7 +251,7 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
                 if(GetComponent<Inventory>().Items.Count > 0)
                     UIManager.Instance.ToggleInventory(GetComponent<Actor>());
                 else
-                    UIManager.Instance.AddMessage("Your inventory is empty!", "#FF0000");
+                    UIManager.Instance.AddMessage("Your inventory is empty!", Utilz.RED);
             }
         }
     }
@@ -264,13 +264,15 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
                 if(GetComponent<Inventory>().Items.Count > 0)
                     UIManager.Instance.ToggleDropMenu(GetComponent<Actor>());
                 else
-                    UIManager.Instance.AddMessage("Your inventory is empty!", "#FF0000");
+                    UIManager.Instance.AddMessage("Your inventory is empty!", Utilz.RED);
             }
         }
     }
 
     private void FixedUpdate()
     {
+        if(GetComponent<Actor>().IsAlive == false)
+            return;
         if(GetComponent<Inventory>().Weapon != null){
             Weapon weapon = GetComponent<Inventory>().Weapon;
             weaponCd = weapon.AttackSpeed; 
@@ -358,7 +360,7 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
             level++;
             mana = maxMana;
             stamina = maxStamina;
-            UIManager.Instance.AddMessage($"You leveled up to level {level}!", "#00FF00");
+            UIManager.Instance.AddMessage($"You leveled up to level {level}!", Utilz.GREEN);
         }
     }
 
@@ -366,12 +368,12 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
     {
         foreach(Skill s in skillManager.Skills){
             if(s.SkillName == skill.SkillName){
-                UIManager.Instance.AddMessage($"You already know {skill.SkillName}!", "#FF0000");
+                UIManager.Instance.AddMessage($"You already know {skill.SkillName}!", Utilz.RED);
                 return;
             }
         }
         skillManager.AddSkill(skill);
-        UIManager.Instance.AddMessage($"You learned {skill.SkillName}!", "#00FF00");
+        UIManager.Instance.AddMessage($"You learned {skill.SkillName}!", Utilz.GREEN);
         UIManager.Instance.UpdateSkills(GetComponent<Actor>(), skillManager.Skills);
     }
 

@@ -10,7 +10,12 @@ public class Burn : StatusEffect
     public override void ApplyEffect()
     {
         fighter.TakeDamage(damage);
-        UIManager.Instance.AddMessage($"{fighter.name} is burning for {damage} damage!", "#FF0000");
+        UIManager.Instance.AddMessage($"{fighter.name} is burning for {damage} damage!", Utilz.RED);
+    }
+
+    public override void EndEffect()
+    {
+        UIManager.Instance.AddMessage($"{fighter.name} has stopped burning.", Utilz.YELLOW);
     }
 
 }

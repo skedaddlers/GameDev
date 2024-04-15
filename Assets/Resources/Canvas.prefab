@@ -5451,7 +5451,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8664145793778072194
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9944,7 +9944,6 @@ MonoBehaviour:
   dropMenuContent: {fileID: 7971820830059917551}
   skills: {fileID: 1102892827890890327}
   skillsContent: {fileID: 4809969433759888992}
-  skillPanel: {fileID: 7897408099314650142}
   escapeMenu: {fileID: 5286086475512505737}
   isEscapeMenuOpen: 0
   weaponImage: {fileID: 85601688}
@@ -14056,7 +14055,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 2.5287, y: 0}
+  m_AnchoredPosition: {x: 2.5286865, y: 0}
   m_SizeDelta: {x: -114.32, y: -136.0646}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7590354155086721302

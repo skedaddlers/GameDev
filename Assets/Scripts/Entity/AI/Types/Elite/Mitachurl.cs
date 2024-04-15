@@ -71,6 +71,7 @@ public class Mitachurl : EliteEnemy
 
     private void Dash()
     {
+        UIManager.Instance.AddMessage("Mitachurl is dashing at you!", "#FF0000");
         GetComponent<Fighter>().MovementSpeed = defaultSpeed * speedMultiplier;
     }
 }

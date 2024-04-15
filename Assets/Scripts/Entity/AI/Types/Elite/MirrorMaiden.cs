@@ -54,16 +54,16 @@ public class MirrorMaiden : EliteEnemy
         
         target.GetComponent<Fighter>().ApplyEffect(ensnare.GetComponent<StatusEffect>());
 
-        UIManager.Instance.AddMessage("Mirror Maiden used Ensnare!", "#FF0000");
+        UIManager.Instance.AddMessage("Mirror Maiden used Ensnare! Oh no, You're stuck!", "#FF0000");
     }
 
     private void TeleportAway(Actor target){
-        Debug.Log("Teleporting away");
+        // Debug.Log("Teleporting away");
         RectangularRoom room = RoomManager.Instance.GetRoomWithEntity(GetComponent<Entity>());    
 
         while(true){
-            float distanceToPlayer = Vector3.Distance(transform.position, target.transform.position);
             Vector3Int randomPos = new Vector3Int(Random.Range(room.X + 1, room.X + room.Width - 1), Random.Range(room.Y - 1, room.Y + room.Height + 1), 0);
+            float distanceToPlayer = Vector3.Distance(MapManager.Instance.FloorMap.CellToWorld(randomPos), target.transform.position);
             if(distanceToPlayer >= 1f){
                 transform.position = MapManager.Instance.FloorMap.CellToWorld(randomPos);
                 break;

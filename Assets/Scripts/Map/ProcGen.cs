@@ -7,6 +7,7 @@ sealed class ProcGen : MonoBehaviour
     public void GenerateDungeon(int mapWidth, int mapHeight, int maxRoomSize, int minRoomSize, int maxRooms, 
     int minMonstersPerRoom, int maxMonstersPerRoom, int maxItemsPerRoom)
     {
+        
         for(int roomNum = 0; roomNum < maxRooms; roomNum++)
         {
             int roomWidth = Random.Range(minRoomSize, maxRoomSize);
@@ -83,6 +84,19 @@ sealed class ProcGen : MonoBehaviour
             newRoom.RoomNumber = roomNum;
             RoomManager.Instance.AddRoom(newRoom);
         }
+        // fill the rest of the map with walls
+        for(int x = -20; x < mapWidth + 20; x++)
+        {
+            for(int y = -20; y < mapHeight + 20; y++)
+            {
+                if(MapManager.Instance.FloorMap.GetTile(new Vector3Int(x, y, 0)) || MapManager.Instance.ObstacleMap.GetTile(new Vector3Int(x, y, 0)))
+                {
+                    continue;
+                }
+                SetWallTileIfEmpty(new Vector3Int(x, y, 0), 8);
+            }
+        }
+
         RoomManager.Instance.Rooms[0].IsCleared = true;
         MapManager.Instance.CreateEntity("Player", RoomManager.Instance.Rooms[0].Center());
         MapManager.Instance.CreateEntity("Weapon0", RoomManager.Instance.Rooms[0].Center());
@@ -334,7 +348,7 @@ sealed class ProcGen : MonoBehaviour
         boss.GetComponent<BossEnemy>().Center = bossPos;
         //convert vector2int to vector3 
         
-        Debug.Log("Boss room created");
+        // Debug.Log("Boss room created");
     }
 
     private void CreateShopRooms(List<RectangularRoom> rooms, int totalShopRooms)

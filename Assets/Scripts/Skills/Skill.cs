@@ -43,7 +43,7 @@ public class Skill : MonoBehaviour {
     }
 
     public virtual void Use(){
-        Debug.Log("Skill Used");
+        // Debug.Log("Skill Used");
     }
 
     public virtual IEnumerator CooldownRoutine()

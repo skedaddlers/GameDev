@@ -97,6 +97,7 @@ public class BossEnemy : HostileEnemy
                 if(fighter.Hp < fighter.MaxHp * 0.8){
                     if(!hasPerformed1){
                         EndAllSkills();
+                        UIManager.Instance.AddMessage("Uh Oh... Focalors is going to do something crazy!", Utilz.PURPLE);
                         StartCoroutine(SpecialAttack1());
                         hasPerformed1 = true;
                     }
@@ -104,6 +105,7 @@ public class BossEnemy : HostileEnemy
                 if(fighter.Hp < fighter.MaxHp * 0.6){
                     if(!hasPerformed2){
                         EndAllSkills();
+                        UIManager.Instance.AddMessage("Uh Oh... Focalors is going to do something crazy!", Utilz.PURPLE);
                         StartCoroutine(SpecialAttack2());
                         hasPerformed2 = true;
                     }
@@ -114,11 +116,13 @@ public class BossEnemy : HostileEnemy
                     if(specialTimer >= specialCooldown){
                         if(toggleSpecial){
                             EndAllSkills();
+                            UIManager.Instance.AddMessage("Uh Oh... Focalors is going to do something crazy!", Utilz.PURPLE);
                             StartCoroutine(SpecialAttack1());
                             toggleSpecial = false;
                         }
                         else{
                             EndAllSkills();
+                            UIManager.Instance.AddMessage("Uh Oh... Focalors is going to do something crazy!", Utilz.PURPLE);
                             StartCoroutine(SpecialAttack2());
                             toggleSpecial = true;
                         }
@@ -155,20 +159,24 @@ public class BossEnemy : HostileEnemy
 
     private void Skill1(){
         // summon 3 minions to fight for the boss
+        UIManager.Instance.AddMessage("Focalors summoned the whole salon members! Oh no... They're seems to be angry at you!", Utilz.PURPLE);
         MapManager.Instance.CreateEntity("Evil Crab", transform.position);
         MapManager.Instance.CreateEntity("Evil Squid", transform.position);
         MapManager.Instance.CreateEntity("Evil Seahorse", transform.position);
     }
 
     private void Skill2(){
+        UIManager.Instance.AddMessage("Focalors is summoned The Singer of Many Waters... It seems to be healing her! How Frustrating!", Utilz.PURPLE);
         MapManager.Instance.CreateEntity("Evil Singer", transform.position);
     }
     private void Skill3(){
+        UIManager.Instance.AddMessage("Focalors is summoning a shield to protect her! It was... Her aspirations to be the sinners all along!", Utilz.PURPLE);
         fighter.ShieldHp = 30;
         MapManager.Instance.GenerateEffect("Evil Shield", GetComponent<Actor>(), skillDuration, 1, 1, false);
     }
     private void Skill4(){
         // have an aura that will deal damage to the player if they get too close
+        UIManager.Instance.AddMessage("Focalors is emitting an evil aura! But why??? She's not the archon anymore! Better not get too close!", Utilz.PURPLE);
         MapManager.Instance.GenerateEffect("Evil Aura", GetComponent<Actor>(), skillDuration, 6, 2, false);
         if(Vector3.Distance(transform.position, fighter.Target.transform.position) <= 5f){
             fighter.Target.GetComponent<Fighter>().TakeDamage(5);
@@ -259,6 +267,7 @@ public class BossEnemy : HostileEnemy
     }
     private void EnrageBoss(){
         // increase attack speed and movement speed, skills and special attacks will be used more frequently
+        UIManager.Instance.AddMessage("Why... WHY??? I JUST WANNA MAKE MY PEOPLE HAPPY! YOU JUST DON'T UNDERSTAND DO YOU??!!", Utilz.PURPLE);
         isEnraged = true;
         fighter.MovementSpeed *= 1.5f;
         skillCooldown *= 0.5f;
