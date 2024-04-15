@@ -105,6 +105,9 @@ public class RoomManager : MonoBehaviour
                     }
                     if(AllEnemiesDead(room)){
                         room.IsCleared = true;
+                        if(room.IsBossRoom){
+                            UIManager.Instance.ShowVictoryScreen();
+                        }
                     }
                 }
                 else{

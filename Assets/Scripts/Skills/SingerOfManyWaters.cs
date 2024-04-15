@@ -12,10 +12,10 @@ public class SingerOfManyWaters : Skill
             remainingDuration -= Time.deltaTime;
             if (remainingDuration <= 0f)
             {
+                DestroySinger();
                 remainingDuration = duration;
                 isActive = false;
                 UIManager.Instance.AddMessage($"{skillName} has ended!", "#00FFFF");
-                DestroySinger();
             }
         }
     }

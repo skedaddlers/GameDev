@@ -9,6 +9,9 @@ public class Singer : Entity
     [SerializeField] private int healAmount = 3;
     [SerializeField] private float healCooldown = 3f;
     [SerializeField] private float healRadius = 5f;
+    [SerializeField] private bool isEvil;
+    public bool IsEvil { get => isEvil; set => isEvil = value; }
+    public int HealAmount { get => healAmount; set => healAmount = value; }
     private float remainingCooldown = 0f;
     // Start is called before the first frame update
     void Start()
@@ -20,7 +23,12 @@ public class Singer : Entity
     // Update is called once per frame
     void Update()
     {
-        HealPlayer();
+        if(isEvil){
+            HealEnemy();
+        }
+        else{
+            HealPlayer();
+        }
     }
 
     private void HealPlayer(){
@@ -31,6 +39,18 @@ public class Singer : Entity
             if(Vector3.Distance(transform.position, player.transform.position) < healRadius){
                 player.GetComponent<Fighter>().Heal(healAmount);
                 UIManager.Instance.AddMessage("You were healed by the Singer of Many Waters!", "#00FFFF");
+            }
+        }
+    }
+
+    private void HealEnemy(){
+        remainingCooldown -= Time.deltaTime;
+        if(remainingCooldown <= 0){
+            remainingCooldown = healCooldown;
+            foreach(Entity entity in GameManager.Instance.Entities){
+                if(entity.GetComponent<HostileEnemy>() && Vector3.Distance(transform.position, entity.transform.position) < healRadius){
+                    entity.GetComponent<Fighter>().Heal(healAmount);
+                }
             }
         }
     }

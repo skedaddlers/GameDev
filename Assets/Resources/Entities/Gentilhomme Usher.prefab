@@ -152,6 +152,8 @@ MonoBehaviour:
   fieldOfView: []
   ai: {fileID: 0}
   inventory: {fileID: 0}
+  fighter: {fileID: 0}
+  player: {fileID: 0}
 --- !u!114 &6389893301892331771
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -165,6 +167,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blocksMovement: 0
-  damage: 0
+  damage: 6
   speed: 2
-  attackCooldown: 0
+  attackCooldown: 2
+  isEvil: 0

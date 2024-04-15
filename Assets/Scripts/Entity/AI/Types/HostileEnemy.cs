@@ -14,7 +14,7 @@ public class HostileEnemy : Ai
     [SerializeField] protected float attackCooldown = 0.1f; // Adjust as needed
     [SerializeField] protected int expGiven;
     [SerializeField] protected int moraGiven;
-    [SerializeField]protected float attackTimer = 0.1f;
+    [SerializeField] protected float attackTimer = 0.1f;
 
     public int ExpGiven { get => expGiven; set => expGiven = value; }
     public bool IsFighting { get => isFighting; set => isFighting = value; }

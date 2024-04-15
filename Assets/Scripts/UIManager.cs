@@ -47,7 +47,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Dictionary<Actor, Slider> enemyHpSliders = new Dictionary<Actor, Slider>();
     
     [Header("Escape Menu UI")]
-    [SerializeField] private GameObject skillPanel;
+    // [SerializeField] private GameObject skillPanel;
     [SerializeField] private GameObject escapeMenu;
     [SerializeField] private bool isEscapeMenuOpen = false;
     
@@ -75,6 +75,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private bool isSlashActive = false;
     [SerializeField] private float slashDuration = 0.2f;
     [SerializeField] private float slashTimer = 0f;
+
+    [Header("Victory/Defeat UI")]
+    [SerializeField] private GameObject victoryScreen;
+    [SerializeField] private GameObject defeatScreen;
 
 
 
@@ -241,9 +245,9 @@ public class UIManager : MonoBehaviour
     public void ToggleMessageHistory(){
         messageHistory.SetActive(!messageHistory.activeSelf);
         isMessageHistoryOpen = messageHistory.activeSelf;
-        skills.SetActive(!skills.activeSelf);
-        playerUI.SetActive(!playerUI.activeSelf);
-        skillPanel.SetActive(!skillPanel.activeSelf);
+        // skills.SetActive(!skills.activeSelf);
+        // playerUI.SetActive(!playerUI.activeSelf);
+        // skillPanel.SetActive(!skillPanel.activeSelf);
     }
 
     public void ToggleInventory(Actor actor = null){
@@ -610,5 +614,13 @@ public class UIManager : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    public void ShowVictoryScreen(){
+        victoryScreen.SetActive(true);
+    }
+
+    public void ShowDefeatScreen(){
+        defeatScreen.SetActive(true);
     }
 }

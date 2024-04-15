@@ -62,7 +62,6 @@ public class Fighter : MonoBehaviour
             Destroy(effect.gameObject);
             return;
         }
-        
     }
 
     public void TakeDamage(int damage){
@@ -100,6 +99,7 @@ public class Fighter : MonoBehaviour
         if(GetComponent<Actor>().IsAlive){
             if(GetComponent<Player>()){
                 UIManager.Instance.AddMessage("You died!", "#FF0000");
+                UIManager.Instance.ShowDefeatScreen();
             }
             else{
                 UIManager.Instance.AddMessage($"{name} died!", "#FFa500");

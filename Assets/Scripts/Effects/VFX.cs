@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class VFX : MonoBehaviour
 {
-    private Transform player; // Reference to the player's transform
+    private Transform actor; // Reference to the actor's transform
     private float duration; // The duration the sprite will be displayed for
     private float timer = 0f; // The timer to keep track of how long the sprite has been displayed for    // getter
     [SerializeField] private float size;
-    //list of sprites to do animation
+    [SerializeField] private bool isPlayer;
     [SerializeField] private List<Sprite> sprites;
     private int currentSpriteIndex = 0;
     private float spriteTimer = 0f;
@@ -16,8 +16,11 @@ public class VFX : MonoBehaviour
     private int maxSprteIndex;
     private float remainingDuration;
     private Camera mainCamera; // Reference to the main camera
+    
     public float Size { get => size; set => size = value; }
     public float Duration { get => duration; set => duration = value; }
+    public bool IsPlayer { get => isPlayer; set => isPlayer = value; }
+
 
     private void Start()
     {
@@ -25,14 +28,17 @@ public class VFX : MonoBehaviour
         mainCamera = Camera.main; // Get the main camera
         transform.localScale = new Vector3(size, size, 1);
         foreach(Entity entity in GameManager.Instance.Entities){
-            if(entity.GetComponent<Player>()){
-                player = entity.GetComponent<Player>().transform;
+            if(isPlayer && entity.GetComponent<Player>()){
+                actor = entity.GetComponent<Player>().transform;
+            }
+            else if(!isPlayer && entity.GetComponent<BossEnemy>()){
+                actor = entity.GetComponent<BossEnemy>().transform;
             }
         }
         mainCamera = Camera.main;
-        if (player == null)
+        if (actor == null)
         {
-            Debug.LogError("Player reference not set for SkillEffect script on " + gameObject.name);
+            Debug.LogError("actor reference not set for SkillEffect script on " + gameObject.name);
         }
         GameManager.Instance.AddVFX(this);
     }
@@ -40,10 +46,10 @@ public class VFX : MonoBehaviour
     private void Update()
     {
         
-        if (player != null)
+        if (actor != null)
         {
-            // Set the position of the skill effect sprite to follow the player
-            transform.position = player.position;
+            // Set the position of the skill effect sprite to follow the actor
+            transform.position = actor.position;
         }
         timer += Time.deltaTime;
         spriteTimer += Time.deltaTime;

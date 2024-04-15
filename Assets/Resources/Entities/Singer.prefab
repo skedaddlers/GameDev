@@ -152,6 +152,8 @@ MonoBehaviour:
   fieldOfView: []
   ai: {fileID: 0}
   inventory: {fileID: 0}
+  fighter: {fileID: 0}
+  player: {fileID: 0}
 --- !u!114 &7842598849844268796
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -168,3 +170,4 @@ MonoBehaviour:
   healAmount: 3
   healCooldown: 3
   healRadius: 5
+  isEvil: 0

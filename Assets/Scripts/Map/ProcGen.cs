@@ -328,7 +328,12 @@ sealed class ProcGen : MonoBehaviour
             }
         }
         farthestRoom.IsBossRoom = true;
-        MapManager.Instance.CreateEntity("Boss", farthestRoom.Center());
+        farthestRoom.IsCleared = false;
+        GameObject boss = MapManager.Instance.CreateEntity("Boss", farthestRoom.Center());
+        Vector3 bossPos = new Vector3(farthestRoom.Center().x + 0.5f, farthestRoom.Center().y + 0.5f, 0);
+        boss.GetComponent<BossEnemy>().Center = bossPos;
+        //convert vector2int to vector3 
+        
         Debug.Log("Boss room created");
     }
 

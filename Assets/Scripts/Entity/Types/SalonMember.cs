@@ -8,6 +8,7 @@ public class SalonMember : Entity
     [SerializeField] private int damage;
     [SerializeField] private float speed = 1.5f;
     [SerializeField] private float attackCooldown;
+    [SerializeField] private bool isEvil;
     private float moveCooldown = 0.5f;
     private float remainingCooldown = 1f;
     private float moveTimer = 0f;
@@ -16,6 +17,7 @@ public class SalonMember : Entity
     public int Damage { get => damage; set => damage = value; }
     public float Speed { get => speed; }
     public float AttackCooldown { get => attackCooldown; set => attackCooldown = value; }
+    public bool IsEvil { get => isEvil; set => isEvil = value; }
 
     // Start is called before the first frame update
     void Start()
@@ -30,7 +32,12 @@ public class SalonMember : Entity
         remainingCooldown -= Time.deltaTime;
         moveTimer -= Time.deltaTime;
         MoveRandomly();
-        AttackEnemies();
+        if(isEvil){
+            AtttackPlayer();
+        }
+        else{
+            AttackEnemies();
+        }
     }
 
     private void MoveRandomly(){
@@ -58,6 +65,20 @@ public class SalonMember : Entity
                     MapManager.Instance.CreateProjectile("Bubble", salonPos, direction, damage, true);
                     break;
                 }
+            }
+        }
+    }
+
+    private void AtttackPlayer(){
+        if(remainingCooldown <= 0){
+            remainingCooldown = attackCooldown;
+            Actor player = GameManager.Instance.Actors[0];
+            if(Vector3.Distance(transform.position, player.transform.position) < 8f && player.IsAlive){
+                Vector3 playerPosition = player.transform.position;
+                Vector2 gridPosition2D = new Vector2(playerPosition.x, playerPosition.y);
+                Vector2 salonPos = transform.position;
+                Vector2 direction = (gridPosition2D - salonPos).normalized;
+                MapManager.Instance.CreateProjectile("Bubble", salonPos, direction, damage, false);
             }
         }
     }

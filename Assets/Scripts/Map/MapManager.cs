@@ -168,13 +168,13 @@ public class MapManager : MonoBehaviour
         }
     }
 
-    public void GenerateEffect(string Effectname, Actor player, float duration, float radius, int totalSprites){
-        GameObject effect = Instantiate(Resources.Load<GameObject>("Effect"), new Vector3(player.transform.position.x, player.transform.position.y, 0), Quaternion.identity);
+    public void GenerateEffect(string Effectname, Actor actor, float duration, float radius, int totalSprites, bool isPlayerEffect = true){
+        GameObject effect = Instantiate(Resources.Load<GameObject>("Effect"), new Vector3(actor.transform.position.x, actor.transform.position.y, 0), Quaternion.identity);
         effect.name = Effectname;
         effect.GetComponent<VFX>().GetSprites(Effectname, totalSprites);
         effect.GetComponent<VFX>().Duration = duration;
         effect.GetComponent<VFX>().Size = radius;
-
+        effect.GetComponent<VFX>().IsPlayer = isPlayerEffect;
     }
 
     public MapState SaveState() => new MapState(tiles);
