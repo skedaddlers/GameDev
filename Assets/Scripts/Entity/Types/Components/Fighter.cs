@@ -42,7 +42,6 @@ public class Fighter : MonoBehaviour
     private void Start(){
         if(GetComponent<Player>()){
             UIManager.Instance.SetHealthMax(maxHp);
-            UIManager.Instance.SetManaMax(GetComponent<Player>().MaxMana);
             UIManager.Instance.SetHealth(hp, maxHp);
         }
     }
@@ -51,7 +50,6 @@ public class Fighter : MonoBehaviour
     {
         if(GetComponent<Player>()){
             UIManager.Instance.SetHealth(hp, maxHp);
-            UIManager.Instance.SetMana(GetComponent<Player>().Mana, GetComponent<Player>().MaxMana);
         }
         else{
             UIManager.Instance.UpdateEnemyHealthBar(this.GetComponent<Actor>());

@@ -116,7 +116,9 @@ public class MapManager : MonoBehaviour
         projectile.GetComponent<Projectile>().Damage = damage;
         projectile.GetComponent<Projectile>().IsPlayerProjectile = isPlayerProjectile;
         projectile.name = projName;
+        // Debug.Log("Projectile created");
         return projectile;
+
     }
 
     public void UpdateFogMap(List<Vector3Int> playerFOV) {

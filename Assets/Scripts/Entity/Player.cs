@@ -290,6 +290,9 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
         UIManager.Instance.SetStamina(stamina, maxStamina);
         UIManager.Instance.SetExpMax(expNeeded);
         UIManager.Instance.SetExp(exp, expNeeded);
+        UIManager.Instance.SetManaMax(maxMana);
+        UIManager.Instance.SetMana(mana, maxMana);
+        UIManager.Instance.SetMora(mora);
         if(stamina < maxStamina){
             staminaTimer -= Time.fixedDeltaTime;
             if(staminaTimer <= 0){

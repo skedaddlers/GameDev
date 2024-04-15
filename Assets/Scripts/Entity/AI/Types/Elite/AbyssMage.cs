@@ -73,7 +73,8 @@ public class AbyssMage : EliteEnemy
     public void FlameAttack(Actor player)
     {
         Vector3Int targetPos = MapManager.Instance.FloorMap.WorldToCell(player.transform.position);
-        Vector2 direction = new Vector2(targetPos.x - transform.position.x, targetPos.y - transform.position.y);
-        MapManager.Instance.CreateProjectile("Flame", transform.position, direction, 2, false);
+        Vector2 direction = new Vector2(targetPos.x - transform.position.x, targetPos.y - transform.position.y).normalized;
+        int damage = GetComponent<Fighter>().Power;
+         GameObject proj = MapManager.Instance.CreateProjectile("Flame", transform.position, direction, damage, false);
     }
 }

@@ -73,8 +73,9 @@ public class MirrorMaiden : EliteEnemy
 
     private void RangedAttack(Actor target){
         Vector3Int targetPos = MapManager.Instance.FloorMap.WorldToCell(target.transform.position);
-        Vector2 direction = new Vector2(targetPos.x - transform.position.x, targetPos.y - transform.position.y);
-        MapManager.Instance.CreateProjectile("Jet", transform.position, direction, 2, false);
+        Vector2 direction = new Vector2(targetPos.x - transform.position.x, targetPos.y - transform.position.y).normalized;
+        int damage = GetComponent<Fighter>().Power; 
+         GameObject proj = MapManager.Instance.CreateProjectile("Jet", transform.position, direction, damage, false);
     }
 }
 

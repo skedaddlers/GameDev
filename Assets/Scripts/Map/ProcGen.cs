@@ -352,6 +352,8 @@ sealed class ProcGen : MonoBehaviour
             }
         }
         nearestRoom.IsShopRoom = true;
+        nearestRoom.IsCleared = true;
+
         GameObject firstSeller = MapManager.Instance.CreateEntity("Seller", nearestRoom.Center());
         Seller sellerComponent = firstSeller.GetComponent<Seller>();
         
@@ -398,6 +400,7 @@ sealed class ProcGen : MonoBehaviour
                 continue;
             }
             rooms[randomIndex].IsShopRoom = true;
+            rooms[randomIndex].IsCleared = true;
 
             GameObject seller = MapManager.Instance.CreateEntity("Seller", rooms[randomIndex].Center());
             Seller sellerComponent2 = seller.GetComponent<Seller>();

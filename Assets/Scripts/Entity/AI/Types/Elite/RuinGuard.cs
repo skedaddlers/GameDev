@@ -96,6 +96,9 @@ public class RuinGuard : EliteEnemy
         // deal massive damage to the player
         Vector3Int targetPos = MapManager.Instance.FloorMap.WorldToCell(player.transform.position);
         Vector2 direction = (new Vector2(targetPos.x - transform.position.x, targetPos.y - transform.position.y)).normalized;
-        // MapManager.Instance.CreateProjectile("Missile", transform.position, direction, 8, false);
+        int damage = (int)(GetComponent<Fighter>().Power * 1.35f);
+        GameObject proj = MapManager.Instance.CreateProjectile("Missile", transform.position, direction, damage, false);
+        proj.GetComponent<Projectile>().IsAOE = true;
+        proj.GetComponent<Projectile>().TargetPosition = player.transform.position;
     }
 }

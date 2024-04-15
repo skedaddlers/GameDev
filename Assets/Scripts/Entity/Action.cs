@@ -99,28 +99,6 @@ public class Action
         UIManager.Instance.ToggleShopMenu(null);
     }
 
-    static public void CheckForCollision(Projectile projectile){
-        Actor target = null;
-        if(projectile.GetComponent<Projectile>().IsPlayerProjectile){
-            target = GameManager.Instance.GetBlockingActorAtLocation(projectile.transform.position);
-        }
-        else{
-            target = GameManager.Instance.GetBlockingPlayerAtLocation(projectile.transform.position);
-        }
-        Vector3Int gridPosition = MapManager.Instance.FloorMap.WorldToCell(projectile.transform.position);
-        if(!MapManager.Instance.InBounds((int)gridPosition.x, (int)gridPosition.y) || MapManager.Instance.ObstacleMap.HasTile(gridPosition)){
-            GameManager.Instance.RemoveEntity(projectile);
-            GameObject.Destroy(projectile.gameObject);
-            return;
-        }
-
-        if(target != null){
-            // Debug.Log($"{projectile.name} hits {target.name}!");
-            target.GetComponent<Fighter>().TakeDamage(projectile.GetComponent<Projectile>().Damage);
-            GameManager.Instance.RemoveEntity(projectile);
-            GameObject.Destroy(projectile.gameObject);
-        }
-    }
 
     static public void SlashAction(Actor actor, Vector3 direction){
         // slashes in a fan shape area, dealing aoe damage to the enemies in the area
@@ -156,10 +134,11 @@ public class Action
 
     static public void RangedAction(Actor actor, Vector3 direction){
         if(actor.GetComponent<Player>()){
-            MapManager.Instance.CreateProjectile("Bubble" ,actor.transform.position, direction, actor.GetComponent<Fighter>().Power, true);
+            GameObject proj = MapManager.Instance.CreateProjectile("Bubble" ,actor.transform.position, direction, actor.GetComponent<Fighter>().Power, true);
+            proj.gameObject.SetActive(true);
         }
         else{
-            MapManager.Instance.CreateProjectile("Bubble", actor.transform.position, direction, actor.GetComponent<Fighter>().Power, false);
+            GameObject proj = MapManager.Instance.CreateProjectile("Bubble", actor.transform.position, direction, actor.GetComponent<Fighter>().Power, false);
         }
 
     }

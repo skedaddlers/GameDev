@@ -18,7 +18,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Slider expSlider;
     [SerializeField] private TextMeshProUGUI expSliderText;
     [SerializeField] private Slider staminaSlider;
-    [SerializeField] private TextMeshProUGUI levelText;
+    [SerializeField] private TextMeshProUGUI moraText;
 
     [Header("Message UI")]
     [SerializeField] private int sameMessageCount = 5;
@@ -183,6 +183,10 @@ public class UIManager : MonoBehaviour
     public void SetExp(int exp, int maxExp){
         expSlider.value = exp;
         expSliderText.text = $"Exp: {exp}/{maxExp}";
+    }
+
+    public void SetMora(int mora){
+        moraText.text = $"{mora}";
     }
 
     public void SetStaminaMax(int MaxStamina){

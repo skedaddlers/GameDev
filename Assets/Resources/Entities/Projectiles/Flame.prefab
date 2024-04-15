@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1046403895623755900}
   - component: {fileID: 1046403895623755843}
-  - component: {fileID: 1046403895623755842}
+  - component: {fileID: 1546748822172342172}
   m_Layer: 0
-  m_Name: Bubble
+  m_Name: Flame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: b3572c66b7deefe4ba08ab9eb80a69d8, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.23251042, b: 0.2113207, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1046403895623755842
+--- !u!114 &1546748822172342172
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -94,15 +94,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 1046403895623755841}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59c67d4179554e2448a3041c2ec043cf, type: 3}
+  m_Script: {fileID: 11500000, guid: 5623de51f045e4144b41362278f896c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   blocksMovement: 0
-  speed: 15
-  damage: 3
+  speed: 0
+  damage: 5
   rotation: 0
   direction: {x: 0, y: 0, z: 0}
   isPlayerProjectile: 0
   isAOE: 0
   aoeRadius: 1
   targetPosition: {x: 0, y: 0, z: 0}
+  burnDuration: 0
+  burnRate: 0
+  burnDamage: 0
