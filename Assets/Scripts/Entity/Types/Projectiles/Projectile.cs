@@ -39,9 +39,9 @@ public class Projectile : Entity
             }
         }
         if(targetPosition != Vector3.zero){
-            if(Vector3.Distance(transform.position, targetPosition) < 0.1f){
+            if(Vector3.Distance(transform.position, targetPosition) < 1f){
                 if(isAOE){
-                    Debug.Log("AOE");
+                    // Debug.Log("AOE");
                     Action.AOEAttack(this);
                 }
                 else{

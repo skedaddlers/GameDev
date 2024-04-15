@@ -43,7 +43,7 @@ public class Mitachurl : EliteEnemy
                 if(targetDistance <= 1f){
                     if(attackTimer > attackCooldown){
                         Action.MeleeAction(GetComponent<Actor>(), fighter.Target);
-                        attackTimer = attackCooldown;
+                        attackTimer = 0;
                         return;
                     }
                 }

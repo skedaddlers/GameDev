@@ -35,9 +35,9 @@ public class Rifthound : EliteEnemy
                 float targetDistance = Vector3.Distance(transform.position, fighter.Target.transform.position);
 
                 if(targetDistance <= 1f){
-                    if(attackTImer >= attackCooldown){
+                    if(attackTimer >= attackCooldown){
                         BleedAttack(fighter.Target);
-                        attackTimer = attackCooldown;
+                        attackTimer = 0;
                         return;
                     }
                 }

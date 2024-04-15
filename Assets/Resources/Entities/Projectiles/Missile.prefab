@@ -104,5 +104,5 @@ MonoBehaviour:
   direction: {x: 0, y: 0, z: 0}
   isPlayerProjectile: 0
   isAOE: 1
-  aoeRadius: 1
+  aoeRadius: 3
   targetPosition: {x: 0, y: 0, z: 0}

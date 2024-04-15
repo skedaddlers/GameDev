@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private bool isMenuOpen = false;
     
     [Header("Player UI")]
+    [SerializeField] private GameObject playerUI;
     [SerializeField] private Slider hpSlider;
     [SerializeField] private TextMeshProUGUI hpSliderText;
     [SerializeField] private Slider manaSlider;
@@ -46,6 +47,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Dictionary<Actor, Slider> enemyHpSliders = new Dictionary<Actor, Slider>();
     
     [Header("Escape Menu UI")]
+    [SerializeField] private GameObject skillPanel;
     [SerializeField] private GameObject escapeMenu;
     [SerializeField] private bool isEscapeMenuOpen = false;
     
@@ -240,6 +242,8 @@ public class UIManager : MonoBehaviour
         messageHistory.SetActive(!messageHistory.activeSelf);
         isMessageHistoryOpen = messageHistory.activeSelf;
         skills.SetActive(!skills.activeSelf);
+        playerUI.SetActive(!playerUI.activeSelf);
+        skillPanel.SetActive(!skillPanel.activeSelf);
     }
 
     public void ToggleInventory(Actor actor = null){
