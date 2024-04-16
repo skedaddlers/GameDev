@@ -18,6 +18,8 @@ public class RuinGuard : EliteEnemy
     [SerializeField] private float disableDuration = 6.6f;
     [SerializeField] private bool isDisabled = false;
     [SerializeField] private bool hasDisabled = false;
+    [SerializeField] private Sprite mainSprite;
+    [SerializeField] private Sprite disabledSprite;
 
     public override void RunAI(){
 
@@ -30,8 +32,10 @@ public class RuinGuard : EliteEnemy
         }
 
         if(isDisabled){
+            GetComponent<SpriteRenderer>().sprite = disabledSprite;
             disableTimer += Time.deltaTime;
             if(disableTimer >= disableDuration){
+                GetComponent<SpriteRenderer>().sprite = mainSprite;
                 isDisabled = false;
                 disableTimer = 0;
             }

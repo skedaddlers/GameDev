@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillName: Aura Of The Former Archon
-  manaCost: 25
+  manaCost: 40
   cooldown: 15
   duration: 10
   onCooldown: 0

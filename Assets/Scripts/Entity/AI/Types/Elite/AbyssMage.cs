@@ -15,6 +15,8 @@ public class AbyssMage : EliteEnemy
     [SerializeField] private float shieldRegenTimer = 0;
     [SerializeField] private float teleportTimer = 0;
     [SerializeField] private float teleportRate = 5f;
+    [SerializeField] private Sprite mainSprite;
+    [SerializeField] private Sprite stunnedSprite;
 
     void Start()
     {
@@ -37,9 +39,11 @@ public class AbyssMage : EliteEnemy
         }
         if(shieldBroken)
         {
+            GetComponent<SpriteRenderer>().sprite = stunnedSprite;
             shieldRegenTimer += Time.deltaTime;
             if(shieldRegenTimer >= shieldRegenTime)
             {
+                GetComponent<SpriteRenderer>().sprite = mainSprite;
                 shieldBroken = false;
                 shieldRegenTimer = 0;
                 GetComponent<Fighter>().ShieldHp = shieldHp;

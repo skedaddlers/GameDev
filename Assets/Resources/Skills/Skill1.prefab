@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillName: Singer Of Many Waters
-  manaCost: 40
+  manaCost: 60
   cooldown: 25
   duration: 12
   onCooldown: 0

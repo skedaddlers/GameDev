@@ -5,9 +5,11 @@ using UnityEngine;
 public class RoomManager : MonoBehaviour
 {
     public static RoomManager Instance;
+    
 
     [SerializeField] private List<RectangularRoom> rooms;
     private bool hasAssignedEntities = false;
+    private bool hasEnteredBossRoom = false;
     public List<RectangularRoom> Rooms { get => rooms; }
 
     void Awake()
@@ -91,6 +93,10 @@ public class RoomManager : MonoBehaviour
             {
                 //Close off the room if it hasn't been done yet
                 if(!room.IsCleared){
+                    if(room.IsBossRoom && !hasEnteredBossRoom){
+                        AudioManager.Instance.PlaySound("BossMusic");
+                        hasEnteredBossRoom = true;
+                    }
                     CloseOffRoom(room);
                     foreach (Entity entity in room.Entities)
                     {
@@ -106,6 +112,8 @@ public class RoomManager : MonoBehaviour
                     if(AllEnemiesDead(room)){
                         room.IsCleared = true;
                         if(room.IsBossRoom){
+                            AudioManager.Instance.PlaySound("VictoryMusic");
+                            GameManager.Instance.HasWon = true;
                             UIManager.Instance.ShowVictoryScreen();
                         }
                     }

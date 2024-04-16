@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillName: Water's Aspirations
-  manaCost: 15
+  manaCost: 35
   cooldown: 18
   duration: 15
   onCooldown: 0

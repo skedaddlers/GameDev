@@ -34,7 +34,7 @@ public class TearsOfTheSinners : Skill
                 float yDistance = Mathf.Abs(player.transform.position.y - entity.transform.position.y);
                 if(xDistance <= Camera.main.orthographicSize * Camera.main.aspect && yDistance <= Camera.main.orthographicSize && 
                 entity.GetComponent<Actor>().IsAlive){
-                    entity.GetComponent<Fighter>().TakeDamage(damage);
+                    entity.GetComponent<Fighter>().Hp -= damage;
                 }           
             }
         }

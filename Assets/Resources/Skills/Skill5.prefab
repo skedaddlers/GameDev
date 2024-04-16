@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillName: Tears Of The Sinners
-  manaCost: 50
+  manaCost: 70
   cooldown: 30
   duration: 3.5
   onCooldown: 0

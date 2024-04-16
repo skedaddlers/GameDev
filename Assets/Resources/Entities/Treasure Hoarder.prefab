@@ -10,13 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 3291528750647799006}
   - component: {fileID: 3291528750647799007}
-  - component: {fileID: 3291528750647799001}
-  - component: {fileID: -2288144159244926110}
-  - component: {fileID: 739648448946735624}
-  - component: {fileID: 7890803495944308918}
-  - component: {fileID: 8966252245883756710}
+  - component: {fileID: -7356037982142339953}
+  - component: {fileID: -806051740714282425}
+  - component: {fileID: 4577567348277160934}
+  - component: {fileID: -6483553199047088656}
   m_Layer: 0
-  m_Name: Boss
+  m_Name: Treasure Hoarder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77,9 +76,9 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1901361099
   m_SortingLayer: 5
-  m_SortingOrder: 2
-  m_Sprite: {fileID: 2127617025, guid: 57ab859f5a0ebaa4896773ac56d13361, type: 3}
-  m_Color: {r: 0.8396226, g: 0.2732734, b: 0.2732734, a: 1}
+  m_SortingOrder: 3
+  m_Sprite: {fileID: 642110817, guid: 07e4a562d0085054f8e8ce4ccfb0ed51, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -89,27 +88,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &3291528750647799001
-Animator:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3291528750647798995}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 74fa14da959598f4aa1e27eb58fe4ef6, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &-2288144159244926110
+--- !u!114 &-7356037982142339953
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -123,13 +102,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blocksMovement: 0
   isAlive: 1
-  fieldOfViewRange: 8
+  fieldOfViewRange: 16
   fieldOfView: []
-  ai: {fileID: 8966252245883756710}
+  ai: {fileID: -6483553199047088656}
   inventory: {fileID: 0}
-  fighter: {fileID: 739648448946735624}
+  fighter: {fileID: -806051740714282425}
   player: {fileID: 0}
---- !u!114 &739648448946735624
+--- !u!114 &-806051740714282425
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -141,15 +120,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b277014bef278241aa45bed70a91787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 200
-  hp: 200
-  defense: 15
-  power: 15
-  movementSpeed: 4
+  maxHp: 25
+  hp: 25
+  defense: 4
+  power: 6
+  movementSpeed: 3.6
   shieldHp: 0
   target: {fileID: 0}
   isUnderStatusEffect: 0
---- !u!114 &7890803495944308918
+  statusEffect: {fileID: 0}
+--- !u!114 &4577567348277160934
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -161,7 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e5a5427ca2524b40a66780396a8bebd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &8966252245883756710
+--- !u!114 &-6483553199047088656
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -170,29 +150,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 3291528750647798995}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e913057b6c29c4a48a1b067c83a811f8, type: 3}
+  m_Script: {fileID: 11500000, guid: 5d2fd12b237da07428ef169b9782c009, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  aStar: {fileID: 7890803495944308918}
-  fighter: {fileID: 739648448946735624}
+  aStar: {fileID: 4577567348277160934}
+  fighter: {fileID: -806051740714282425}
   isFighting: 0
   canTakeDamage: 0
-  attackCooldown: 2.5
-  expGiven: 100
-  moraGiven: 200
-  attackTimer: 0
-  center: {x: 0, y: 0, z: 0}
-  radius: 2.5
-  skillCooldown: 15
-  skillTimer: 0
-  specialCooldown: 20
-  specialTimer: 0
-  specialDuration: 5
-  skillDuration: 5
-  skillDurationTimer: 0
-  hasUsedSkill: 0
-  isEnraged: 0
-  hasPerformed1: 0
-  hasPerformed2: 0
-  isPerformingSpecialAttack: 0
-  toggleSpecial: 0
+  attackCooldown: 1
+  expGiven: 15
+  moraGiven: 5
+  attackTimer: 0.1

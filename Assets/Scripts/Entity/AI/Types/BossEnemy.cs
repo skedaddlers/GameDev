@@ -211,25 +211,29 @@ public class BossEnemy : HostileEnemy
 
     private IEnumerator SpecialAttack1(){
         isPerformingSpecialAttack = true;
-        Vector3 moveDirection = (center - transform.position).normalized;
-        float moveDistance = Vector3.Distance(center, transform.position) - 1f;
-        
-        // move towards the center of the room
-        
+        Vector3 startPos = center + new Vector3(Mathf.Cos(90f * Mathf.Deg2Rad) * radius, Mathf.Sin(90f * Mathf.Deg2Rad) * radius, 0);
+        Vector3 moveDirection = (startPos - transform.position).normalized;
+        float moveDistance = Vector3.Distance(startPos, transform.position) - 1f;
+                
         while(moveDistance > 0){
-            transform.position += moveDirection * fighter.MovementSpeed * Time.deltaTime;
+            transform.position += moveDirection * fighter.MovementSpeed * 0.75f *Time.deltaTime;
             moveDistance -= fighter.MovementSpeed * Time.deltaTime;
             canTakeDamage = false;
+            if (fighter.Target && !fighter.Target.IsAlive) {
+                isPerformingSpecialAttack = false;
+                yield break; // Exit the coroutine
+            }
             yield return null;
+
         }
         canTakeDamage = true;
 
         float angle = 0f;
-        float angularSpeed = 40f;
+        float angularSpeed = 30f;
         float projectileCooldown = 0.1f;
 
         while(angle < 360f){
-            transform.position = center + new Vector3(Mathf.Cos(angle * Mathf.Deg2Rad) * radius, Mathf.Sin(angle * Mathf.Deg2Rad) * radius, 0);
+            transform.position = center + new Vector3(Mathf.Cos((angle + 90f) * Mathf.Deg2Rad) * radius, Mathf.Sin((angle + 90f) * Mathf.Deg2Rad) * radius, 0);
             angle += angularSpeed * Time.deltaTime;
 
             if(Time.time % projectileCooldown < Time.deltaTime){
@@ -237,7 +241,13 @@ public class BossEnemy : HostileEnemy
                 Attack(direction, fighter.Power);
             }
 
+            if (fighter.Target && !fighter.Target.IsAlive) {
+                isPerformingSpecialAttack = false;
+                yield break; // Exit the coroutine
+            }
+
             yield return null;
+
         }
 
         isPerformingSpecialAttack = false;
@@ -247,6 +257,24 @@ public class BossEnemy : HostileEnemy
         transform.position = center;
         isPerformingSpecialAttack = true;
 
+        Vector3 moveDirection = (center - transform.position).normalized;
+        float moveDistance = Vector3.Distance(center, transform.position) - 1f;
+        
+        // move towards the center of the room
+        
+        while(moveDistance > 0){
+            transform.position += moveDirection * fighter.MovementSpeed * 0.75f * Time.deltaTime;
+            moveDistance -= fighter.MovementSpeed * Time.deltaTime;
+            canTakeDamage = false;
+            if (fighter.Target && !fighter.Target.IsAlive) {
+                isPerformingSpecialAttack = false;
+                yield break; // Exit the coroutine
+            }
+            yield return null;
+
+        }
+        canTakeDamage = true;
+
         float angle = 0f;
         float angleIncrement = 40f;
         float projectileCooldown = 0.5f;
@@ -255,13 +283,18 @@ public class BossEnemy : HostileEnemy
         float currentAngle = 0f;
         while(elapsedTime < specialDuration){
             for(int i = 0; i < 9; i++){
-                angle += 10f;
-                Vector2 direction = new Vector2(Mathf.Cos(currentAngle * Mathf.Deg2Rad), Mathf.Sin(currentAngle * Mathf.Deg2Rad));
+                Vector2 direction = new Vector2(Mathf.Cos((currentAngle + angle) * Mathf.Deg2Rad), Mathf.Sin((currentAngle + angle) * Mathf.Deg2Rad));
                 Attack(direction, fighter.Power);
                 currentAngle += angleIncrement;
             }
+            angle += 10f;
             elapsedTime += projectileCooldown;
+            if (fighter.Target && !fighter.Target.IsAlive) {
+                isPerformingSpecialAttack = false;
+                yield break; // Exit the coroutine
+            }
             yield return new WaitForSeconds(projectileCooldown);
+
         }
         isPerformingSpecialAttack = false;
     }

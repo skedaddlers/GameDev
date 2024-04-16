@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillName: Salon Solitaire
-  manaCost: 15
+  manaCost: 30
   cooldown: 15
   duration: 10
   onCooldown: 0

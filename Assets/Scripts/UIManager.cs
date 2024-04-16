@@ -20,6 +20,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI expSliderText;
     [SerializeField] private Slider staminaSlider;
     [SerializeField] private TextMeshProUGUI moraText;
+    [SerializeField] private GameObject statusEffectImage;
+    [SerializeField] private Sprite[] effectSprites = new Sprite[3];
 
     [Header("Message UI")]
     [SerializeField] private int sameMessageCount = 5;
@@ -154,6 +156,23 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void UpdateStatusEffect(StatusEffect effect){
+        if(effect.GetComponent<Ensnare>() != null){
+            statusEffectImage.transform.GetChild(0).gameObject.SetActive(true);
+        }
+        else if(effect.GetComponent<Bleed>() != null){
+            statusEffectImage.transform.GetChild(1).gameObject.SetActive(true);
+        }
+        else if(effect.GetComponent<Burn>() != null){
+            statusEffectImage.transform.GetChild(2).gameObject.SetActive(true);
+        }
+    }
+
+    public void RemoveStatusEffect(){
+        for(int i = 0; i < statusEffectImage.transform.childCount; i++){
+            statusEffectImage.transform.GetChild(i).gameObject.SetActive(false);
+        }
+    }
     private Color GetColorFromHex(string v) {
         Color color;
         if (ColorUtility.TryParseHtmlString(v, out color)) {
@@ -245,6 +264,7 @@ public class UIManager : MonoBehaviour
     public void ToggleMessageHistory(){
         messageHistory.SetActive(!messageHistory.activeSelf);
         isMessageHistoryOpen = messageHistory.activeSelf;
+        isMenuOpen = messageHistory.activeSelf;
         // skills.SetActive(!skills.activeSelf);
         // playerUI.SetActive(!playerUI.activeSelf);
         // skillPanel.SetActive(!skillPanel.activeSelf);
@@ -307,10 +327,10 @@ public class UIManager : MonoBehaviour
 
         string[] buttonLabels = {
             $"Constitution (+5 HP, from {fighter.MaxHp} -> {fighter.MaxHp + 5})",
-            $"Strength (+2 Power, from {fighter.Power} -> {fighter.Power + 2})",
-            $"Resistance (+2 Defense, from {fighter.Defense} -> {fighter.Defense + 2})",
+            $"Strength (+1 Power, from {fighter.Power} -> {fighter.Power + 1})",
+            $"Resistance (+3 Defense, from {fighter.Defense} -> {fighter.Defense + 3})",
             $"Agility (+1 Movement Speed, from {fighter.MovementSpeed} -> {fighter.MovementSpeed + 1})",
-            $"Fortune (+1 Luck, from {actor.GetComponent<Player>().Luck} -> {actor.GetComponent<Player>().Luck + 1})",
+            $"Fortune (+2 Luck, from {actor.GetComponent<Player>().Luck} -> {actor.GetComponent<Player>().Luck + 2})",
             $"Sustainibility (+10 Mana, from {actor.GetComponent<Player>().MaxMana} -> {actor.GetComponent<Player>().MaxMana + 10})"
         };
 
@@ -452,14 +472,15 @@ public class UIManager : MonoBehaviour
             case 0:
                 fighter.MaxHp += 5;
                 fighter.Hp += 5;
+                SetHealthMax(fighter.MaxHp);
                 AddMessage($"You are blessed with more healthiness by The Tsaritsa!", "#32E9F1");
                 break;
             case 1:
-                fighter.Power += 2;
+                fighter.Power += 1;
                 AddMessage($"You are blessed with more strength by Murata!", "#F14A32");
                 break;
             case 2:
-                fighter.Defense += 2;
+                fighter.Defense += 3;
                 AddMessage($"You are blessed with more resistance by Morax!", "#F1B432");
                 break;
             case 3:
@@ -471,8 +492,10 @@ public class UIManager : MonoBehaviour
                 AddMessage($"You are blessed with more fortune by Buer!", "#8CF132");
                 break;
             case 5:
+
                 player.MaxMana += 10;
                 player.Mana = player.MaxMana;
+                SetManaMax(player.MaxMana);
                 AddMessage($"You are blessed with more sustainibility by Beelzebul!", "#CA32F1");
                 break;
         }

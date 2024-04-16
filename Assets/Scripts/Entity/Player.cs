@@ -282,6 +282,7 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
         if(!UIManager.Instance.IsMenuOpen || UIManager.Instance.IsLevelUpMenuOpen){
             if (GameManager.Instance.IsPlayerTurn && moveKeyHeld && GetComponent<Actor>().IsAlive)
             {
+
                 if(!isDashing)
                     MovePlayer();
                 else
@@ -335,6 +336,8 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
 
     private void MovePlayer(float moveSpeed = 1f)
     {
+        if(GameManager.Instance.HasWon)
+            return;
         Vector2 direction = controls.Player.Movement.ReadValue<Vector2>();
         Vector3 roundedDirection = new Vector3(direction.x, direction.y, 0f) * GetComponent<Fighter>().MovementSpeed * Time.fixedDeltaTime * moveSpeed;
         Vector3 futurePosition = transform.position + roundedDirection;

@@ -81,6 +81,8 @@ public class Action
             UIManager.Instance.AddMessage("You don't have enough gold!", Utilz.RED);
             return;
         }
+        skill.gameObject.SetActive(true);
+        skill.GetComponent<SpriteRenderer>().enabled = false;
         skill.transform.SetParent(actor.transform);
         actor.GetComponent<Player>().Mora -= skill.Cost;
         actor.GetComponent<Player>().AddSkill(skill);
@@ -123,9 +125,7 @@ public class Action
             }
             else{        
                 int damage = projectile.GetComponent<Projectile>().Damage;
-                int targetDefense = target.GetComponent<Fighter>().Defense;
-                int damageDealt = (int)(damage * (0.5f + (1 - (targetDefense / 20f))/2));
-                target.GetComponent<Fighter>().TakeDamage(damageDealt);
+                target.GetComponent<Fighter>().TakeDamage(damage);
                 // Debug.Log($"Original damage: {damage}, Damage dealt: {damageDealt}");
                 // UIManager.Instance.AddMessage($"{target.name} takes a {damageDealt} damage from the {projectile.name}!", "#FF0000");
                 if(projectile.GetComponent<Flame>()){
@@ -151,11 +151,9 @@ public class Action
             float distance = Vector3.Distance(projectile.transform.position, target.transform.position);
             if (distance <= projectile.GetComponent<Projectile>().AoeRadius) {
                 int damage = projectile.GetComponent<Projectile>().Damage;
-                int targetDefense = target.GetComponent<Fighter>().Defense;
-                int damageDealt = (int)(damage * (0.5f + (1 - (targetDefense / 20f))/2));
-                target.GetComponent<Fighter>().TakeDamage(damageDealt);
+                target.GetComponent<Fighter>().TakeDamage(damage);
                 // Debug.Log($"Original damage: {damage}, Damage dealt: {damageDealt}");   
-                UIManager.Instance.AddMessage($"{target.name} takes a {damageDealt} damage because of the AOE from the {projectile.name}!", Utilz.RED);
+                UIManager.Instance.AddMessage($"{target.name} takes an AOE attack from the {projectile.name}!", Utilz.RED);
             }
         }
     }
@@ -180,37 +178,10 @@ public class Action
                         damageDealt = (int)(damageDealt * actor.GetComponent<Player>().CritDamage);
                         UIManager.Instance.AddMessage($"{actor.name} critically slashes {target.name} for {damageDealt} damage!", Utilz.ORANGE);
                     }
-                    else{
-                        int targetDefense = target.GetComponent<Fighter>().Defense;
-                        damageDealt = (int)(damageDealt * (0.5f + (1 - (targetDefense / 20f))/2));
-                        // UIManager.Instance.AddMessage($"{actor.name} slashes {target.name} for {damageDealt} damage!",Utilz.RED);
-                    }
                 }
                 target.GetComponent<Fighter>().TakeDamage(damageDealt);
             }
         }
-        
-        // foreach(Actor target in GameManager.Instance.Actors){
-        //     if(target == actor)
-        //         continue;
-        //     Vector3 targetDirection = target.transform.position - actor.transform.position;
-        //     float angle = Vector3.Angle(direction, targetDirection);
-        //     if(angle < fanAngle && targetDirection.magnitude < area){  
-        //         int damageDealt = damage;
-        //         if(actor.GetComponent<Player>()){
-        //             if(Random.value < actor.GetComponent<Player>().CritRate){
-        //                 damageDealt = (int)(damageDealt * actor.GetComponent<Player>().CritDamage);
-        //                 UIManager.Instance.AddMessage($"{actor.name} critically slashes {target.name} for {damageDealt} damage!", "#FFFFFF");
-        //             }
-        //             else{
-        //                 int targetDefense = target.GetComponent<Fighter>().Defense;
-        //                 damageDealt = (int)(damageDealt * (0.5f + (1 - (targetDefense / 20f))/2));
-        //                 UIManager.Instance.AddMessage($"{actor.name} slashes {target.name} for {damageDealt} damage!", "#d1a3a4");
-        //             }
-        //         }
-        //         target.GetComponent<Fighter>().TakeDamage(damageDealt);
-        //     }
-        // }
 
         UIManager.Instance.DrawFanSprite(actor.transform.position, direction, fanAngle, area);
     }
@@ -228,7 +199,7 @@ public class Action
 
     static public void MeleeAction(Actor actor, Actor target){
         int targetDefense = target.GetComponent<Fighter>().Defense;
-        int damage = (int)(actor.GetComponent<Fighter>().Power * (0.5f + (1 - (targetDefense / 20f))/2));
+        int damage = actor.GetComponent<Fighter>().Power;
 
         string attackDesc = $"{actor.name} attacks {target.name}";
 

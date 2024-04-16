@@ -74,7 +74,7 @@ public class MapManager : MonoBehaviour
     {
         tiles = new Dictionary<Vector3Int, TileData>();
         visibleTiles = new List<Vector3Int>();
-
+        
         ProcGen procGen = new ProcGen();
         procGen.GenerateDungeon(Width, Height, roomMaxSize, roomMinSize, maxRooms, minMonsterPerRoom, maxMonsterPerRoom, maxItemsPerRoom);
 

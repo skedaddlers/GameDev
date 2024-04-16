@@ -99,9 +99,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blocksMovement: 0
   weaponName: Primordial Jade Cutter
-  damage: 6
-  radius: 2.2
+  damage: 5
+  radius: 2.4
   icon: {fileID: 0}
-  attackSpeed: 0.65
+  attackSpeed: 0.75
   cost: 95
   description: A superb weapon for you, the star!

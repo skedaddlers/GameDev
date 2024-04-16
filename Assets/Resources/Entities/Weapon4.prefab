@@ -99,9 +99,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blocksMovement: 0
   weaponName: Splendor of Tranquil Waters
-  damage: 9
+  damage: 7
   radius: 2.5
   icon: {fileID: 0}
-  attackSpeed: 0.5
+  attackSpeed: 0.65
   cost: 125
   description: OMG IT'S THE WEAPON OF FURINA DE FONTAINE!

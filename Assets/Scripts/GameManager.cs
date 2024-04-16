@@ -20,6 +20,8 @@ public class GameManager : MonoBehaviour
 
     [Header("Death")]
     [SerializeField] private Sprite deadSprite;
+    private bool hasWon = false;
+    public bool HasWon { get => hasWon; set => hasWon = value; }
     public bool IsPlayerTurn { get => isPlayerTurn; }
     public List<Entity> Entities { get => entities; }
     public List<Actor> Actors { get => actors; }

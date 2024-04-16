@@ -31,35 +31,34 @@ sealed class ProcGen : MonoBehaviour
                     if(x == roomX || x == roomX + roomWidth - 1 || y == roomY || y == roomY + roomHeight - 1)
                     {
                         int tileIndex = 0;
-                        if (x == roomX){
+
+                        if (x == roomX)
+                        {
                             if (y == roomY)
-                                tileIndex = 3;
-                            else if(y == roomY + roomHeight - 1)
                                 tileIndex = 0;
+                            else if (y == roomY + roomHeight - 1)
+                                tileIndex = 3;
                             else
                                 tileIndex = 11;
                         }
-                        else if(y == roomY){
-                            tileIndex = 10;
-                            if (x == roomX)
-                                tileIndex = 3;
-                            else if(x == roomX + roomWidth - 1)
-                                tileIndex = 2;
-                        }
-                        else if(x == roomX + roomWidth - 1){
-                            tileIndex = 9;
+                        else if (x == roomX + roomWidth - 1)
+                        {
                             if (y == roomY)
+                                tileIndex = 1;
+                            else if (y == roomY + roomHeight - 1)
                                 tileIndex = 2;
-                            else if(y == roomY + roomHeight - 1)
-                                tileIndex = 1;
+                            else
+                                tileIndex = 9;
                         }
-                        else if(y == roomY + roomHeight - 1){
+                        else if (y == roomY)
+                        {
                             tileIndex = 8;
-                            if (x == roomX)
-                                tileIndex = 0;
-                            else if(x == roomX + roomWidth - 1)
-                                tileIndex = 1;
                         }
+                        else if (y == roomY + roomHeight - 1)
+                        {
+                            tileIndex = 10;
+                        }
+
                         if(SetWallTileIfEmpty(new Vector3Int(x, y, 0), tileIndex))
                         {
                             continue;
@@ -85,15 +84,15 @@ sealed class ProcGen : MonoBehaviour
             RoomManager.Instance.AddRoom(newRoom);
         }
         // fill the rest of the map with walls
-        for(int x = -20; x < mapWidth + 20; x++)
+        for(int x = -10; x < mapWidth + 10; x++)
         {
-            for(int y = -20; y < mapHeight + 20; y++)
+            for(int y = -10; y < mapHeight + 10; y++)
             {
                 if(MapManager.Instance.FloorMap.GetTile(new Vector3Int(x, y, 0)) || MapManager.Instance.ObstacleMap.GetTile(new Vector3Int(x, y, 0)))
                 {
                     continue;
                 }
-                SetWallTileIfEmpty(new Vector3Int(x, y, 0), 8);
+                SetWallTileIfEmpty(new Vector3Int(x, y, 0), 12);
             }
         }
 
@@ -153,9 +152,47 @@ sealed class ProcGen : MonoBehaviour
 
             for (int x = tunnelCoords[i].x - 2; x <= tunnelCoords[i].x + 2; x++) {
                 for (int y = tunnelCoords[i].y - 2; y <= tunnelCoords[i].y + 2; y++) {
-                    if (SetWallTileIfEmpty(new Vector3Int(x, y, 0), 8)) {
+                    if(SetWallTileIfEmpty(new Vector3Int(x, y, 0), 8))
+                    {
                         continue;
                     }
+                    // if(x == roomX || x == roomX + roomWidth - 1 || y == roomY || y == roomY + roomHeight - 1)
+                    // {
+                    //     int tileIndex = 0;
+                    //     if (x == roomX){
+                    //         if (y == roomY)
+                    //             tileIndex = 3;
+                    //         else if(y == roomY + roomHeight - 1)
+                    //             tileIndex = 0;
+                    //         else
+                    //             tileIndex = 11;
+                    //     }
+                    //     else if(y == roomY){
+                    //         tileIndex = 10;
+                    //         if (x == roomX)
+                    //             tileIndex = 3;
+                    //         else if(x == roomX + roomWidth - 1)
+                    //             tileIndex = 2;
+                    //     }
+                    //     else if(x == roomX + roomWidth - 1){
+                    //         tileIndex = 9;
+                    //         if (y == roomY)
+                    //             tileIndex = 2;
+                    //         else if(y == roomY + roomHeight - 1)
+                    //             tileIndex = 1;
+                    //     }
+                    //     else if(y == roomY + roomHeight - 1){
+                    //         tileIndex = 8;
+                    //         if (x == roomX)
+                    //             tileIndex = 0;
+                    //         else if(x == roomX + roomWidth - 1)
+                    //             tileIndex = 1;
+                    //     }
+                    //     if(SetWallTileIfEmpty(new Vector3Int(x, y, 0), tileIndex))
+                    //     {
+                    //         continue;
+                    //     }
+                    // }
                 }
             }
         }
@@ -190,11 +227,21 @@ sealed class ProcGen : MonoBehaviour
                 }
             }
 
-            if(Random.value < 0.5f){
-                MapManager.Instance.CreateEntity("Skeleton", new Vector2(x, y));
+            float random = Random.value;
+            if(random < 0.2f){
+                MapManager.Instance.CreateEntity("Slime", new Vector2(x, y));
+            }
+            else if(random < 0.4f){
+                MapManager.Instance.CreateEntity("Fungi", new Vector2(x, y));
+            }
+            else if(random < 0.6f){
+                MapManager.Instance.CreateEntity("Spectre", new Vector2(x, y));
+            }
+            else if(random < 0.8f){
+                MapManager.Instance.CreateEntity("Treasure Hoarder", new Vector2(x, y));
             }
             else{
-                MapManager.Instance.CreateEntity("Zombie", new Vector2(x, y));
+                MapManager.Instance.CreateEntity("Hilichurl", new Vector2(x, y));
             }
             monster++;
         }
@@ -343,7 +390,7 @@ sealed class ProcGen : MonoBehaviour
         }
         farthestRoom.IsBossRoom = true;
         farthestRoom.IsCleared = false;
-        GameObject boss = MapManager.Instance.CreateEntity("Boss", farthestRoom.Center());
+        GameObject boss = MapManager.Instance.CreateEntity("Focalors", farthestRoom.Center());
         Vector3 bossPos = new Vector3(farthestRoom.Center().x + 0.5f, farthestRoom.Center().y + 0.5f, 0);
         boss.GetComponent<BossEnemy>().Center = bossPos;
         //convert vector2int to vector3 

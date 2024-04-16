@@ -10,6 +10,7 @@ public class Fighter : MonoBehaviour
     [SerializeField] private int shieldHp = 0;
     [SerializeField] private Actor target;
     [SerializeField] private bool isUnderStatusEffect = false;
+    [SerializeField] private StatusEffect statusEffect;
 
     public int Hp{
         get => hp;
@@ -48,8 +49,14 @@ public class Fighter : MonoBehaviour
 
     void Update()
     {
+        if(statusEffect == null){
+            isUnderStatusEffect = false;
+        }
         if(GetComponent<Player>()){
             UIManager.Instance.SetHealth(hp, maxHp);
+            if(!isUnderStatusEffect){
+                UIManager.Instance.RemoveStatusEffect();
+            }
         }
         else{
             UIManager.Instance.UpdateEnemyHealthBar(this.GetComponent<Actor>());
@@ -58,16 +65,21 @@ public class Fighter : MonoBehaviour
 
     public void ApplyEffect(StatusEffect effect){
         if(isUnderStatusEffect){
-            UIManager.Instance.AddMessage("Already under a status effect!", "#FF0000");
+            UIManager.Instance.AddMessage("Already under a status effect!", Utilz.RED);
             Destroy(effect.gameObject);
             return;
+        }
+        isUnderStatusEffect = true;
+        statusEffect = effect;
+        if(GetComponent<Player>()){
+            UIManager.Instance.UpdateStatusEffect(effect);
         }
     }
 
     public void TakeDamage(int damage){
         if(GetComponent<Player>()){
             if(GetComponent<Player>().IsDashing){
-                UIManager.Instance.AddMessage("You are invulnerable while dashing!", "#FF0000");
+                UIManager.Instance.AddMessage("You are invulnerable while dashing!", Utilz.GREEN);
                 return;
             }
         }
@@ -76,16 +88,16 @@ public class Fighter : MonoBehaviour
                 return;
             }
         }
+        int damageDealt = (int)(damage * (0.5f + (1 - (defense / 30f))/2));
         if(shieldHp > 0){
-            shieldHp -= damage;
+            shieldHp -= damageDealt;
             if(shieldHp < 0){
                 hp += shieldHp;
                 shieldHp = 0;
             }
         }
         else{
-            int damageDealt = damage;
-            if(hp < damage){
+            if(hp < damageDealt){
                 damageDealt = hp;
             }
             hp -= damageDealt;
@@ -98,11 +110,11 @@ public class Fighter : MonoBehaviour
     public void Die(){
         if(GetComponent<Actor>().IsAlive){
             if(GetComponent<Player>()){
-                UIManager.Instance.AddMessage("You died!", "#FF0000");
+                UIManager.Instance.AddMessage("You died!", Utilz.RED);
                 UIManager.Instance.ShowDefeatScreen();
             }
             else{
-                UIManager.Instance.AddMessage($"{name} died!", "#FFA500");
+                UIManager.Instance.AddMessage($"{name} died!", Utilz.GREEN);
             }
             GetComponent<Actor>().IsAlive = false;
         }

@@ -99,9 +99,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blocksMovement: 0
   weaponName: Festering Desire
-  damage: 5
-  radius: 2
+  damage: 4
+  radius: 2.31
   icon: {fileID: 0}
-  attackSpeed: 0.8
+  attackSpeed: 0.83
   cost: 70
   description: A better weapon that's suitable for you! It's pretty ancient you know!

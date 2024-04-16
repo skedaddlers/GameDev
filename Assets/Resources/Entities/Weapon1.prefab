@@ -99,9 +99,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blocksMovement: 0
   weaponName: Fleuve Cendre Ferryman
-  damage: 4
-  radius: 1.7
+  damage: 3
+  radius: 2.23
   icon: {fileID: 0}
-  attackSpeed: 0.9
+  attackSpeed: 0.92
   cost: 50
   description: Imagine having to fish to get this ordinary weapon

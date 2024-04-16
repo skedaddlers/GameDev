@@ -99,8 +99,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blocksMovement: 0
   weaponName: Dull Blade
-  damage: 3
-  radius: 1.6
+  damage: 2
+  radius: 2.15
   icon: {fileID: 0}
   attackSpeed: 1
   cost: 0
