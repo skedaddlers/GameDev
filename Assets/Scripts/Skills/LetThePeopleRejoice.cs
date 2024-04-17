@@ -30,6 +30,7 @@ public class LetThePeopleRejoice : Skill
                 isActive = false;
                 UIManager.Instance.AddMessage($"{skillName} has ended!", "#00FFFF");
                 player.GetComponent<Fighter>().Power -= powerGain;
+                powerGain = 0;
                 if(player.GetComponent<Player>().EnemiesKilled > initialAmountOfEnemiesKilled)
                 {
                     player.GetComponent<Fighter>().Heal(5);
@@ -37,7 +38,7 @@ public class LetThePeopleRejoice : Skill
             }
             if(remainingReduceHpInterval <= 0f)
             {
-                player.GetComponent<Fighter>().TakeDamage(1);
+                player.GetComponent<Fighter>().Hp -= 1;
                 remainingReduceHpInterval = reduceHpInterval;
             }
             if(remainingHealIfDefeatEnemyInterval <= 0f)
@@ -55,7 +56,7 @@ public class LetThePeopleRejoice : Skill
         UIManager.Instance.AddMessage("You used " + skillName + "!", "#00FFFF");
         isActive = true;
         Actor player = GameManager.Instance.Actors[0];
-        int powerGain = player.GetComponent<Fighter>().Power;
+        powerGain = player.GetComponent<Fighter>().Power;
         player.GetComponent<Fighter>().Power += powerGain;
         initialAmountOfEnemiesKilled = player.GetComponent<Player>().EnemiesKilled;
         MapManager.Instance.GenerateEffect("Let", player, duration, 1, 2);
