@@ -19,6 +19,7 @@ public class SalonSolitaire : Skill
     }
     public override void Use()
     {
+        AudioManager.Instance.PlayVoiceLine("Salon Solitaire");
         UIManager.Instance.AddMessage("You used " + skillName + "!", "#00FFFF");
         Actor player = GameManager.Instance.Actors[0];
         // MapManager.Instance.GenerateSalonMembers(player);

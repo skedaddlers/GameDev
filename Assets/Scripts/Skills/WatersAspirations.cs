@@ -33,6 +33,7 @@ public class WatersAspirations : Skill
 
     public override void Use()
     {
+        AudioManager.Instance.PlayVoiceLine("Water's Aspirations");
         isActive = true;
         UIManager.Instance.AddMessage("You used " + skillName + "!", "#00FFFF");
         Actor player = GameManager.Instance.Actors[0];

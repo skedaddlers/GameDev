@@ -99,7 +99,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blocksMovement: 0
   speed: 13
-  damage: 3
+  damage: 5
   rotation: 0
   direction: {x: 0, y: 0, z: 0}
   isPlayerProjectile: 0

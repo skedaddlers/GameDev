@@ -117,6 +117,7 @@ public class Player : MonoBehaviour, Controls.IPlayerActions
     {
         if(context.performed && !isDashing){
             if(stamina >= 20 && dashTimer <= 0 && GetComponent<Actor>().IsAlive){
+                AudioManager.Instance.PlaySFX("Sprint");
                 stamina -= 20;
                 dashTimer = dashCd;
                 isDashing = true;

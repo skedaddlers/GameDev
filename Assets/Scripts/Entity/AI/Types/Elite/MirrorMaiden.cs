@@ -72,6 +72,7 @@ public class MirrorMaiden : EliteEnemy
     }
 
     private void RangedAttack(Actor target){
+        AudioManager.Instance.PlaySFX("EnemyShoot");
         Vector3Int targetPos = MapManager.Instance.FloorMap.WorldToCell(target.transform.position);
         Vector2 direction = new Vector2(targetPos.x - transform.position.x, targetPos.y - transform.position.y).normalized;
         int damage = GetComponent<Fighter>().Power; 

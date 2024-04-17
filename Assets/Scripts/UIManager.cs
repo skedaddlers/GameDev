@@ -467,7 +467,7 @@ public class UIManager : MonoBehaviour
     private void ApplyLevelUp(int level, int choiceIndex, Actor actor){
         Fighter fighter = actor.GetComponent<Fighter>();
         Player player = actor.GetComponent<Player>();
-
+        AudioManager.Instance.PlaySFX("Powerup");
         switch(choiceIndex){
             case 0:
                 fighter.MaxHp += 5;

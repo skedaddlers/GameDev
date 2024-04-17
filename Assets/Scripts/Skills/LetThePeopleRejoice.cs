@@ -53,6 +53,7 @@ public class LetThePeopleRejoice : Skill
     }
     public override void Use()
     {
+        AudioManager.Instance.PlayVoiceLine("Let The People Rejoice");
         UIManager.Instance.AddMessage("You used " + skillName + "!", "#00FFFF");
         isActive = true;
         Actor player = GameManager.Instance.Actors[0];

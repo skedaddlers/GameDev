@@ -41,6 +41,7 @@ public class TearsOfTheSinners : Skill
     }
     public override void Use()
     {
+        AudioManager.Instance.PlayVoiceLine("Tears Of The Sinners");
         UIManager.Instance.AddMessage("You used " + skillName + "!", "#00FFFF");
         isActive = true;
         Actor player = GameManager.Instance.Actors[0];      

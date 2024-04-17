@@ -47,6 +47,7 @@ public class Projectile : Entity
                 else{
                     Action.CheckForCollision(this);
                 }
+                AudioManager.Instance.PlaySFX("Explosion");
                 Destroy(gameObject);
             }
         }

@@ -135,6 +135,7 @@ public class BossEnemy : HostileEnemy
 
     private void Attack(Vector2 direction, int damage){
         // shoot projectile at player
+        AudioManager.Instance.PlaySFX("EnemyShoot");
         MapManager.Instance.CreateProjectile("Evil Bubble", transform.position, direction, damage, false);
     }
 

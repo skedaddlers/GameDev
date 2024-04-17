@@ -100,7 +100,11 @@ public class Fighter : MonoBehaviour
             if(hp < damageDealt){
                 damageDealt = hp;
             }
+            AudioManager.Instance.PlaySFX("Hit");
             hp -= damageDealt;
+            if(GetComponent<Player>() && damageDealt > 10){
+                AudioManager.Instance.PlayVoiceLine("Lethal Damage");
+            }
         }
         if(hp <= 0){
             
@@ -112,6 +116,7 @@ public class Fighter : MonoBehaviour
             if(GetComponent<Player>()){
                 UIManager.Instance.AddMessage("You died!", Utilz.RED);
                 UIManager.Instance.ShowDefeatScreen();
+                AudioManager.Instance.PlayVoiceLine("Death");
             }
             else{
                 UIManager.Instance.AddMessage($"{name} died!", Utilz.GREEN);

@@ -99,7 +99,7 @@ public class RuinGuard : EliteEnemy
         // perform special attack
         // ;aunch a missile projectile at the target position
         // deal massive damage to the player
-
+        AudioManager.Instance.PlaySFX("Missile");
         Vector3Int targetPos = MapManager.Instance.FloorMap.WorldToCell(player.transform.position);
         Vector2 direction = (new Vector2(targetPos.x - transform.position.x, targetPos.y - transform.position.y)).normalized;
         int damage = (int)(GetComponent<Fighter>().Power * 1.35f);

@@ -34,7 +34,7 @@ public class Consumable : MonoBehaviour
 
     private bool Healing(Actor actor, Item item){
         int amountHealed = actor.GetComponent<Fighter>().Heal(amount);
-
+        AudioManager.Instance.PlaySFX("Heal");
         if(amountHealed > 0){
             UIManager.Instance.AddMessage($"You consumed the {name} and healed for {amountHealed} HP!", Utilz.GREEN);
             Consume(actor, item);

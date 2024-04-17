@@ -108,4 +108,4 @@ MonoBehaviour:
   targetPosition: {x: 0, y: 0, z: 0}
   burnDuration: 4
   burnRate: 2
-  burnDamage: 1
+  burnDamage: 2

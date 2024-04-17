@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class Action
 {
-    
     static public void PickupAction(Actor actor)
     {
         for(int i = 0; i < GameManager.Instance.Entities.Count; i++){
@@ -18,6 +17,7 @@ public class Action
                 actor.GetComponent<Fighter>().Power = weapon.Damage;
                 weapon.GetComponent<SpriteRenderer>().enabled = false;
                 UIManager.Instance.UpdateWeapon(actor);
+                AudioManager.Instance.PlaySFX("Pickup");
                 return;
             }
             else if(GameManager.Instance.Entities[i].GetComponent<Item>()){
@@ -28,7 +28,8 @@ public class Action
                 Item item = GameManager.Instance.Entities[i].GetComponent<Item>();
                 actor.Inventory.Add(item);
                 item.GetComponent<SpriteRenderer>().enabled = false;
-                UIManager.Instance.AddMessage($"You picked up the {item.name}.", "#00FF00");
+                UIManager.Instance.AddMessage($"You picked up the {item.name}.", Utilz.GREEN);
+                AudioManager.Instance.PlaySFX("Pickup");
             }
             // Debug.Log("Picking up item");
             
@@ -81,6 +82,7 @@ public class Action
             UIManager.Instance.AddMessage("You don't have enough gold!", Utilz.RED);
             return;
         }
+        AudioManager.Instance.PlaySFX("Buy");
         skill.gameObject.SetActive(true);
         skill.GetComponent<SpriteRenderer>().enabled = false;
         skill.transform.SetParent(actor.transform);
@@ -95,6 +97,7 @@ public class Action
             UIManager.Instance.AddMessage("You don't have enough gold!", Utilz.RED);
             return;
         }
+        AudioManager.Instance.PlaySFX("Buy");
         UIManager.Instance.AddMessage($"You bought the {weapon.WeaponName}!", Utilz.GREEN);
         // weapon.gameObject.SetActive(true);
         actor.GetComponent<Player>().Mora -= weapon.Cost;
@@ -121,6 +124,7 @@ public class Action
 
         if(target != null){
             if(projectile.GetComponent<Projectile>().IsAOE){
+
                 AOEAttack(projectile);
             }
             else{        
@@ -182,12 +186,13 @@ public class Action
                 target.GetComponent<Fighter>().TakeDamage(damageDealt);
             }
         }
-
+        AudioManager.Instance.PlaySFX("Slash");
         UIManager.Instance.DrawFanSprite(actor.transform.position, direction, fanAngle, area);
     }
 
     static public void RangedAction(Actor actor, Vector3 direction){
         if(actor.GetComponent<Player>()){
+            AudioManager.Instance.PlaySFX("Ranged");
             MapManager.Instance.CreateProjectile("Bubble" ,actor.transform.position, direction, actor.GetComponent<Fighter>().Power, true);
         }
         else{

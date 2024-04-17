@@ -76,6 +76,7 @@ public class AbyssMage : EliteEnemy
 
     public void FlameAttack(Actor player)
     {
+        AudioManager.Instance.PlaySFX("EnemyShoot");
         Vector3Int targetPos = MapManager.Instance.FloorMap.WorldToCell(player.transform.position);
         Vector2 direction = new Vector2(targetPos.x - transform.position.x, targetPos.y - transform.position.y).normalized;
         int damage = GetComponent<Fighter>().Power;
